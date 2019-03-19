@@ -26,6 +26,7 @@ import sys
 import os
 
 # Third-party
+import git
 
 # Local
 import lib.arg_parser as arg_parser
@@ -51,30 +52,117 @@ def help_message():
     print(__doc__)
 
 
-def merge_repo(args_array, **kwargs):
+def is_git_repo(path, **kwargs):
+
+    """Function:  is_git_repo
+
+    Description:  Determines if the path is a local git repository.
+
+    Arguments:
+        (input) path -> Directory path to git repository.
+        (input) **kwargs:
+            None
+        (output)  True|False -> If the directory path is a git repository.
+
+    """
+
+    try:
+        _ = git.Repo(path).git_dir
+        return True
+
+    except git.exc.InvalidGitRepositoryError:
+        return False
+
+
+def is_remote_branch(gitcmd, branch, **kwargs):
+
+    """Function:  is_remote_branch
+
+    Description:  Determines if the branch exist in remote git repository.
+
+    Arguments:
+        (input) gitcmd -> Git command instance.
+        (input) branch -> Git branch name.
+        (input) **kwargs:
+            None
+        (output)  True|False -> If the branch in remote git repository.
+
+    """
+
+    try:        
+        gitcmd.rev_parse('--verify', branch)
+        return True
+
+    except git.exc.GitCommandError:
+        return False
+
+
+def merge_repo(args_array, cfg, log, **kwargs):
 
     """Function:  merge_repo
 
-    Description:
+    Description:  Controls the merging of a non-local repository with a remote
+        repository, but having the non-local repository as the priority
+        repository.
 
     Arguments:
-        (input) args_array -> Array of command line options and values.
+        (input) args_array -> Dict of command line options and values.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
         (input) **kwargs:
             None
 
     """
 
-    return NNNN
+    gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
+
+    proj_dir = os.join.path(cfg.work_dir, os.path.basename(args_array["-p"]))
+
+    if is_git_repo(proj_dir):
+
+        log.log_info("Working in %s directory" % (proj_dir))
+
+        gitrepo = git.Repo(proj_dir)
+        gitcmd = gitrepo.git
+
+        if is_remote_branch(gitcmd, "master"):
+
+            if gitrepo.is_dirty(untracked_files=True):
+
+                for f_git in gitrepo.untracked_files:
+
+                    # STOPPED HERE
+
+#           # Continue to process.
+
+        else:
+
+            log.log_err("ERROR:  %s.%s does not exist at remote Git repo" % \
+                        (proj_dir, "master"))
+            log.log_info("Remote git repo: %s" % (gitrepo.remotes.origin.url))
+
+#           # Send notification of error.
+#           # Clean up or archive directory.
+
+    else:
+
+        log.log_err("ERROR:  %s is not a Git repository" % ())
+
+#       # Send notification of error.
+#       # Clean up or archive directory.
 
 
-def run_program(args_array, **kwargs):
+def run_program(args_array, cfg, log, **kwargs):
 
     """Function:  run_program
 
-    Description:  Controls the running of the program.
+    Description:  Controls the running of the program and sets up a logger
+        class for the running instance of the program.
 
     Arguments:
         (input) args_array -> Dict of command line options and values.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
         (input) **kwargs:
             None
 
@@ -100,7 +188,7 @@ def run_program(args_array, **kwargs):
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
 
-            func_dict[opt](cfg, log, **kwargs)
+            func_dict[opt](args_array, cfg, log, **kwargs)
 
         log.log_close()
 
