@@ -132,7 +132,8 @@ def merge_repo(args_array, cfg, log, **kwargs):
         gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
 
         # Does branch resides in the remote git repo.
-        # Make "master" a cfg or variable setting? Cfg as we can then merge another branch if so desired, but not recommended to be changed.
+        # Make "master" a cfg or variable setting? Cfg as we can then merge another branch if so desired,
+        #    but setting not recommended to be changed.
         if is_remote_branch(gitcmd, "master"):
 
             # Process the untracked files.
@@ -156,7 +157,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
                     if f_git.change_type == "D":
 
-                        # Need to test this code first.
+                        # Test this code, not been tested before.
                         gitcmd.rm(f_git)
                     
                     elif f_git.change_type == "M":
@@ -167,6 +168,23 @@ def merge_repo(args_array, cfg, log, **kwargs):
                 # Can I stipulate what is in the comments dynamically?
                 gitrepo.index.commit("Add untracked files")
             # ### End function 2 process_dirty
+
+            # Test this code, not been tested before.
+            gitcmd.fetch()
+
+            # Test this code, not been tested before.
+            gitcmd.branch("mod_release")
+
+            # Another one with branch name here.
+            gitcmd.checkout("master")
+
+            # Test this code, not been tested before.
+            # Git merge --no-off -s recursive -X theirs mod_release
+            gitcmd.merge("--no-off", "-s", "recursive", "-X", "theirs", "mod_release")
+            # or gitcmd.merge("--no-off", "-s recursive", "-X theirs", "mod_release")
+
+            # Test this code, not been tested before.
+            gitcmd.push("--tags")
 
             # STOPPED HERE
 
