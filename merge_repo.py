@@ -127,11 +127,43 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
         if is_remote_branch(gitcmd, "master"):
 
+            # Process the untracked files.
+            # ### Start function 1 process_untracked
             if gitrepo.is_dirty(untracked_files=True):
 
                 for f_git in gitrepo.untracked_files:
 
-                    # STOPPED HERE
+                    # Check this code works.
+                    gitcmd.add(f_git)
+                
+                # Can I stipulate what is in the comments dynamically?
+                gitrepo.index.commit("Add untracked files")
+            # ### End function 1 process_untracked
+            
+            # Process the dirty files.
+            # ### Start function 2 process_dirty
+            if gitrepo.is_dirty():
+
+                for f_git in gitrepo.index.diff(None):
+
+                    if f_git.change_type == "D":
+
+                        # Need to test this code first.
+                        gitcmd.rm(f_git)
+                    
+                    elif f_git.change_type == "M":
+
+                        # Check this code works.
+                        gitcmd.add(f_git)
+
+                # Can I stipulate what is in the comments dynamically?
+                gitrepo.index.commit("Add untracked files")
+            # ### End function 2 process_dirty
+
+            # Set the url to the remote Git repo.
+            # Git remote set-url origin cfg.url + project_name + ".git"
+
+            # STOPPED HERE
 
 #           # Continue to process.
 
