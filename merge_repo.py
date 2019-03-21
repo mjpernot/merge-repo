@@ -118,6 +118,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
     proj_dir = os.join.path(cfg.work_dir, os.path.basename(args_array["-p"]))
 
+    # Does current directory setup as a local git repo.
     if is_git_repo(proj_dir):
 
         log.log_info("Working in %s directory" % (proj_dir))
@@ -125,6 +126,13 @@ def merge_repo(args_array, cfg, log, **kwargs):
         gitrepo = git.Repo(proj_dir)
         gitcmd = gitrepo.git
 
+        # Set the url to the remote Git repo.
+        # Git remote set-url origin cfg.url + project_name + ".git"
+        # gitcmd.remote('set-url', 'origin', 'git@gitlab.code.dicelab.net:JAC-IDM/test-merge.git')
+        gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
+
+        # Does branch resides in the remote git repo.
+        # Make "master" a cfg or variable setting? Cfg as we can then merge another branch if so desired, but not recommended to be changed.
         if is_remote_branch(gitcmd, "master"):
 
             # Process the untracked files.
@@ -159,9 +167,6 @@ def merge_repo(args_array, cfg, log, **kwargs):
                 # Can I stipulate what is in the comments dynamically?
                 gitrepo.index.commit("Add untracked files")
             # ### End function 2 process_dirty
-
-            # Set the url to the remote Git repo.
-            # Git remote set-url origin cfg.url + project_name + ".git"
 
             # STOPPED HERE
 
