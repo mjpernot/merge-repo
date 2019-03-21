@@ -186,9 +186,8 @@ def merge_repo(args_array, cfg, log, **kwargs):
             # Test this code, not been tested before.
             gitcmd.push("--tags")
 
-            # STOPPED HERE
-
-#           # Continue to process.
+#           # Send notification of completion.
+#           # Clean up or archive directory.
 
         else:
 
