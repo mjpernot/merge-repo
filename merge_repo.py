@@ -158,7 +158,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
                     if f_git.change_type == "D":
 
                         # Test this code, not been tested before.
-                        gitcmd.rm(f_git)
+                        gitcmd.rm([f_git], working_tree=True)
                     
                     elif f_git.change_type == "M":
 
@@ -180,8 +180,8 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
             # Test this code, not been tested before.
             # Git merge --no-off -s recursive -X theirs mod_release
-            gitcmd.merge("--no-off", "-s", "recursive", "-X", "theirs", "mod_release")
             # or gitcmd.merge("--no-off", "-s recursive", "-X theirs", "mod_release")
+            gitcmd.merge("--no-off", "-s", "recursive", "-X", "theirs", "mod_release")
 
             # Test this code, not been tested before.
             gitcmd.push("--tags")
