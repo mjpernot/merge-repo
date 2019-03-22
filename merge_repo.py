@@ -8,10 +8,23 @@
     Usage:
 
     Arguments:
+        -c (config file)
+        -d (config directory path)
+        -M (Run merge_repo function)
+        -r (project/repository name (e.g. "test-merge"))
+        -p (project directory including full path)
+        -e (Error directory path) # Use -e or cfg.err_dir?
         -v => Display version of this program.
         -h => Help and usage message.
 
         NOTE 1:  -v or -h overrides the other options.
+    
+    Notes:
+        Config file:
+            url="git@gitlab.code.dicelab.net:JAC-IDM/"
+            work_dir="/home/mark.j.pernot/merge/work_dir"
+            err_dir="/home/mark.j.pernot/merge/error_dir"
+            archive_dir="/home/mark.j.pernot/merge/archive_dir"
 
     Examples:
 
@@ -114,6 +127,8 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
     """
 
+    log.log_info("Starting merge of:  %s" % (args_array["-r"]))
+
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
 
     proj_dir = os.join.path(cfg.work_dir, os.path.basename(args_array["-p"]))
@@ -186,24 +201,26 @@ def merge_repo(args_array, cfg, log, **kwargs):
             # Test this code, not been tested before.
             gitcmd.push("--tags")
 
-#           # Send notification of completion.
-#           # Clean up or archive directory.
+            gen_libs.mv_file2(proj_dir, cfg.archive_dir)
+
+            # Send notification of completion.
 
         else:
 
-            log.log_err("ERROR:  %s.%s does not exist at remote Git repo" % \
-                        (proj_dir, "master"))
-            log.log_info("Remote git repo: %s" % (gitrepo.remotes.origin.url))
+            log.log_err("%s.%s does not exist at remote repo: %s" % \
+                        (proj_dir, "master", (gitrepo.remotes.origin.url))
 
-#           # Send notification of error.
-#           # Clean up or archive directory.
+            gen_libs.mv_file2(proj_dir, cfg.err_dir)
+
+            # Send notification of error.
 
     else:
 
-        log.log_err("ERROR:  %s is not a Git repository" % ())
+        log.log_err("%s is not a Git repository" % ())
 
-#       # Send notification of error.
-#       # Clean up or archive directory.
+        gen_libs.mv_file2(proj_dir, cfg.err_dir)
+
+        # Send notification of error.
 
 
 def run_program(args_array, cfg, log, **kwargs):
