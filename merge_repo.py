@@ -408,8 +408,7 @@ def main():
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list,
-                                       multi_val=opt_multi_list)
+    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
