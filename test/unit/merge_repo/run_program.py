@@ -3,10 +3,10 @@
 
 """Program:  run_program.py
 
-    Description:  Unit testing of run_program in mail_2_rmq.py.
+    Description:  Unit testing of run_program in merge_repo.py.
 
     Usage:
-        test/unit/mail_2_rmq/run_program.py
+        test/unit/merge_repo/run_program.py
 
     Arguments:
         None
@@ -29,7 +29,7 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import mail_2_rmq
+import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
@@ -41,7 +41,7 @@ def process_message(cfg, log, **kwargs):
 
     """Function:  process_message
 
-    Description:  This is a function stub for mail_2_rmq.process_message.
+    Description:  This is a function stub for merge_repo.process_message.
 
     Arguments:
         cfg -> Stub argument holder.
@@ -56,7 +56,7 @@ def check_nonprocess(cfg, log, **kwargs):
 
     """Function:  check_nonprocess
 
-    Description:  This is a function stub for mail_2_rmq.check_nonprocess.
+    Description:  This is a function stub for merge_repo.check_nonprocess.
 
     Arguments:
         cfg -> Stub argument holder.
@@ -135,8 +135,8 @@ class UnitTest(unittest.TestCase):
         self.args_array = {"-c": "CONFIG_FILE", "-d": "CONFIG_DIRECTORY"}
         self.func_dict = {"-M": process_message, "-C": check_nonprocess}
 
-    @mock.patch("mail_2_rmq.gen_class")
-    @mock.patch("mail_2_rmq.load_cfg")
+    @mock.patch("merge_repo.gen_class")
+    @mock.patch("merge_repo.load_cfg")
     def test_all_func(self, mock_cfg, mock_class):
 
         """Function:  test_all_func
@@ -144,22 +144,22 @@ class UnitTest(unittest.TestCase):
         Description:  Test with all functions.
 
         Arguments:
-            mock_cfg -> Mock Ref:  mail_2_rmq.load_cfg
-            mock_class -> Mock Ref:  mail_2_rmq.gen_class
+            mock_cfg -> Mock Ref:  merge_repo.load_cfg
+            mock_class -> Mock Ref:  merge_repo.gen_class
 
         """
 
         mock_cfg.return_value = (self.cfg, True)
-        mock_class.Logger.return_value = mail_2_rmq.gen_class.Logger
-        mock_class.ProgramLock.return_value = mail_2_rmq.gen_class.ProgramLock
+        mock_class.Logger.return_value = merge_repo.gen_class.Logger
+        mock_class.ProgramLock.return_value = merge_repo.gen_class.ProgramLock
 
         self.args_array["-M"] = True
         self.args_array["-C"] = True
-        self.assertFalse(mail_2_rmq.run_program(self.args_array,
+        self.assertFalse(merge_repo.run_program(self.args_array,
                                                 self.func_dict))
 
-    @mock.patch("mail_2_rmq.gen_class")
-    @mock.patch("mail_2_rmq.load_cfg")
+    @mock.patch("merge_repo.gen_class")
+    @mock.patch("merge_repo.load_cfg")
     def test_true_func(self, mock_cfg, mock_class):
 
         """Function:  test_true_func
@@ -167,21 +167,21 @@ class UnitTest(unittest.TestCase):
         Description:  Test with true status and function.
 
         Arguments:
-            mock_cfg -> Mock Ref:  mail_2_rmq.load_cfg
-            mock_class -> Mock Ref:  mail_2_rmq.gen_class
+            mock_cfg -> Mock Ref:  merge_repo.load_cfg
+            mock_class -> Mock Ref:  merge_repo.gen_class
 
         """
 
         mock_cfg.return_value = (self.cfg, True)
-        mock_class.Logger.return_value = mail_2_rmq.gen_class.Logger
-        mock_class.ProgramLock.return_value = mail_2_rmq.gen_class.ProgramLock
+        mock_class.Logger.return_value = merge_repo.gen_class.Logger
+        mock_class.ProgramLock.return_value = merge_repo.gen_class.ProgramLock
 
         self.args_array["-M"] = True
-        self.assertFalse(mail_2_rmq.run_program(self.args_array,
+        self.assertFalse(merge_repo.run_program(self.args_array,
                                                 self.func_dict))
 
-    @mock.patch("mail_2_rmq.gen_class")
-    @mock.patch("mail_2_rmq.load_cfg")
+    @mock.patch("merge_repo.gen_class")
+    @mock.patch("merge_repo.load_cfg")
     def test_true_status(self, mock_cfg, mock_class):
 
         """Function:  test_true_status
@@ -189,18 +189,18 @@ class UnitTest(unittest.TestCase):
         Description:  Test with true status flag.
 
         Arguments:
-            mock_cfg -> Mock Ref:  mail_2_rmq.load_cfg
-            mock_class -> Mock Ref:  mail_2_rmq.gen_class
+            mock_cfg -> Mock Ref:  merge_repo.load_cfg
+            mock_class -> Mock Ref:  merge_repo.gen_class
 
         """
 
         mock_cfg.return_value = (self.cfg, True)
-        mock_class.Logger.return_value = mail_2_rmq.gen_class.Logger
+        mock_class.Logger.return_value = merge_repo.gen_class.Logger
 
-        self.assertFalse(mail_2_rmq.run_program(self.args_array,
+        self.assertFalse(merge_repo.run_program(self.args_array,
                                                 self.func_dict))
 
-    @mock.patch("mail_2_rmq.load_cfg")
+    @mock.patch("merge_repo.load_cfg")
     def test_false_status(self, mock_cfg):
 
         """Function:  test_false_status
@@ -208,14 +208,14 @@ class UnitTest(unittest.TestCase):
         Description:  Test with false status flag.
 
         Arguments:
-            mock_cfg -> Mock Ref:  mail_2_rmq.load_cfg
+            mock_cfg -> Mock Ref:  merge_repo.load_cfg
 
         """
 
         mock_cfg.return_value = (self.cfg, False)
 
         with gen_libs.no_std_out():
-            self.assertFalse(mail_2_rmq.run_program(self.args_array,
+            self.assertFalse(merge_repo.run_program(self.args_array,
                                                     self.func_dict))
 
 
