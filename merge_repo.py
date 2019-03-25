@@ -25,6 +25,9 @@
             work_dir="/home/mark.j.pernot/merge/work_dir"
             err_dir="/home/mark.j.pernot/merge/error_dir"
             archive_dir="/home/mark.j.pernot/merge/archive_dir"
+            to_line="Mark.J.Pernot@coe.ic.gov"
+            # Do not modify unless you know what you are doing.
+            branch="master"
 
     Examples:
 
