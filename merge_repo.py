@@ -3,16 +3,26 @@
 
 """Program:  merge_repo.py
 
-    Description:
+    Description:  Merge an external non-local Git repository into an existing Git
+        repository.  The merge process will clean up the new project using Git
+        and then pull the existing remote Git branch to the local Git repository
+        before merging the non-local Git repo with the existing Git repo.  Once
+        the changes have been merged then the updated branch will be pushed back
+        to the remote Git repository.
+        NOTE:  The non-local Git repo will be marked as the priority, which
+            means the non-local Git repo will have priority over the changes made
+            to the project.
 
     Usage:
+        merge_repo.py -c config -d config_dir -r repo_name -p repo_directory [-M]
+            {-v | -h}
 
     Arguments:
-        -c (config file)
-        -d (config directory path)
-        -M (Run merge_repo function)
-        -r (project/repository name (e.g. "test-merge"))
-        -p (project directory including full path)
+        -c file_name => Name of merge_repo configuration file.
+        -d directory_path => Directory path to the configuration file.
+        -M => Run merge_repo function.
+        -r repo_name => Repository name (e.g. "test-merge").
+        -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -29,6 +39,8 @@
             branch="master"
 
     Examples:
+        merge_repo.py -c merge_cfg -d config -r hp-python-lib
+            -p /opt/local/hp-python-lib -M
 
 """
 
@@ -386,7 +398,7 @@ def main():
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge_repo]
-    opt_req_list = ["-c", "-d", "-r"]
+    opt_req_list = ["-c", "-d", "-p", "-r"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
