@@ -192,6 +192,38 @@ def send_mail(cfg, subj, email_body, **kwargs):
 
     email.send_mail()
 
+def process_project(gitrepo, gitcmd, **kwargs):
+
+    """Function:  process_project
+
+    Description:  Fetch, merge, and push the project to the
+        remote Git repo.
+
+    Arguments:
+        (input) gitrepo -> Git repo class instance.
+        (input) gitcmd -> Git command line class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    # Test this code, not been tested before.
+    gitcmd.fetch()
+
+    # Test this code, not been tested before.
+    gitcmd.branch("mod_release")
+
+    # Another one with branch name here.
+    gitcmd.checkout("master")
+
+    # Test this code, not been tested before.
+    # Git merge --no-off -s recursive -X theirs mod_release
+    # or gitcmd.merge("--no-off", "-s recursive", "-X theirs", "mod_release")
+    gitcmd.merge("--no-off", "-s", "recursive", "-X", "theirs", "mod_release")
+
+    # Test this code, not been tested before.
+    gitcmd.push("--tags")
+
 
 def merge_repo(args_array, cfg, log, **kwargs):
 
@@ -219,7 +251,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
     # Is directory a git repo.
     if is_git_repo(proj_dir):
 
-        log.log_info("Working in %s directory" % (proj_dir))
+        log.log_info("Processing: %s directory" % (proj_dir))
 
         gitrepo = git.Repo(proj_dir)
         gitcmd = gitrepo.git
@@ -240,23 +272,10 @@ def merge_repo(args_array, cfg, log, **kwargs):
             # Process any dirty files.
             process_dirty(gitrepo, gitcmd)
 
-            # Test this code, not been tested before.
-            gitcmd.fetch()
+            # Process the project.
+            process_project(gitrepo, gitcmd)
 
-            # Test this code, not been tested before.
-            gitcmd.branch("mod_release")
-
-            # Another one with branch name here.
-            gitcmd.checkout("master")
-
-            # Test this code, not been tested before.
-            # Git merge --no-off -s recursive -X theirs mod_release
-            # or gitcmd.merge("--no-off", "-s recursive", "-X theirs", "mod_release")
-            gitcmd.merge("--no-off", "-s", "recursive", "-X", "theirs", "mod_release")
-
-            # Test this code, not been tested before.
-            gitcmd.push("--tags")
-
+            # Archive the post-merge project.
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
 
             # Send notification of completion.
@@ -272,6 +291,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
             log.log_err("%s.%s does not exist at remote repo: %s" % \
                         (proj_dir, "master", (gitrepo.remotes.origin.url))
 
+            # Archive the errored project.
             gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
             # Send notification of error.
@@ -290,6 +310,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
         log.log_err("%s is not a Git repository" % (proj_dir))
 
+        # Archive the errored project.
         gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
         # Send notification of error.
