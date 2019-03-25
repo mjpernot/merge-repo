@@ -110,6 +110,32 @@ def is_remote_branch(gitcmd, branch, **kwargs):
         return False
 
 
+def send_mail(cfg, subj, email_body):
+
+    """Function:  send_mail
+
+    Description:  Compiles and sends out an email notification message.
+
+    Arguments:
+        (input) cfg -> Configuration settings module for the program.
+        (input) subj -> Email subject line.
+        (input) email_body -> Email body list.
+        (input) **kwargs:
+            None
+
+    """
+
+    body = list(email_body)
+    frm_line = getpass.getuser() + "@" + socket.gethostname()
+
+    email = gen_class.Mail(cfg.to_line, subj, frm_line)
+
+    for line in body:
+        email.add_2_msg(line)
+
+    email.send_mail()
+
+
 def merge_repo(args_array, cfg, log, **kwargs):
 
     """Function:  merge_repo
@@ -209,17 +235,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
                                                         "%Y-%m-%d %H:%M:%S")]
             body.append("Merge of project has been completed.")
 
-            # ### Start function 3 email_notify
-            #   Don't forget to run list() against "body" during argument pass.
-            frm_line = getpass.getuser() + "@" + socket.gethostname()
-
-            email = gen_class.Mail(cfg.to_line, subj, frm_line)
-
-            for line in body:
-                email.add_2_msg(line)
-
-            email.send_mail()
-            # ### End function 3 email_notify
+            send_mail(cfg, subj, body)
 
         else:
 
@@ -238,17 +254,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
             body.append("Project Dir: " + proj_dir)
             body.append("Branch: " + "master")
 
-            # ### Start function 3 email_notify
-            #   Don't forget to run list() against "body" during argument pass.
-            frm_line = getpass.getuser() + "@" + socket.gethostname()
-
-            email = gen_class.Mail(cfg.to_line, subj, frm_line)
-
-            for line in body:
-                email.add_2_msg(line)
-
-            email.send_mail()
-            # ### End function 3 email_notify
+            send_mail(cfg, subj, body)
 
     else:
 
@@ -264,17 +270,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
         body.append("Local Git repository does not exist.")
         body.append("Project Dir: " + proj_dir)
 
-        # ### Start function 3 email_notify
-        #   Don't forget to run list() against "body" during argument pass.
-        frm_line = getpass.getuser() + "@" + socket.gethostname()
-
-        email = gen_class.Mail(cfg.to_line, subj, frm_line)
-
-        for line in body:
-            email.add_2_msg(line)
-
-        email.send_mail()
-        # ### End function 3 email_notify
+        send_mail(cfg, subj, body)
 
 
 def run_program(args_array, cfg, log, **kwargs):
