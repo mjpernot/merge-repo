@@ -204,6 +204,22 @@ def merge_repo(args_array, cfg, log, **kwargs):
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
 
             # Send notification of completion.
+            subj = "Merge completed for: " + args_array["-r"]
+            body = ["DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+                                                        "%Y-%m-%d %H:%M:%S")]
+            body.append("Merge of project has been completed.")
+
+            # ### Start function 3 email_notify
+            #   Don't forget to run list() against "body" during argument pass.
+            frm_line = getpass.getuser() + "@" + socket.gethostname()
+
+            email = gen_class.Mail(cfg.to_line, subj, frm_line)
+
+            for line in body:
+                email.add_2_msg(line)
+
+            email.send_mail()
+            # ### End function 3 email_notify
 
         else:
 
@@ -213,14 +229,52 @@ def merge_repo(args_array, cfg, log, **kwargs):
             gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
             # Send notification of error.
+            subj = "Merge error for: " + args_array["-r"]
+            body = ["DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+                                                        "%Y-%m-%d %H:%M:%S")]
+            body.append("Merge of project has failed.")
+            body.append("Branch does not exist at remote Git.")
+            body.append("Remote URL: " + gitrepo.remotes.origin.url)
+            body.append("Project Dir: " + proj_dir)
+            body.append("Branch: " + "master")
+
+            # ### Start function 3 email_notify
+            #   Don't forget to run list() against "body" during argument pass.
+            frm_line = getpass.getuser() + "@" + socket.gethostname()
+
+            email = gen_class.Mail(cfg.to_line, subj, frm_line)
+
+            for line in body:
+                email.add_2_msg(line)
+
+            email.send_mail()
+            # ### End function 3 email_notify
 
     else:
 
-        log.log_err("%s is not a Git repository" % ())
+        log.log_err("%s is not a Git repository" % (proj_dir))
 
         gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
         # Send notification of error.
+        subj = "Merge error for: " + args_array["-r"]
+        body = ["DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+                                                    "%Y-%m-%d %H:%M:%S")]
+        body.append("Merge of project has failed.")
+        body.append("Local Git repository does not exist.")
+        body.append("Project Dir: " + proj_dir)
+
+        # ### Start function 3 email_notify
+        #   Don't forget to run list() against "body" during argument pass.
+        frm_line = getpass.getuser() + "@" + socket.gethostname()
+
+        email = gen_class.Mail(cfg.to_line, subj, frm_line)
+
+        for line in body:
+            email.add_2_msg(line)
+
+        email.send_mail()
+        # ### End function 3 email_notify
 
 
 def run_program(args_array, cfg, log, **kwargs):
