@@ -79,6 +79,45 @@ def help_message():
     print(__doc__)
 
 
+def load_cfg(cfg_name, cfg_dir, **kwargs):
+
+    """Function:  load_cfg
+
+    Description:  Load the configuration file and validate the settings.
+
+    Arguments:
+        (input) cfg_name -> Configuration file name.
+        (input) cfg_dir -> Directory path to the configuration file.
+        (input) **kwargs:
+            None
+        (output) cfg -> Configuration module handler.
+        (output) status_flag -> True|False - successfully validate config file.
+
+    """
+
+    status_flag = True
+
+    cfg = gen_libs.load_module(cfg_name, cfg_dir)
+
+    status, err_msg = gen_libs.chk_crt_dir(cfg.work_dir, write=True, read=True)
+
+    if not status:
+        status_flag = status
+
+    status, err_msg = gen_libs.chk_crt_dir(cfg.err_dir, write=True, read=True)
+
+    if not status:
+        status_flag = status
+
+    status, err_msg = gen_libs.chk_crt_dir(cfg.archive_dir, write=True,
+                                           read=True)
+
+    if not status:
+        status_flag = status
+
+    return cfg, status_flag
+
+
 def is_git_repo(path, **kwargs):
 
     """Function:  is_git_repo
