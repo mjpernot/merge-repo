@@ -3,19 +3,19 @@
 
 """Program:  merge_repo.py
 
-    Description:  Merge an external non-local Git repository into an existing Git
-        repository.  The merge process will clean up the new project using Git
-        and then pull the existing remote Git branch to the local Git repository
-        before merging the non-local Git repo with the existing Git repo.  Once
-        the changes have been merged then the updated branch will be pushed back
-        to the remote Git repository.
+    Description:  Merge an external non-local Git repository into an existing
+        Git repository.  The merge process will clean up the new project using
+        Git and then pull the existing remote Git branch to the local Git
+        repository before merging the non-local Git repo with the existing Git
+        repo.  Once the changes have been merged then the updated branch will
+        be pushed back to the remote Git repository.
         NOTE:  The non-local Git repo will be marked as the priority, which
-            means the non-local Git repo will have priority over the changes made
-            to the project.
+            means the non-local Git repo will have priority over the changes
+            made to the project.
 
     Usage:
-        merge_repo.py -c config -d config_dir -r repo_name -p repo_directory [-M]
-            {-v | -h}
+        merge_repo.py -c config -d config_dir -r repo_name -p repo_directory
+            [-M] {-v | -h}
 
     Arguments:
         -c file_name => Name of merge_repo configuration file.
@@ -27,7 +27,7 @@
         -h => Help and usage message.
 
         NOTE 1:  -v or -h overrides the other options.
-    
+
     Notes:
         Config file:
             url="git@gitlab.code.dicelab.net:JAC-IDM/"
@@ -116,7 +116,7 @@ def is_remote_branch(gitcmd, branch, **kwargs):
 
     """
 
-    try:        
+    try:
         gitcmd.rev_parse('--verify', branch)
         return True
 
@@ -146,7 +146,7 @@ def process_dirty(gitrepo, gitcmd, **kwargs):
 
                 # Test this code, not been tested before.
                 gitcmd.rm([f_git], working_tree=True)
-            
+
             elif f_git.change_type == "M":
 
                 # Check this code works.
@@ -176,7 +176,7 @@ def process_untracked(gitrepo, gitcmd, **kwargs):
 
             # Check this code works.
             gitcmd.add(f_git)
-        
+
         # Can I stipulate what is in the comments dynamically?
         gitrepo.index.commit("Add untracked files")
 
@@ -205,6 +205,7 @@ def send_mail(cfg, subj, email_body, **kwargs):
         email.add_2_msg(line)
 
     email.send_mail()
+
 
 def process_project(branch, gitrepo, gitcmd, **kwargs):
 
@@ -273,7 +274,8 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
         # Set the url to the remote Git repo.
         # Git remote set-url origin cfg.url + project_name + ".git"
-        # gitcmd.remote('set-url', 'origin', 'git@gitlab.code.dicelab.net:JAC-IDM/test-merge.git')
+        # gitcmd.remote('set-url', 'origin',
+        #               'git@gitlab.code.dicelab.net:JAC-IDM/test-merge.git')
         gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
 
         # Does branch resides in the remote git repo.
@@ -281,7 +283,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
             # Process any untracked files.
             process_untracked(gitrepo, gitcmd)
-            
+
             # Process any dirty files.
             process_dirty(gitrepo, gitcmd)
 
@@ -293,24 +295,26 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
             # Send notification of completion.
             subj = "Merge completed for: " + args_array["-r"]
-            body = ["DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
-                                                        "%Y-%m-%d %H:%M:%S")]
+            body = ["DTG: "
+                    + datetime.datetime.strftime(datetime.datetime.now(),
+                                                 "%Y-%m-%d %H:%M:%S")]
             body.append("Merge of project has been completed.")
 
             send_mail(cfg, subj, body)
 
         else:
 
-            log.log_err("%s.%s does not exist at remote repo: %s" % \
-                        (proj_dir, cfg.branch, (gitrepo.remotes.origin.url))
+            log.log_err("%s.%s does not exist at remote repo: %s" %
+                        (proj_dir, cfg.branch, (gitrepo.remotes.origin.url)))
 
             # Archive the errored project.
             gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
             # Send notification of error.
             subj = "Merge error for: " + args_array["-r"]
-            body = ["DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
-                                                        "%Y-%m-%d %H:%M:%S")]
+            body = ["DTG: "
+                    + datetime.datetime.strftime(datetime.datetime.now(),
+                                                 "%Y-%m-%d %H:%M:%S")]
             body.append("Merge of project has failed.")
             body.append("Branch does not exist at remote Git.")
             body.append("Remote URL: " + gitrepo.remotes.origin.url)
@@ -328,8 +332,9 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
         # Send notification of error.
         subj = "Merge error for: " + args_array["-r"]
-        body = ["DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
-                                                    "%Y-%m-%d %H:%M:%S")]
+        body = ["DTG: " +
+                datetime.datetime.strftime(datetime.datetime.now(),
+                                           "%Y-%m-%d %H:%M:%S")]
         body.append("Merge of project has failed.")
         body.append("Local Git repository does not exist.")
         body.append("Project Dir: " + proj_dir)
