@@ -13,7 +13,6 @@
         -M (Run merge_repo function)
         -r (project/repository name (e.g. "test-merge"))
         -p (project directory including full path)
-        -e (Error directory path) # Use -e or cfg.err_dir?
         -v => Display version of this program.
         -h => Help and usage message.
 
