@@ -192,7 +192,7 @@ def send_mail(cfg, subj, email_body, **kwargs):
 
     email.send_mail()
 
-def process_project(gitrepo, gitcmd, **kwargs):
+def process_project(branch, gitrepo, gitcmd, **kwargs):
 
     """Function:  process_project
 
@@ -200,6 +200,7 @@ def process_project(gitrepo, gitcmd, **kwargs):
         remote Git repo.
 
     Arguments:
+        (input) branch -> Branch being merge into.
         (input) gitrepo -> Git repo class instance.
         (input) gitcmd -> Git command line class instance.
         (input) **kwargs:
@@ -214,7 +215,7 @@ def process_project(gitrepo, gitcmd, **kwargs):
     gitcmd.branch("mod_release")
 
     # Another one with branch name here.
-    gitcmd.checkout("master")
+    gitcmd.checkout(branch)
 
     # Test this code, not been tested before.
     # Git merge --no-off -s recursive -X theirs mod_release
@@ -262,9 +263,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
         gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
 
         # Does branch resides in the remote git repo.
-        # Make "master" a cfg or variable setting? Cfg as we can then merge another branch if so desired,
-        #    but setting not recommended to be changed.
-        if is_remote_branch(gitcmd, "master"):
+        if is_remote_branch(gitcmd, cfg.branch):
 
             # Process any untracked files.
             process_untracked(gitrepo, gitcmd)
@@ -273,7 +272,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
             process_dirty(gitrepo, gitcmd)
 
             # Process the project.
-            process_project(gitrepo, gitcmd)
+            process_project(cfg.branch, gitrepo, gitcmd)
 
             # Archive the post-merge project.
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
@@ -289,7 +288,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
         else:
 
             log.log_err("%s.%s does not exist at remote repo: %s" % \
-                        (proj_dir, "master", (gitrepo.remotes.origin.url))
+                        (proj_dir, cfg.branch, (gitrepo.remotes.origin.url))
 
             # Archive the errored project.
             gen_libs.mv_file2(proj_dir, cfg.err_dir)
@@ -302,7 +301,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
             body.append("Branch does not exist at remote Git.")
             body.append("Remote URL: " + gitrepo.remotes.origin.url)
             body.append("Project Dir: " + proj_dir)
-            body.append("Branch: " + "master")
+            body.append("Branch: " + cfg.branch)
 
             send_mail(cfg, subj, body)
 
