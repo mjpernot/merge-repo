@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("merge_repo.gen_libs.help_func")
     @mock.patch("merge_repo.arg_parser")
-    def test_help_false(self, mock_class, mock_arg, mock_help):
+    def test_help_false(self, mock_arg, mock_help):
 
         """Function:  test_status_false
 
