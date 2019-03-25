@@ -41,7 +41,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
     """Function:  merge_repo
 
-    Description:  This is a function stub for maimerge_repol_2_rmq.merge_repo.
+    Description:  This is a function stub for merge_repo.merge_repo.
 
     Arguments:
         args_array -> Stub argument holder.
@@ -65,7 +65,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_status_flag_true -> Test with true status flag.
+        test_status_flag_false -> Test with status flag set to False.
 
         test_all_func -> Test with all functions.
         test_true_func -> Test with true status and function.
@@ -125,11 +125,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.load_cfg")
-    def test_status_flag_true(self, mock_cfg, mock_log):
+    def test_status_flag_false(self, mock_cfg, mock_log):
 
-        """Function:  test_status_flag_true
+        """Function:  test_status_flag_false
 
-        Description:  Test with true status flag.
+        Description:  Test with status flag set to False.
 
         Arguments:
             mock_cfg -> Mock Ref:  merge_repo.load_cfg
@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cfg.return_value = (self.cfg, True)
+        mock_cfg.return_value = (self.cfg, False)
         mock_log.return_value = True
 
         self.assertFalse(merge_repo.run_program(self.args_array,
