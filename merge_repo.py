@@ -110,7 +110,32 @@ def is_remote_branch(gitcmd, branch, **kwargs):
         return False
 
 
-def send_mail(cfg, subj, email_body):
+def process_untracked(gitrepo, gitcmd, **kwargs):
+
+    """Function:  process_untracked
+
+    Description:  Check for and process untracked files.
+
+    Arguments:
+        (input) gitrepo -> Git repo class instance.
+        (input) gitcmd -> Git command line class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    if gitrepo.is_dirty(untracked_files=True):
+
+        for f_git in gitrepo.untracked_files:
+
+            # Check this code works.
+            gitcmd.add(f_git)
+        
+        # Can I stipulate what is in the comments dynamically?
+        gitrepo.index.commit("Add untracked files")
+
+
+def send_mail(cfg, subj, email_body, **kwargs):
 
     """Function:  send_mail
 
@@ -159,7 +184,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
 
     proj_dir = os.join.path(cfg.work_dir, os.path.basename(args_array["-p"]))
 
-    # Does current directory setup as a local git repo.
+    # Is directory a git repo.
     if is_git_repo(proj_dir):
 
         log.log_info("Working in %s directory" % (proj_dir))
@@ -177,20 +202,10 @@ def merge_repo(args_array, cfg, log, **kwargs):
         #    but setting not recommended to be changed.
         if is_remote_branch(gitcmd, "master"):
 
-            # Process the untracked files.
-            # ### Start function 1 process_untracked
-            if gitrepo.is_dirty(untracked_files=True):
-
-                for f_git in gitrepo.untracked_files:
-
-                    # Check this code works.
-                    gitcmd.add(f_git)
-                
-                # Can I stipulate what is in the comments dynamically?
-                gitrepo.index.commit("Add untracked files")
-            # ### End function 1 process_untracked
+            # Process any untracked files.
+            process_untracked(gitrepo, gitcmd)
             
-            # Process the dirty files.
+            # Process any dirty files.
             # ### Start function 2 process_dirty
             if gitrepo.is_dirty():
 
