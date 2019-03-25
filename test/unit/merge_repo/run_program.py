@@ -37,28 +37,14 @@ import version
 __version__ = version.__version__
 
 
-def process_message(cfg, log, **kwargs):
+def merge_repo(args_array, cfg, log, **kwargs):
 
-    """Function:  process_message
+    """Function:  merge_repo
 
-    Description:  This is a function stub for merge_repo.process_message.
-
-    Arguments:
-        cfg -> Stub argument holder.
-        log -> Stub argument holder.
-
-    """
-
-    pass
-
-
-def check_nonprocess(cfg, log, **kwargs):
-
-    """Function:  check_nonprocess
-
-    Description:  This is a function stub for merge_repo.check_nonprocess.
+    Description:  This is a function stub for maimerge_repol_2_rmq.merge_repo.
 
     Arguments:
+        args_array -> Stub argument holder.
         cfg -> Stub argument holder.
         log -> Stub argument holder.
 
@@ -79,9 +65,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_status_flag_true -> Test with true status flag.
+
         test_all_func -> Test with all functions.
         test_true_func -> Test with true status and function.
-        test_true_status -> Test with true status flag.
         test_false_status -> Test with false status flag.
 
     """
@@ -123,18 +110,42 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.log_file = "LOG_FILE"
-                self.host = "HOSTNAME"
-                self.exchange_name = "EXCHANGE_NAME"
-                self.exchange_type = "EXCAHNGE_TYPE"
-                self.valid_queues = ["QUEUE1", "QUEUE2"]
-                self.email_dir = "EMAIL_DIRECTORY"
+                self.url="git@gitlab.code.dicelab.net:JAC-IDM/"
+                self.work_dir="/home/mark.j.pernot/merge/work_dir"
+                self.err_dir="/home/mark.j.pernot/merge/error_dir"
+                self.archive_dir="/home/mark.j.pernot/merge/archive_dir"
+                self.to_line="Mark.J.Pernot@coe.ic.gov"
+                self.branch="master"
 
         self.cfg = CfgTest()
 
-        self.args_array = {"-c": "CONFIG_FILE", "-d": "CONFIG_DIRECTORY"}
-        self.func_dict = {"-M": process_message, "-C": check_nonprocess}
+        self.args = {"-c": "config_file", "-d": "config_dir", "-r": "repo-name",
+                     "-p": "repo_path", "-M": True}
+        self.func_dict = {"-M": merge_repo}
 
+    @mock.patch("merge_repo.gen_class.Logger")
+    @mock.patch("merge_repo.load_cfg")
+    def test_status_flag_true(self, mock_cfg, mock_log):
+
+        """Function:  test_status_flag_true
+
+        Description:  Test with true status flag.
+
+        Arguments:
+            mock_cfg -> Mock Ref:  merge_repo.load_cfg
+            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
+
+        """
+
+        mock_cfg.return_value = (self.cfg, True)
+        mock_log.return_value = True
+
+        self.assertFalse(merge_repo.run_program(self.args_array,
+                                                mock_log,
+                                                self.func_dict))
+
+
+    @unittest.skip("not done yet")
     @mock.patch("merge_repo.gen_class")
     @mock.patch("merge_repo.load_cfg")
     def test_all_func(self, mock_cfg, mock_class):
@@ -158,6 +169,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(merge_repo.run_program(self.args_array,
                                                 self.func_dict))
 
+    @unittest.skip("not done yet")
     @mock.patch("merge_repo.gen_class")
     @mock.patch("merge_repo.load_cfg")
     def test_true_func(self, mock_cfg, mock_class):
@@ -180,26 +192,7 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(merge_repo.run_program(self.args_array,
                                                 self.func_dict))
 
-    @mock.patch("merge_repo.gen_class")
-    @mock.patch("merge_repo.load_cfg")
-    def test_true_status(self, mock_cfg, mock_class):
-
-        """Function:  test_true_status
-
-        Description:  Test with true status flag.
-
-        Arguments:
-            mock_cfg -> Mock Ref:  merge_repo.load_cfg
-            mock_class -> Mock Ref:  merge_repo.gen_class
-
-        """
-
-        mock_cfg.return_value = (self.cfg, True)
-        mock_class.Logger.return_value = merge_repo.gen_class.Logger
-
-        self.assertFalse(merge_repo.run_program(self.args_array,
-                                                self.func_dict))
-
+    @unittest.skip("not done yet")
     @mock.patch("merge_repo.load_cfg")
     def test_false_status(self, mock_cfg):
 
