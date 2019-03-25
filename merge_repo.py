@@ -355,10 +355,8 @@ def run_program(args_array, cfg, log, **kwargs):
 
     cfg, status_flag = load_cfg(args_array["-c"], args_array["-d"])
 
-    if not status_flag:
-        print("Error:  Problem in configuration file.")
+    if status_flag:
 
-    else:
         log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
                                "%(asctime)s %(levelname)s %(message)s",
                                "%Y-%m-%dT%H:%M:%SZ")
@@ -376,6 +374,9 @@ def run_program(args_array, cfg, log, **kwargs):
             func_dict[opt](args_array, cfg, log, **kwargs)
 
         log.log_close()
+
+    else:
+        print("Error:  Problem in configuration file.")
 
 
 def main():
