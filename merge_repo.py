@@ -110,6 +110,38 @@ def is_remote_branch(gitcmd, branch, **kwargs):
         return False
 
 
+def process_dirty(gitrepo, gitcmd, **kwargs):
+
+    """Function:  process_dirty
+
+    Description:  Check for and process dirty files.
+
+    Arguments:
+        (input) gitrepo -> Git repo class instance.
+        (input) gitcmd -> Git command line class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    if gitrepo.is_dirty():
+
+        for f_git in gitrepo.index.diff(None):
+
+            if f_git.change_type == "D":
+
+                # Test this code, not been tested before.
+                gitcmd.rm([f_git], working_tree=True)
+            
+            elif f_git.change_type == "M":
+
+                # Check this code works.
+                gitcmd.add(f_git)
+
+        # Can I stipulate what is in the comments dynamically?
+        gitrepo.index.commit("Add dirty files")
+
+
 def process_untracked(gitrepo, gitcmd, **kwargs):
 
     """Function:  process_untracked
@@ -206,24 +238,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
             process_untracked(gitrepo, gitcmd)
             
             # Process any dirty files.
-            # ### Start function 2 process_dirty
-            if gitrepo.is_dirty():
-
-                for f_git in gitrepo.index.diff(None):
-
-                    if f_git.change_type == "D":
-
-                        # Test this code, not been tested before.
-                        gitcmd.rm([f_git], working_tree=True)
-                    
-                    elif f_git.change_type == "M":
-
-                        # Check this code works.
-                        gitcmd.add(f_git)
-
-                # Can I stipulate what is in the comments dynamically?
-                gitrepo.index.commit("Add untracked files")
-            # ### End function 2 process_dirty
+            process_dirty(gitrepo, gitcmd)
 
             # Test this code, not been tested before.
             gitcmd.fetch()
