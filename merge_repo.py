@@ -225,8 +225,10 @@ def process_untracked(gitrepo, gitcmd, **kwargs):
             # Check this code works.
             gitcmd.add(f_git)
 
-        # Can I stipulate what is in the comments dynamically?
-        gitrepo.index.commit("Add untracked files")
+        if gitrepo.untracked_files:
+
+            # Can I stipulate what is in the comments dynamically?
+            gitrepo.index.commit("Add untracked files")
 
 
 def send_mail(cfg, subj, email_body, **kwargs):
