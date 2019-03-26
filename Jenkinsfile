@@ -15,6 +15,15 @@ pipeline {
                 pip2 install mock --user
                 ./test/unit/merge_repo/main.py
                 ./test/unit/merge_repo/run_program.py
+                ./test/unit/merge_repo/help_message.py
+                ./test/unit/merge_repo/load_cfg.py
+                ./test/unit/merge_repo/is_git_repo.py
+                ./test/unit/merge_repo/is_remote_branch.py
+                ./test/unit/merge_repo/process_dirty.py
+                ./test/unit/merge_repo/process_untracked.py
+                ./test/unit/merge_repo/send_mail.py
+                ./test/unit/merge_repo/process_project.py
+                ./test/unit/merge_repo/merge.py
                 """
             }
         }
