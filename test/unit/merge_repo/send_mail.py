@@ -90,13 +90,14 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.url="git@gitlab.code.dicelab.net:JAC-IDM/"
-                self.work_dir="/home/mark.j.pernot/merge/work_dir"
-                self.err_dir="/home/mark.j.pernot/merge/error_dir"
-                self.archive_dir="/home/mark.j.pernot/merge/archive_dir"
-                self.log_file="/home/mark.j.pernot/merge/log_dir/merge_repo.log"
-                self.to_line="Mark.J.Pernot@coe.ic.gov"
-                self.branch="master"
+                self.url = "git@gitlab.code.dicelab.net:JAC-IDM/"
+                self.work_dir = "/home/mark.j.pernot/merge/work_dir"
+                self.err_dir = "/home/mark.j.pernot/merge/error_dir"
+                self.archive_dir = "/home/mark.j.pernot/merge/archive_dir"
+                self.log_file = \
+                    "/home/mark.j.pernot/merge/log_dir/merge_repo.log"
+                self.to_line = "Mark.J.Pernot@coe.ic.gov"
+                self.branch = "master"
 
         self.cfg = CfgTest()
         self.subj = "Email_Subject"
