@@ -172,15 +172,14 @@ class UnitTest(unittest.TestCase):
         self.gitcmd = GitCmd()
         self.gitrepo = GitRepo()
 
-    @mock.patch("merge_repo.git")
-    def test_untracked_files(self, mock_git):
+    def test_untracked_files(self,):
 
         """Function:  test_untracked_files
 
         Description:  Test with untracked_files filled.
 
         Arguments:
-            mock_git -> Mock Ref:  merge_repo.git.Repo
+            None
 
         """
 
@@ -189,45 +188,42 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(merge_repo.process_untracked(self.gitrepo,
                                                       self.gitcmd))
 
-    @mock.patch("merge_repo.git")
-    def test_no_untracked_files(self, mock_git):
+    def test_no_untracked_files(self):
 
         """Function:  test_no_untracked_files
 
         Description:  Test with untracked_files empty.
 
         Arguments:
-            mock_git -> Mock Ref:  merge_repo.git.Repo
+            None
 
         """
 
         self.assertFalse(merge_repo.process_untracked(self.gitrepo,
                                                       self.gitcmd))
 
-    @mock.patch("merge_repo.git")
-    def test_is_dirty_true(self, mock_git):
+    def test_is_dirty_true(self):
 
         """Function:  test_is_dirty_true
 
         Description:  Test with is_dirty set to True.
 
         Arguments:
-            mock_git -> Mock Ref:  merge_repo.git.Repo
+            None
 
         """
 
         self.assertFalse(merge_repo.process_untracked(self.gitrepo,
                                                       self.gitcmd))
 
-    @mock.patch("merge_repo.git")
-    def test_is_dirty_false(self, mock_git):
+    def test_is_dirty_false(self):
 
         """Function:  test_is_dirty_false
 
         Description:  Test with is_dirty set to False.
 
         Arguments:
-            mock_git -> Mock Ref:  merge_repo.git.Repo
+            None
 
         """
 
