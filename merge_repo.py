@@ -52,6 +52,8 @@ from __future__ import print_function
 import sys
 import os
 import datetime
+import socket
+import getpass
 
 # Third-party
 import git
