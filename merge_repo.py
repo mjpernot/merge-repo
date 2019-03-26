@@ -253,7 +253,7 @@ def send_mail(cfg, subj, email_body, **kwargs):
     email.send_mail()
 
 
-def process_project(branch, gitrepo, gitcmd, **kwargs):
+def process_project(branch, gitcmd, **kwargs):
 
     """Function:  process_project
 
@@ -262,7 +262,6 @@ def process_project(branch, gitrepo, gitcmd, **kwargs):
 
     Arguments:
         (input) branch -> Branch being merge into.
-        (input) gitrepo -> Git repo class instance.
         (input) gitcmd -> Git command line class instance.
         (input) **kwargs:
             None
@@ -334,7 +333,7 @@ def merge(args_array, cfg, log, **kwargs):
             process_dirty(gitrepo, gitcmd)
 
             # Process the project.
-            process_project(cfg.branch, gitrepo, gitcmd)
+            process_project(cfg.branch, gitcmd)
 
             # Archive the post-merge project.
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
