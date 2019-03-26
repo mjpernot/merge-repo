@@ -81,14 +81,14 @@ class GitCmd(object):
 
     """
 
-    def add(self):
+    def add(self, arg1):
 
         """Method:  add
 
         Description:  Stub holder for add method.
 
         Arguments:
-            None
+            (input) arg1 -> Stub holder for argument.
 
         """
 
@@ -152,7 +152,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_no_untracked_files -> Test with untracked_files empty.
+        test_untracked_files -> Test with untracked_files filled.
         test_is_dirty_true -> Test with is_dirty set to True.
         test_is_dirty_false -> Test with is_dirty set to False.
 
@@ -171,6 +171,23 @@ class UnitTest(unittest.TestCase):
 
         self.gitcmd = GitCmd()
         self.gitrepo = GitRepo()
+
+    @mock.patch("merge_repo.git")
+    def test_untracked_files(self, mock_git):
+
+        """Function:  test_untracked_files
+
+        Description:  Test with untracked_files filled.
+
+        Arguments:
+            mock_git -> Mock Ref:  merge_repo.git.Repo
+
+        """
+
+        self.gitrepo.untracked_files = ["File1", "File2"]
+
+        self.assertFalse(merge_repo.process_untracked(self.gitrepo,
+                                                      self.gitcmd))
 
     @mock.patch("merge_repo.git")
     def test_no_untracked_files(self, mock_git):
