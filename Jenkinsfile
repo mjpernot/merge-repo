@@ -13,6 +13,7 @@ pipeline {
                 }
                 sh """
                 pip2 install mock --user
+                pip2 install gitpython --user
                 ./test/unit/merge_repo/main.py
                 ./test/unit/merge_repo/run_program.py
                 ./test/unit/merge_repo/help_message.py
