@@ -211,13 +211,14 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.url="git@gitlab.code.dicelab.net:JAC-IDM/"
-                self.work_dir="/home/mark.j.pernot/merge/work_dir"
-                self.err_dir="/home/mark.j.pernot/merge/error_dir"
-                self.archive_dir="/home/mark.j.pernot/merge/archive_dir"
-                self.log_file="/home/mark.j.pernot/merge/log_dir/merge_repo.log"
-                self.to_line="Mark.J.Pernot@coe.ic.gov"
-                self.branch="master"
+                self.url = "git@gitlab.code.dicelab.net:JAC-IDM/"
+                self.work_dir = "/home/mark.j.pernot/merge/work_dir"
+                self.err_dir = "/home/mark.j.pernot/merge/error_dir"
+                self.archive_dir = "/home/mark.j.pernot/merge/archive_dir"
+                self.log_file = \
+                    "/home/mark.j.pernot/merge/log_dir/merge_repo.log"
+                self.to_line = "Mark.J.Pernot@coe.ic.gov"
+                self.branch = "master"
 
         self.cfg = CfgTest()
 
@@ -336,7 +337,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_git_repo_false(self, mock_log, mock_libs, mock_isgit, mock_mail):
+    def test_is_git_repo_false(self, mock_log, mock_libs, mock_isgit,
+                               mock_mail):
 
         """Function:  test_is_git_repo_false
 
@@ -360,5 +362,3 @@ class UnitTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-        
-        
