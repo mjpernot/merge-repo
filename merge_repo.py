@@ -20,7 +20,7 @@
     Arguments:
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
-        -M => Run merge_repo function.
+        -M => Run merge function.
         -r repo_name => Repository name (e.g. "test-merge").
         -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
@@ -280,9 +280,9 @@ def process_project(branch, gitrepo, gitcmd, **kwargs):
     gitcmd.push("--tags")
 
 
-def merge_repo(args_array, cfg, log, **kwargs):
+def merge(args_array, cfg, log, **kwargs):
 
-    """Function:  merge_repo
+    """Function:  merge
 
     Description:  Controls the merging of a non-local repository with a remote
         repository, but having the non-local repository as the priority
@@ -381,7 +381,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
         send_mail(cfg, subj, body)
 
 
-def run_program(args_array, **kwargs):
+def run_program(args_array, func_dict, **kwargs):
 
     """Function:  run_program
 
@@ -390,6 +390,7 @@ def run_program(args_array, **kwargs):
 
     Arguments:
         (input) args_array -> Dict of command line options and values.
+        (input) func_dict -> Dict of function calls and associated options.
         (input) **kwargs:
             None
 
@@ -440,7 +441,7 @@ def main():
     """
 
     dir_chk_list = ["-d", "-p"]
-    func_dict = {"-M": merge_repo}
+    func_dict = {"-M": merge}
     opt_req_list = ["-c", "-d", "-p", "-r"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
@@ -455,11 +456,11 @@ def main():
             PROG_LOCK = gen_class.ProgramLock(sys.argv,
                                               args_array.get("-r", ""))
 
-            run_program(args_array)
+            run_program(args_array, func_dict)
             del PROG_LOCK
 
         except gen_class.SingleInstanceException:
-            print("WARNING:  lock in place for merge_repo with id of: %s"
+            print("WARNING:  lock in place for merge with id of: %s"
                   % (args_array.get("-r", "")))
 
 
