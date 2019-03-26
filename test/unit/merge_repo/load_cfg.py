@@ -49,9 +49,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_false_false_cfg -> Test False and False statuses.
-        test_false_true_cfg -> Test False and True statuses.
-        test_true_false_cfg -> Test True and False statuses.
+        test_work_dir_false -> Test work_dir check returns False.
         test_work_dir_true -> Test work_dir check returns True.
 
     """
@@ -106,13 +104,12 @@ class UnitTest(unittest.TestCase):
         self.cfg_name = "Configuration_File"
         self.cfg_dir = "Configuration_Directory"
 
-    @unittest.skip("Not done")
     @mock.patch("merge_repo.gen_libs")
-    def test_false_false_cfg(self, mock_lib):
+    def test_err_dir_false(self, mock_lib):
 
-        """Function:  test_false_false_cfg
+        """Function:  test_err_dir_false
 
-        Description:  Test False and False statuses.
+        Description:  Test err_dir check returns False.
 
         Arguments:
             mock_lib -> Mock Ref:  merge_repo.gen_libs
@@ -120,18 +117,18 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[False, ""], [False, ""]]
+        mock_lib.chk_crt_dir.side_effect = [[True, ""], [False, ""], [True, ""]]
+        mock_lib.chk_crt_file.side_effect = [[True, ""]]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
                          (self.cfg, False))
 
-    @unittest.skip("Not done")
     @mock.patch("merge_repo.gen_libs")
-    def test_false_true_cfg(self, mock_lib):
+    def test_err_dir_true(self, mock_lib):
 
-        """Function:  test_false_true_cfg
+        """Function:  test_err_dir_true
 
-        Description:  Test False and True statuses.
+        Description:  Test err_dir check returns True.
 
         Arguments:
             mock_lib -> Mock Ref:  merge_repo.gen_libs
@@ -139,29 +136,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[False, ""], [True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [True, ""]]
+        mock_lib.chk_crt_file.side_effect = [[True, ""]]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, False))
-
-    @unittest.skip("Not done")
-    @mock.patch("merge_repo.gen_libs")
-    def test_true_false_cfg(self, mock_lib):
-
-        """Function:  test_true_false_cfg
-
-        Description:  Test True and False statuses.
-
-        Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
-
-        """
-
-        mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [False, ""]]
-
-        self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, False))
+                         (self.cfg, True))
 
     @mock.patch("merge_repo.gen_libs")
     def test_work_dir_false(self, mock_lib):
