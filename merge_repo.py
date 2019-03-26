@@ -381,7 +381,7 @@ def merge_repo(args_array, cfg, log, **kwargs):
         send_mail(cfg, subj, body)
 
 
-def run_program(args_array, cfg, log, **kwargs):
+def run_program(args_array, **kwargs):
 
     """Function:  run_program
 
@@ -390,8 +390,6 @@ def run_program(args_array, cfg, log, **kwargs):
 
     Arguments:
         (input) args_array -> Dict of command line options and values.
-        (input) cfg -> Configuration settings module for the program.
-        (input) log -> Log class instance.
         (input) **kwargs:
             None
 
