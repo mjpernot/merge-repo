@@ -112,8 +112,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args = {"-c": "config_file", "-d": "config_dir", "-r": "repo-name",
-                     "-p": "repo_path", "-M": True}
+        self.args = {"-c": "config_file", "-d": "config_dir",
+                     "-r": "repo-name", "-p": "repo_path", "-M": True}
         self.func_dict = {"-M": merge_repo.merge}
 
     @mock.patch("merge_repo.gen_libs.help_func")
@@ -221,7 +221,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs.help_func")
     @mock.patch("merge_repo.arg_parser")
     @mock.patch("merge_repo.gen_class")
-    def test_arg_dir_chk_crt_false(self, mock_class, mock_arg, mock_help, mock_run):
+    def test_arg_dir_chk_crt_false(self, mock_class, mock_arg, mock_help,
+                                   mock_run):
 
         """Function:  test_arg_dir_chk_crt_false
 
