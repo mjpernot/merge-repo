@@ -49,6 +49,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_archive_dir_false -> Test archive_dir check returns False.
+        test_archive_dir_true -> Test archive_dir check returns True.
+        test_err_dir_false -> Test err_dir check returns False.
+        test_err_dir_true -> Test err_dir check returns True.
         test_work_dir_false -> Test work_dir check returns False.
         test_work_dir_true -> Test work_dir check returns True.
 
@@ -103,6 +107,44 @@ class UnitTest(unittest.TestCase):
 
         self.cfg_name = "Configuration_File"
         self.cfg_dir = "Configuration_Directory"
+
+    @mock.patch("merge_repo.gen_libs")
+    def test_archive_dir_false(self, mock_lib):
+
+        """Function:  test_archive_dir_false
+
+        Description:  Test archive_dir check returns False.
+
+        Arguments:
+            mock_lib -> Mock Ref:  merge_repo.gen_libs
+
+        """
+
+        mock_lib.load_module.return_value = self.cfg
+        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [False, ""]]
+        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+
+        self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
+                         (self.cfg, False))
+
+    @mock.patch("merge_repo.gen_libs")
+    def test_archive_dir_true(self, mock_lib):
+
+        """Function:  test_archive_dir_true
+
+        Description:  Test archive_dir check returns True.
+
+        Arguments:
+            mock_lib -> Mock Ref:  merge_repo.gen_libs
+
+        """
+
+        mock_lib.load_module.return_value = self.cfg
+        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [True, ""]]
+        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+
+        self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
+                         (self.cfg, True))
 
     @mock.patch("merge_repo.gen_libs")
     def test_err_dir_false(self, mock_lib):
