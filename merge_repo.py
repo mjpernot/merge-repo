@@ -51,6 +51,7 @@
 from __future__ import print_function
 import sys
 import os
+import datetime
 
 # Third-party
 import git
@@ -307,7 +308,7 @@ def merge(args_array, cfg, log, **kwargs):
 
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
 
-    proj_dir = os.join.path(cfg.work_dir, os.path.basename(args_array["-p"]))
+    proj_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
     # Is directory a git repo.
     if is_git_repo(proj_dir):
