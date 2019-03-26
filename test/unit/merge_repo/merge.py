@@ -37,6 +37,15 @@ import version
 __version__ = version.__version__
 
 
+class Repo(object):
+
+    class git(object):
+
+        def remote(self):
+            pass
+        
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -105,11 +114,45 @@ class UnitTest(unittest.TestCase):
                      "-r": "repo-name",
                      "-p": "/home/mark.j.pernot/merge/repo-name", "-M": True}
 
+    @mock.patch("merge_repo.is_remote_branch")
+    @mock.patch("merge_repo.git")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_git_repo_false(self, mock_log, mock_libs, mock_git, mock_mail):
+    def test_is_git_repo_true(self, mock_log, mock_libs, mock_isgit, mock_mail,
+                              mock_git, mock_isremote):
+
+        """Function:  test_is_git_repo_true
+
+        Description:  Test with is_git_repo set to True.
+
+        Arguments:
+            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
+            mock_libs -> Mock Ref:  merge_repo.gen_libs
+            mock_isgit -> Mock Ref:  merge_repo.is_git_repo
+            mock_mail -> Mock Ref:  merge_repo.send_mail
+            mock_git -> Mock Ref:  merge_repo.git.Repo
+            mock_isremote -> Mock Reg:  merge_repo.is_remote_branch
+
+        """
+
+        mock_log.return_value = True
+        mock_libs.mv_file.return_value = True
+        mock_isgit.return_value = True
+        mock_mail.return_value = True
+        mock_git.Repo.return_value = Repo()
+        mock_git.Repo.git.return_value = Repo.git()
+        #mock_git.Repo.git.return_value = git()
+        mock_isremote.return_value = False
+
+        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
+
+    @mock.patch("merge_repo.send_mail")
+    @mock.patch("merge_repo.is_git_repo")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_is_git_repo_false(self, mock_log, mock_libs, mock_isgit, mock_mail):
 
         """Function:  test_is_git_repo_false
 
@@ -118,14 +161,14 @@ class UnitTest(unittest.TestCase):
         Arguments:
             mock_log -> Mock Ref:  merge_repo.gen_class.Logger
             mock_libs -> Mock Ref:  merge_repo.gen_libs
-            mock_git -> Mock Ref:  merge_repo.is_git_repo
+            mock_isgit -> Mock Ref:  merge_repo.is_git_repo
             mock_mail -> Mock Ref:  merge_repo.send_mail
 
         """
 
         mock_log.return_value = True
         mock_libs.mv_file.return_value = True
-        mock_git.return_value = False
+        mock_isgit.return_value = False
         mock_mail.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
