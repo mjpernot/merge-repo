@@ -231,6 +231,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.gitrepo.dirty = False
+
         self.assertFalse(merge_repo.process_untracked(self.gitrepo,
                                                       self.gitcmd))
 
