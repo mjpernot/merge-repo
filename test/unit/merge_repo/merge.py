@@ -49,8 +49,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_status_flag_true -> Test with status flag set to True.
-        test_status_flag_false -> Test with status flag set to False.
+        test_is_git_repo_false -> Test with is_git_repo set to False.
 
     """
 
@@ -111,6 +110,18 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_is_git_repo_false(self, mock_log, mock_libs, mock_git, mock_mail):
+
+        """Function:  test_is_git_repo_false
+
+        Description:  Test with is_git_repo set to False.
+
+        Arguments:
+            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
+            mock_libs -> Mock Ref:  merge_repo.gen_libs
+            mock_git -> Mock Ref:  merge_repo.is_git_repo
+            mock_mail -> Mock Ref:  merge_repo.send_mail
+
+        """
 
         mock_log.return_value = True
         mock_libs.mv_file.return_value = True
