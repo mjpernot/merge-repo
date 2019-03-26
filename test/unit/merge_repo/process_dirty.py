@@ -26,6 +26,7 @@ else:
 
 # Third-party
 import mock
+import collections
 
 # Local
 sys.path.append(os.getcwd())
@@ -77,8 +78,9 @@ class Index(object):
 
         """
 
-        return []
-        return self.change_type
+        CT = collections.namedtuple('CT', 'change_type')
+
+        return [CT("D"), CT("M")]
 
 
 class GitCmd(object):
@@ -110,7 +112,7 @@ class GitCmd(object):
 
         return True
 
-    def rm(self, arg1, arg2):
+    def rm(self, arg1, working_tree):
 
         """Method:  rm
 
@@ -118,7 +120,7 @@ class GitCmd(object):
 
         Arguments:
             (input) arg1 -> Stub holder for argument.
-            (input) arg2 -> Stub holder for argument.
+            (input) working_tree -> Stub holder for argument.
 
         """
 
@@ -181,7 +183,6 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_untracked_files -> Test with untracked_files filled.
         test_is_dirty_true -> Test with is_dirty set to True.
         test_is_dirty_false -> Test with is_dirty set to False.
 
@@ -201,20 +202,34 @@ class UnitTest(unittest.TestCase):
         self.gitcmd = GitCmd()
         self.gitrepo = GitRepo()
 
-    @mock.patch("merge_repo.git")
-    def test_untracked_files(self, mock_git):
+    def test_is_dirty_true(self):
 
-        """Function:  test_untracked_files
+        """Function:  test_is_dirty_true
 
-        Description:  Test with untracked_files filled.
+        Description:  Test with is_dirty set to True.
 
         Arguments:
-            mock_git -> Mock Ref:  merge_repo.git.Repo
+            None
 
         """
 
-        self.gitrepo.untracked_files = ["File1", "File2"]
+        self.assertFalse(merge_repo.process_dirty(self.gitrepo, self.gitcmd))
 
-        self.assertFalse(merge_repo.process_untracked(self.gitrepo,
-                                                      self.gitcmd))
+    def test_is_dirty_false(self):
 
+        """Function:  test_is_dirty_false
+
+        Description:  Test with is_dirty set to False.
+
+        Arguments:
+            None
+
+        """
+
+        self.gitrepo.dirty = False
+
+        self.assertFalse(merge_repo.process_dirty(self.gitrepo, self.gitcmd))
+
+
+if __name__ == "__main__":
+    unittest.main()
