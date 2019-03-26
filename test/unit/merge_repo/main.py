@@ -114,7 +114,7 @@ class UnitTest(unittest.TestCase):
 
         self.args = {"-c": "config_file", "-d": "config_dir", "-r": "repo-name",
                      "-p": "repo_path", "-M": True}
-        self.func_dict = {"-M": merge_repo.merge_repo}
+        self.func_dict = {"-M": merge_repo.merge}
 
     @mock.patch("merge_repo.gen_libs.help_func")
     @mock.patch("merge_repo.arg_parser.arg_parse2")
