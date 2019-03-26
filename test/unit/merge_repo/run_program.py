@@ -37,7 +37,7 @@ import version
 __version__ = version.__version__
 
 
-def merge_repo(args_array, cfg, log, **kwargs):
+def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge_repo
 
@@ -65,11 +65,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_status_flag_true -> Test with status flag set to True.
         test_status_flag_false -> Test with status flag set to False.
-
-        test_all_func -> Test with all functions.
-        test_true_func -> Test with true status and function.
-        test_false_status -> Test with false status flag.
 
     """
 
@@ -114,6 +111,7 @@ class UnitTest(unittest.TestCase):
                 self.work_dir="/home/mark.j.pernot/merge/work_dir"
                 self.err_dir="/home/mark.j.pernot/merge/error_dir"
                 self.archive_dir="/home/mark.j.pernot/merge/archive_dir"
+                self.log_file="/home/mark.j.pernot/merge/log_dir/merge_repo.log"
                 self.to_line="Mark.J.Pernot@coe.ic.gov"
                 self.branch="master"
 
@@ -121,15 +119,15 @@ class UnitTest(unittest.TestCase):
 
         self.args = {"-c": "config_file", "-d": "config_dir", "-r": "repo-name",
                      "-p": "repo_path", "-M": True}
-        self.func_dict = {"-M": merge_repo}
+        self.func_dict = {"-M": merge}
 
     @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.load_cfg")
-    def test_status_flag_false(self, mock_cfg, mock_log):
+    def test_status_flag_true(self, mock_cfg, mock_log):
 
-        """Function:  test_status_flag_false
+        """Function:  test_status_flag_true
 
-        Description:  Test with status flag set to False.
+        Description:  Test with status flag set to True.
 
         Arguments:
             mock_cfg -> Mock Ref:  merge_repo.load_cfg
@@ -137,68 +135,19 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cfg.return_value = (self.cfg, False)
-        mock_log.return_value = True
-
-        self.assertFalse(merge_repo.run_program(self.args_array,
-                                                mock_log,
-                                                self.func_dict))
-
-
-    @unittest.skip("not done yet")
-    @mock.patch("merge_repo.gen_class")
-    @mock.patch("merge_repo.load_cfg")
-    def test_all_func(self, mock_cfg, mock_class):
-
-        """Function:  test_all_func
-
-        Description:  Test with all functions.
-
-        Arguments:
-            mock_cfg -> Mock Ref:  merge_repo.load_cfg
-            mock_class -> Mock Ref:  merge_repo.gen_class
-
-        """
-
         mock_cfg.return_value = (self.cfg, True)
-        mock_class.Logger.return_value = merge_repo.gen_class.Logger
-        mock_class.ProgramLock.return_value = merge_repo.gen_class.ProgramLock
+        mock_log.return_value = merge_repo.gen_class.Logger
+        mock_log.log_info.return_value = True
+        mock_log.log_close.return_value = True
 
-        self.args_array["-M"] = True
-        self.args_array["-C"] = True
-        self.assertFalse(merge_repo.run_program(self.args_array,
-                                                self.func_dict))
+        self.assertFalse(merge_repo.run_program(self.args, self.func_dict))
 
-    @unittest.skip("not done yet")
-    @mock.patch("merge_repo.gen_class")
     @mock.patch("merge_repo.load_cfg")
-    def test_true_func(self, mock_cfg, mock_class):
+    def test_status_flag_false(self, mock_cfg):
 
-        """Function:  test_true_func
+        """Function:  test_status_flag_false
 
-        Description:  Test with true status and function.
-
-        Arguments:
-            mock_cfg -> Mock Ref:  merge_repo.load_cfg
-            mock_class -> Mock Ref:  merge_repo.gen_class
-
-        """
-
-        mock_cfg.return_value = (self.cfg, True)
-        mock_class.Logger.return_value = merge_repo.gen_class.Logger
-        mock_class.ProgramLock.return_value = merge_repo.gen_class.ProgramLock
-
-        self.args_array["-M"] = True
-        self.assertFalse(merge_repo.run_program(self.args_array,
-                                                self.func_dict))
-
-    @unittest.skip("not done yet")
-    @mock.patch("merge_repo.load_cfg")
-    def test_false_status(self, mock_cfg):
-
-        """Function:  test_false_status
-
-        Description:  Test with false status flag.
+        Description:  Test with status flag set to False.
 
         Arguments:
             mock_cfg -> Mock Ref:  merge_repo.load_cfg
@@ -208,8 +157,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.return_value = (self.cfg, False)
 
         with gen_libs.no_std_out():
-            self.assertFalse(merge_repo.run_program(self.args_array,
-                                                    self.func_dict))
+            merge_repo.run_program(self.args, self.func_dict)
 
 
 if __name__ == "__main__":
