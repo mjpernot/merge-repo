@@ -182,7 +182,7 @@ def is_remote(gitcmd, url, **kwargs):
         _ = gitcmd.ls_remote(url)
         return True
 
-    except git.exe.GitCommandError:
+    except git.exc.GitCommandError:
         return False
 
 
