@@ -309,21 +309,10 @@ def process_project(branch, gitcmd, **kwargs):
 
     """
 
-    # Test this code, not been tested before.
     gitcmd.fetch()
-
-    # Test this code, not been tested before.
     gitcmd.branch("mod_release")
-
-    # Another one with branch name here.
     gitcmd.checkout(branch)
-
-    # Test this code, not been tested before.
-    # Git merge --no-off -s recursive -X theirs mod_release
-    # or gitcmd.merge("--no-off", "-s recursive", "-X theirs", "mod_release")
-    gitcmd.merge("--no-off", "-s", "recursive", "-X", "theirs", "mod_release")
-
-    # Test this code, not been tested before.
+    gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
     gitcmd.push("--tags")
 
 
@@ -359,24 +348,16 @@ def merge(args_array, cfg, log, **kwargs):
         gitcmd = gitrepo.git
 
         # Set the url to the remote Git repo.
-        # Git remote set-url origin cfg.url + project_name + ".git"
         # gitcmd.remote('set-url', 'origin',
         #               'git@gitlab.code.dicelab.net:JAC-IDM/test-merge.git')
         gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
 
-        # Does branch resides in the remote git repo.
+        # Does remote git repo exist.
         if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
 
-            # Process any untracked files.
             process_untracked(gitrepo, gitcmd)
-
-            # Process any dirty files.
             process_dirty(gitrepo, gitcmd)
-
-            # Process the project.
             process_project(cfg.branch, gitcmd)
-
-            # Archive the post-merge project.
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
 
             # Send notification of completion.
@@ -393,7 +374,7 @@ def merge(args_array, cfg, log, **kwargs):
             log.log_err("%s.%s does not exist at remote repo: %s" %
                         (proj_dir, cfg.branch, (gitrepo.remotes.origin.url)))
 
-            # Archive the errored project.
+            # Archive the problem project.
             gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
             # Send notification of error.
@@ -413,7 +394,7 @@ def merge(args_array, cfg, log, **kwargs):
 
         log.log_err("%s is not a Git repository" % (proj_dir))
 
-        # Archive the errored project.
+        # Archive the problem project.
         gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
         # Send notification of error.
