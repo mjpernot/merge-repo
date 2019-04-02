@@ -30,12 +30,26 @@
 
     Notes:
         Config file:
+            # Base URL address to remote Git repository.
             url="git@gitlab.code.dicelab.net:JAC-IDM/"
+
+            # Directory of where the merge will take place.
             work_dir="/home/mark.j.pernot/merge/work_dir"
+
+            # Directory where projects will be archived if encounter errors.
             err_dir="/home/mark.j.pernot/merge/error_dir"
+
+            # Directory where projects will be archived after a merge.
             archive_dir="/home/mark.j.pernot/merge/archive_dir"
+
+            # Email addresses for notification.
             to_line="Mark.J.Pernot@coe.ic.gov"
+
+            # Directory where log files will be placed.
+            log_file="/home/mark.j.pernot/merge/logs/merge-repo.log"
+
             # Do not modify unless you know what you are doing.
+            # Branch on which the merge will take place on.
             branch="master"
 
     Examples:
@@ -149,6 +163,29 @@ def is_git_repo(path, **kwargs):
         return False
 
 
+def is_remote(gitcmd, url, **kwargs):
+
+    """Function:  is_remote
+
+    Description:  Determines if the remote git repository exists.
+
+    Arguments:
+        (input) gitcmd -> Git command instance.
+        (input) url -> Git URL address.
+        (input) **kwargs:
+            None
+        (output)  True|False -> If the remote git repository exists.
+
+    """
+
+    try:
+        _ = gitcmd.ls_remote(url)
+        return True
+
+    except git.exc.GitCommandError:
+        return False
+
+
 def is_remote_branch(gitcmd, branch, **kwargs):
 
     """Function:  is_remote_branch
@@ -257,7 +294,7 @@ def send_mail(cfg, subj, email_body, **kwargs):
     email.send_mail()
 
 
-def process_project(branch, gitcmd, **kwargs):
+def process_project(branch, gitcmd, log, **kwargs):
 
     """Function:  process_project
 
@@ -267,26 +304,24 @@ def process_project(branch, gitcmd, **kwargs):
     Arguments:
         (input) branch -> Branch being merge into.
         (input) gitcmd -> Git command line class instance.
+        (input) log -> Log class instance.
         (input) **kwargs:
             None
 
     """
 
-    # Test this code, not been tested before.
+    log.log_info("Fetching and setting up branches.")
     gitcmd.fetch()
-
-    # Test this code, not been tested before.
     gitcmd.branch("mod_release")
-
-    # Another one with branch name here.
     gitcmd.checkout(branch)
 
-    # Test this code, not been tested before.
-    # Git merge --no-off -s recursive -X theirs mod_release
-    # or gitcmd.merge("--no-off", "-s recursive", "-X theirs", "mod_release")
-    gitcmd.merge("--no-off", "-s", "recursive", "-X", "theirs", "mod_release")
+    log.log_info("Merging new repo into branch: %s" % (branch))
+    gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
 
-    # Test this code, not been tested before.
+    log.log_info("Pushing local repo to remote repo.")
+
+    # Push changes and then push tags.
+    gitcmd.push()
     gitcmd.push("--tags")
 
 
@@ -322,25 +357,22 @@ def merge(args_array, cfg, log, **kwargs):
         gitcmd = gitrepo.git
 
         # Set the url to the remote Git repo.
-        # Git remote set-url origin cfg.url + project_name + ".git"
         # gitcmd.remote('set-url', 'origin',
         #               'git@gitlab.code.dicelab.net:JAC-IDM/test-merge.git')
         gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
 
-        # Does branch resides in the remote git repo.
-        if is_remote_branch(gitcmd, cfg.branch):
+        # Does remote git repo exist.
+        if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
 
-            # Process any untracked files.
+            log.log_info("Processing untracked files")
             process_untracked(gitrepo, gitcmd)
 
-            # Process any dirty files.
+            log.log_info("Processing dirty files")
             process_dirty(gitrepo, gitcmd)
 
-            # Process the project.
-            process_project(cfg.branch, gitcmd)
-
-            # Archive the post-merge project.
+            process_project(cfg.branch, gitcmd, log)
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
+            log.log_info("Processing of: %s complete." % (proj_dir))
 
             # Send notification of completion.
             subj = "Merge completed for: " + args_array["-r"]
@@ -356,7 +388,7 @@ def merge(args_array, cfg, log, **kwargs):
             log.log_err("%s.%s does not exist at remote repo: %s" %
                         (proj_dir, cfg.branch, (gitrepo.remotes.origin.url)))
 
-            # Archive the errored project.
+            # Archive the problem project.
             gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
             # Send notification of error.
@@ -376,7 +408,7 @@ def merge(args_array, cfg, log, **kwargs):
 
         log.log_err("%s is not a Git repository" % (proj_dir))
 
-        # Archive the errored project.
+        # Archive the problem project.
         gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
         # Send notification of error.

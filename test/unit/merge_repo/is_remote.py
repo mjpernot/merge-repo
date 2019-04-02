@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  is_remote_branch.py
+"""Program:  is_remote.py
 
-    Description:  Unit testing of merge in is_remote_branch.py.
+    Description:  Unit testing of merge in is_remote.py.
 
     Usage:
-        test/unit/merge_repo/is_remote_branch.py
+        test/unit/merge_repo/is_remote.py
 
     Arguments:
         None
@@ -49,19 +49,18 @@ class GitCmd2(object):
     Sub-Classes:  None
 
     Methods:
-        rev_parse -> Stub holder for rev_parse method.
+        ls_remote -> Stub holder for ls_remote method.
 
     """
 
-    def rev_parse(self, arg1, arg2):
+    def ls_remote(self, arg1):
 
         """Method:  rev_parse
 
-        Description:  Stub holder for rev_parse method.
+        Description:  Stub holder for ls_remote method.
 
         Arguments:
             (input) arg1 -> Stub holder for argument.
-            (input) arg2 -> Stub holder for argument.
             (output) Return raised error for git.
 
         """
@@ -80,20 +79,19 @@ class GitCmd(object):
     Sub-Classes:  None
 
     Methods:
-        rev_parse -> Stub holder for rev_parse method.
+        ls_remote -> Stub holder for ls_remote method.
 
     """
 
-    def rev_parse(self, arg1, arg2):
+    def ls_remote(self, arg1):
 
         """Method:  rev_parse
 
-        Description:  Stub holder for rev_parse method.
+        Description:  Stub holder for ls_remote method.
 
         Arguments:
             (input) arg1 -> Stub holder for argument.
-            (input) arg2 -> Stub holder for argument.
-            (output) True -> Successful git.rev_parse command.
+            (output) True -> Successful git.ls_remote command.
 
         """
 
@@ -112,8 +110,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_is_remote_branch_fail -> Test function raising error.
-        test_is_remote_branch -> Test is_remote_branch function.
+        test_is_remote_fail -> Test is_remote function raising error.
+        test_is_remote -> Test is_remote function.
 
     """
 
@@ -131,31 +129,31 @@ class UnitTest(unittest.TestCase):
         self.gitcmd = GitCmd()
         self.gitcmd2 = GitCmd2()
 
-    def test_is_remote_branch_fail(self):
+    def test_is_remote_fail(self):
 
-        """Function:  test_is_remote_branch_fail
+        """Function:  test_is_remote_fail
 
-        Description:  Test is_remote_branch function raising error.
-
-        Arguments:
-            None
-
-        """
-
-        self.assertFalse(merge_repo.is_remote_branch(self.gitcmd2, "test-brh"))
-
-    def test_is_remote_branch(self):
-
-        """Function:  test_is_remote_branch
-
-        Description:  Test is_remote_branch function.
+        Description:  Test is_remote function raising error.
 
         Arguments:
             None
 
         """
 
-        self.assertTrue(merge_repo.is_remote_branch(self.gitcmd, "test-brh"))
+        self.assertFalse(merge_repo.is_remote(self.gitcmd2, "url_address"))
+
+    def test_is_remote(self):
+
+        """Function:  test_is_remote
+
+        Description:  Test is_remote function.
+
+        Arguments:
+            None
+
+        """
+
+        self.assertTrue(merge_repo.is_remote(self.gitcmd, "url_address"))
 
 
 if __name__ == "__main__":
