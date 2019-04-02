@@ -163,6 +163,29 @@ def is_git_repo(path, **kwargs):
         return False
 
 
+def is_remote(gitcmd, url, **kwargs):
+
+    """Function:  is_remote
+
+    Description:  Determines if the remote git repository exists.
+
+    Arguments:
+        (input) gitcmd -> Git command instance.
+        (input) url -> Git URL address.
+        (input) **kwargs:
+            None
+        (output)  True|False -> If the remote git repository exists.
+
+    """
+
+    try:
+        _ = gitcmd.ls_remote(url)
+        return True
+
+    except git.exe.GitCommandError:
+        return False
+
+
 def is_remote_branch(gitcmd, branch, **kwargs):
 
     """Function:  is_remote_branch
