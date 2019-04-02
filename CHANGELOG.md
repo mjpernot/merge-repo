@@ -10,6 +10,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - merge:  Replaced is_remote_branch() call with is_remote() call.
+- process_project:  Add second push() to push only changes.
+- process_project:  Add log entries.
 
 
 ## [0.0.1] - 2019-03-19
