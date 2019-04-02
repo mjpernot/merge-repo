@@ -26,6 +26,7 @@ else:
 
 # Third-party
 import mock
+import git
 
 # Local
 sys.path.append(os.getcwd())
@@ -35,6 +36,36 @@ import version
 
 # Version
 __version__ = version.__version__
+
+
+class GitCmd2(object):
+
+    """Class:  GitCmd2
+
+    Description:  Class stub holder for GitCmd class.
+
+    Super-Class:  None
+
+    Sub-Classes:  None
+
+    Methods:
+        ls_remote -> Stub holder for ls_remote method.
+
+    """
+
+    def ls_remote(self, arg1):
+
+        """Method:  rev_parse
+
+        Description:  Stub holder for ls_remote method.
+
+        Arguments:
+            (input) arg1 -> Stub holder for argument.
+            (output) Return raised error for git.
+
+        """
+
+        raise git.exc.GitCommandError('git', 128)
 
 
 class GitCmd(object):
@@ -48,7 +79,7 @@ class GitCmd(object):
     Sub-Classes:  None
 
     Methods:
-        rev_parse -> Stub holder for rev_parse method.
+        ls_remote -> Stub holder for ls_remote method.
 
     """
 
@@ -60,6 +91,7 @@ class GitCmd(object):
 
         Arguments:
             (input) arg1 -> Stub holder for argument.
+            (output) True -> Successful git.ls_remote command.
 
         """
 
@@ -78,6 +110,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_is_remote_fail -> Test is_remote function raising error.
         test_is_remote -> Test is_remote function.
 
     """
@@ -94,6 +127,20 @@ class UnitTest(unittest.TestCase):
         """
 
         self.gitcmd = GitCmd()
+        self.gitcmd2 = GitCmd2()
+
+    def test_is_remote_fail(self):
+
+        """Function:  test_is_remote_fail
+
+        Description:  Test is_remote function raising error.
+
+        Arguments:
+            None
+
+        """
+
+        self.assertFalse(merge_repo.is_remote(self.gitcmd2, "url_address"))
 
     def test_is_remote(self):
 
