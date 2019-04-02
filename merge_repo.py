@@ -294,7 +294,7 @@ def send_mail(cfg, subj, email_body, **kwargs):
     email.send_mail()
 
 
-def process_project(branch, gitcmd, **kwargs):
+def process_project(branch, gitcmd, log, **kwargs):
 
     """Function:  process_project
 
@@ -304,16 +304,23 @@ def process_project(branch, gitcmd, **kwargs):
     Arguments:
         (input) branch -> Branch being merge into.
         (input) gitcmd -> Git command line class instance.
+        (input) log -> Log class instance.
         (input) **kwargs:
             None
 
     """
 
+    log.log_info("Fetching and setting up branches.")
     gitcmd.fetch()
     gitcmd.branch("mod_release")
     gitcmd.checkout(branch)
+
+    log.log_info("Merging new repo into branch: %s" % (branch))
     gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
-    gitcmd.push("--tags")
+
+    log.log_info("Pushing local repo to remote repo.")
+    print("Pushing to remote repo")
+    #gitcmd.push("--tags")
 
 
 def merge(args_array, cfg, log, **kwargs):
@@ -355,9 +362,13 @@ def merge(args_array, cfg, log, **kwargs):
         # Does remote git repo exist.
         if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
 
+            log.log_info("Processing untracked files")
             process_untracked(gitrepo, gitcmd)
+
+            log.log_info("Processing dirty files")
             process_dirty(gitrepo, gitcmd)
-            process_project(cfg.branch, gitcmd)
+            
+            process_project(cfg.branch, gitcmd, log)
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
 
             # Send notification of completion.
