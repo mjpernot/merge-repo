@@ -365,7 +365,7 @@ def merge(args_array, cfg, log, **kwargs):
         gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
 
         # Does branch resides in the remote git repo.
-        if is_remote_branch(gitcmd, cfg.branch):
+        if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
 
             # Process any untracked files.
             process_untracked(gitrepo, gitcmd)
