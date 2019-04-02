@@ -319,8 +319,7 @@ def process_project(branch, gitcmd, log, **kwargs):
     gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
 
     log.log_info("Pushing local repo to remote repo.")
-    print("Pushing to remote repo")
-    #gitcmd.push("--tags")
+    gitcmd.push("--tags")
 
 
 def merge(args_array, cfg, log, **kwargs):
