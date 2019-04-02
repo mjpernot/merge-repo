@@ -113,7 +113,7 @@ class GitCmd(object):
 
         return True
 
-    def push(self, arg1):
+    def push(self, arg1=None):
 
         """Method:  push
 
@@ -157,18 +157,22 @@ class UnitTest(unittest.TestCase):
         self.branch = "test-master"
         self.gitcmd = GitCmd()
 
-    def test_process_project(self):
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_process_project(self, mock_log):
 
         """Function:  test_process_project
 
         Description:  Test test_process_project function.
 
         Arguments:
-            None
+            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
 
         """
 
-        self.assertFalse(merge_repo.process_project(self.branch, self.gitcmd))
+        mock_log.return_value = True
+
+        self.assertFalse(merge_repo.process_project(self.branch, self.gitcmd,
+                                                    mock_log))
 
 
 if __name__ == "__main__":
