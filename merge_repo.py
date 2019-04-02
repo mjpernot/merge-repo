@@ -369,6 +369,7 @@ def merge(args_array, cfg, log, **kwargs):
             
             process_project(cfg.branch, gitcmd, log)
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
+            log.log_info("Processing of: %s complete." % (proj_dir))
 
             # Send notification of completion.
             subj = "Merge completed for: " + args_array["-r"]
