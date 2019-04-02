@@ -40,7 +40,7 @@ __version__ = version.__version__
 
 class GitCmd2(object):
 
-    """Class:  GitCmd
+    """Class:  GitCmd2
 
     Description:  Class stub holder for GitCmd class.
 
