@@ -30,12 +30,26 @@
 
     Notes:
         Config file:
+            # Base URL address to remote Git repository.
             url="git@gitlab.code.dicelab.net:JAC-IDM/"
+
+            # Directory of where the merge will take place.
             work_dir="/home/mark.j.pernot/merge/work_dir"
+
+            # Directory where projects will be archived if encounter errors.
             err_dir="/home/mark.j.pernot/merge/error_dir"
+
+            # Directory where projects will be archived after a merge.
             archive_dir="/home/mark.j.pernot/merge/archive_dir"
+
+            # Email addresses for notification.
             to_line="Mark.J.Pernot@coe.ic.gov"
+
+            # Directory where log files will be placed.
+            log_file="/home/mark.j.pernot/merge/logs/merge-repo.log"
+
             # Do not modify unless you know what you are doing.
+            # Branch on which the merge will take place on.
             branch="master"
 
     Examples:
