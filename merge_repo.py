@@ -369,7 +369,7 @@ def merge(args_array, cfg, log, **kwargs):
 
             log.log_info("Processing dirty files")
             process_dirty(gitrepo, gitcmd)
-            
+
             process_project(cfg.branch, gitcmd, log)
             gen_libs.mv_file2(proj_dir, cfg.archive_dir)
             log.log_info("Processing of: %s complete." % (proj_dir))
