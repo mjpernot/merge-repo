@@ -168,7 +168,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_is_remote_branch_false -> Test with is_remote_branch set to False.
+        test_is_remote_true -> Test with is_remote set to True.
+        test_is_remote_false -> Test with is_remote set to False.
         test_is_git_repo_false -> Test with is_git_repo set to False.
         test_is_git_repo_true -> Test with is_git_repo set to True.
 
@@ -230,19 +231,19 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.process_project")
     @mock.patch("merge_repo.process_dirty")
     @mock.patch("merge_repo.process_untracked")
-    @mock.patch("merge_repo.is_remote_branch")
+    @mock.patch("merge_repo.is_remote")
     @mock.patch("merge_repo.git")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_remote_branch_true(self, mock_log, mock_libs, mock_isgit,
-                                   mock_mail, mock_git, mock_isremote,
-                                   mock_untrack, mock_dirty, mock_project):
+    def test_is_remote_true(self, mock_log, mock_libs, mock_isgit, mock_mail,
+                            mock_git, mock_isremote, mock_untrack, mock_dirty,
+                            mock_project):
 
-        """Function:  test_is_remote_branch_true
+        """Function:  test_is_remote_true
 
-        Description:  Test with is_remote_branch set to True.
+        Description:  Test with is_remote set to True.
 
         Arguments:
             mock_log -> Mock Ref:  merge_repo.gen_class.Logger
@@ -250,7 +251,7 @@ class UnitTest(unittest.TestCase):
             mock_isgit -> Mock Ref:  merge_repo.is_git_repo
             mock_mail -> Mock Ref:  merge_repo.send_mail
             mock_git -> Mock Ref:  merge_repo.git.Repo
-            mock_isremote -> Mock Reg:  merge_repo.is_remote_branch
+            mock_isremote -> Mock Reg:  merge_repo.is_remote
             mock_untrack -> Mock Reg:  merge_repo.process_untracked
             mock_dirty -> Mock Reg:  merge_repo.process_dirty
             mock_project -> Mock Reg:  merge_repo.process_project
@@ -269,18 +270,18 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.is_remote_branch")
+    @mock.patch("merge_repo.is_remote")
     @mock.patch("merge_repo.git")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_remote_branch_false(self, mock_log, mock_libs, mock_isgit,
-                                    mock_mail, mock_git, mock_isremote):
+    def test_is_remote_false(self, mock_log, mock_libs, mock_isgit, mock_mail,
+                             mock_git, mock_isremote):
 
-        """Function:  test_is_remote_branch_false
+        """Function:  test_is_remote_false
 
-        Description:  Test with is_remote_branch set to False.
+        Description:  Test with is_remote set to False.
 
         Arguments:
             mock_log -> Mock Ref:  merge_repo.gen_class.Logger
@@ -288,7 +289,7 @@ class UnitTest(unittest.TestCase):
             mock_isgit -> Mock Ref:  merge_repo.is_git_repo
             mock_mail -> Mock Ref:  merge_repo.send_mail
             mock_git -> Mock Ref:  merge_repo.git.Repo
-            mock_isremote -> Mock Reg:  merge_repo.is_remote_branch
+            mock_isremote -> Mock Reg:  merge_repo.is_remote
 
         """
 
@@ -301,7 +302,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.is_remote_branch")
+    @mock.patch("merge_repo.is_remote")
     @mock.patch("merge_repo.git")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
@@ -320,7 +321,7 @@ class UnitTest(unittest.TestCase):
             mock_isgit -> Mock Ref:  merge_repo.is_git_repo
             mock_mail -> Mock Ref:  merge_repo.send_mail
             mock_git -> Mock Ref:  merge_repo.git.Repo
-            mock_isremote -> Mock Reg:  merge_repo.is_remote_branch
+            mock_isremote -> Mock Reg:  merge_repo.is_remote
 
         """
 
