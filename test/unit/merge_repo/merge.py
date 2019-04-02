@@ -237,9 +237,9 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_remote_true(self, mock_log, mock_libs, mock_isgit,
-                                   mock_mail, mock_git, mock_isremote,
-                                   mock_untrack, mock_dirty, mock_project):
+    def test_is_remote_true(self, mock_log, mock_libs, mock_isgit, mock_mail,
+                            mock_git, mock_isremote, mock_untrack, mock_dirty,
+                            mock_project):
 
         """Function:  test_is_remote_true
 
@@ -276,8 +276,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_remote_false(self, mock_log, mock_libs, mock_isgit,
-                                    mock_mail, mock_git, mock_isremote):
+    def test_is_remote_false(self, mock_log, mock_libs, mock_isgit, mock_mail,
+                             mock_git, mock_isremote):
 
         """Function:  test_is_remote_false
 
