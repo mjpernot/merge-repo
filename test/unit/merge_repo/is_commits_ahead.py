@@ -92,6 +92,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_is_two_ahead -> Test with two commits ahead of remote repo.
+        test_is_one_ahead -> Test with one commit ahead of remote repo.
         test_is_zero_ahead -> Test with zero commits ahead of remote repo.
 
     """
@@ -109,6 +111,38 @@ class UnitTest(unittest.TestCase):
 
         self.gitrepo = GitRepo()
         self.branch = "master"
+
+    def test_is_two_ahead(self,):
+
+        """Function:  test_is_two_ahead
+
+        Description:  Test with two commits ahead of remote repo.
+
+        Arguments:
+            None
+
+        """
+
+        self.gitrepo.commit_diff = [1, 2]
+
+        self.assertEqual(merge_repo.is_commits_ahead(self.gitrepo,
+                                                     self.branch), 2)
+
+    def test_is_one_ahead(self,):
+
+        """Function:  test_is_one_ahead
+
+        Description:  Test with one commit ahead of remote repo.
+
+        Arguments:
+            None
+
+        """
+
+        self.gitrepo.commit_diff = [1]
+
+        self.assertEqual(merge_repo.is_commits_ahead(self.gitrepo,
+                                                     self.branch), 1)
 
     def test_is_zero_ahead(self,):
 
