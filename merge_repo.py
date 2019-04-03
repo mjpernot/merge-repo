@@ -394,24 +394,47 @@ def merge(args_array, cfg, log, **kwargs):
             process_dirty(gitrepo, gitcmd)
 
             process_project(cfg.branch, gitcmd, log)
-            gen_libs.mv_file2(proj_dir, cfg.archive_dir)
-            log.log_info("Processing of: %s complete." % (proj_dir))
 
-            # Send notification of completion.
-            subj = "Merge completed for: " + args_array["-r"]
-            body = ["DTG: "
-                    + datetime.datetime.strftime(datetime.datetime.now(),
-                                                 "%Y-%m-%d %H:%M:%S")]
-            body.append("Merge of project has been completed.")
+            if is_commits_ahead(gitrepo, cfg.branch):
 
-            send_mail(cfg, subj, body)
+                log.log_err("Local branch: %s not in sync with remote repo" \
+                            % (cfg.branch))
+
+                gen_libs.mv_file2(proj_dir, cfg.err_dir)
+
+                # Send notification of error.
+                subj = "Merge error for: " + args_array["-r"]
+                body = ["DTG: "
+                        + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S")]
+                body.append("Local branch: %s not in sync with remote repo." \
+                            % (cfg.branch))
+                body.append("Local branch is %s commits ahead of remote." \
+                            % (is_commits_ahead(gitrepo, cfg.branch)))
+                body.append("Remote URL: " + gitrepo.remotes.origin.url)
+                body.append("Project Dir: " + proj_dir)
+                body.append("Branch: " + cfg.branch)
+
+                send_mail(cfg, subj, body)
+
+            else:
+                gen_libs.mv_file2(proj_dir, cfg.archive_dir)
+                log.log_info("Processing of: %s complete." % (proj_dir))
+
+                # Send notification of completion.
+                subj = "Merge completed for: " + args_array["-r"]
+                body = ["DTG: "
+                        + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S")]
+                body.append("Merge of project has been completed.")
+
+                send_mail(cfg, subj, body)
 
         else:
 
             log.log_err("%s.%s does not exist at remote repo: %s" %
                         (proj_dir, cfg.branch, (gitrepo.remotes.origin.url)))
 
-            # Archive the problem project.
             gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
             # Send notification of error.
@@ -431,7 +454,6 @@ def merge(args_array, cfg, log, **kwargs):
 
         log.log_err("%s is not a Git repository" % (proj_dir))
 
-        # Archive the problem project.
         gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
         # Send notification of error.

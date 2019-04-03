@@ -8,6 +8,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Added
 - is_commits_ahead:  Returns count on local branch ahead of remote branch.
 
+### Changed
+- merge:  Added check to see if local and remote branches are in sync.
+
 
 ## [0.0.2] - 2019-04-02
 ### Added
