@@ -13,6 +13,14 @@ echo "Unit test:  is_git_repo"
 test/unit/merge_repo/is_git_repo.py
 
 echo ""
+echo "Unit test:  is_commits_ahead"
+test/unit/merge_repo/is_commits_ahead.py
+
+echo ""
+echo "Unit test:  is_remote"
+test/unit/merge_repo/is_remote.py
+
+echo ""
 echo "Unit test:  is_remote_branch"
 test/unit/merge_repo/is_remote_branch.py
 

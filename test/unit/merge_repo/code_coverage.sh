@@ -12,6 +12,7 @@ coverage run -a --source=merge_repo test/unit/merge_repo/is_git_repo.py
 coverage run -a --source=merge_repo test/unit/merge_repo/load_cfg.py
 coverage run -a --source=merge_repo test/unit/merge_repo/merge.py
 coverage run -a --source=merge_repo test/unit/merge_repo/process_project.py
+coverage run -a --source=merge_repo test/unit/merge_repo/is_commits_ahead.py
 coverage run -a --source=merge_repo test/unit/merge_repo/is_remote.py
 coverage run -a --source=merge_repo test/unit/merge_repo/is_remote_branch.py
 coverage run -a --source=merge_repo test/unit/merge_repo/process_dirty.py
