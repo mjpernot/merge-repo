@@ -168,6 +168,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_commits_ahead_true -> Test with is_commits_ahead set to True.
+        test_commits_ahead_false -> Test with is_commits_ahead set to False.
         test_is_remote_true -> Test with is_remote set to True.
         test_is_remote_false -> Test with is_remote set to False.
         test_is_git_repo_false -> Test with is_git_repo set to False.
@@ -227,6 +229,98 @@ class UnitTest(unittest.TestCase):
                      "-d": "/home/mark.j.pernot/merge_repo/config",
                      "-r": "repo-name",
                      "-p": "/home/mark.j.pernot/merge/repo-name", "-M": True}
+
+    @mock.patch("merge_repo.is_commits_ahead")
+    @mock.patch("merge_repo.process_project")
+    @mock.patch("merge_repo.process_dirty")
+    @mock.patch("merge_repo.process_untracked")
+    @mock.patch("merge_repo.is_remote")
+    @mock.patch("merge_repo.git")
+    @mock.patch("merge_repo.send_mail")
+    @mock.patch("merge_repo.is_git_repo")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_commits_ahead_true(self, mock_log, mock_libs, mock_isgit,
+                                mock_mail, mock_git, mock_isremote,
+                                mock_untrack, mock_dirty, mock_project,
+                                mock_commits):
+
+        """Function:  test_commits_ahead_true
+
+        Description:  Test with is_commits_ahead set to True.
+
+        Arguments:
+            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
+            mock_libs -> Mock Ref:  merge_repo.gen_libs
+            mock_isgit -> Mock Ref:  merge_repo.is_git_repo
+            mock_mail -> Mock Ref:  merge_repo.send_mail
+            mock_git -> Mock Ref:  merge_repo.git.Repo
+            mock_isremote -> Mock Reg:  merge_repo.is_remote
+            mock_untrack -> Mock Reg:  merge_repo.process_untracked
+            mock_dirty -> Mock Reg:  merge_repo.process_dirty
+            mock_project -> Mock Reg:  merge_repo.process_project
+            mock_commits -> Mock Reg:  merge_repo.is_commits_ahead
+
+        """
+
+        mock_log.return_value = True
+        mock_libs.mv_file.return_value = True
+        mock_isgit.return_value = True
+        mock_mail.return_value = True
+        mock_git.Repo.return_value = Repo()
+        mock_isremote.return_value = True
+        mock_untrack.return_value = True
+        mock_dirty.return_value = True
+        mock_project.return_value = True
+        mock_commits.return_value = True
+
+        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
+
+    @mock.patch("merge_repo.is_commits_ahead")
+    @mock.patch("merge_repo.process_project")
+    @mock.patch("merge_repo.process_dirty")
+    @mock.patch("merge_repo.process_untracked")
+    @mock.patch("merge_repo.is_remote")
+    @mock.patch("merge_repo.git")
+    @mock.patch("merge_repo.send_mail")
+    @mock.patch("merge_repo.is_git_repo")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_commits_ahead_false(self, mock_log, mock_libs, mock_isgit,
+                                 mock_mail, mock_git, mock_isremote,
+                                 mock_untrack, mock_dirty, mock_project,
+                                 mock_commits):
+
+        """Function:  test_commits_ahead_false
+
+        Description:  Test with is_commits_ahead set to False.
+
+        Arguments:
+            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
+            mock_libs -> Mock Ref:  merge_repo.gen_libs
+            mock_isgit -> Mock Ref:  merge_repo.is_git_repo
+            mock_mail -> Mock Ref:  merge_repo.send_mail
+            mock_git -> Mock Ref:  merge_repo.git.Repo
+            mock_isremote -> Mock Reg:  merge_repo.is_remote
+            mock_untrack -> Mock Reg:  merge_repo.process_untracked
+            mock_dirty -> Mock Reg:  merge_repo.process_dirty
+            mock_project -> Mock Reg:  merge_repo.process_project
+            mock_commits -> Mock Reg:  merge_repo.is_commits_ahead
+
+        """
+
+        mock_log.return_value = True
+        mock_libs.mv_file.return_value = True
+        mock_isgit.return_value = True
+        mock_mail.return_value = True
+        mock_git.Repo.return_value = Repo()
+        mock_isremote.return_value = True
+        mock_untrack.return_value = True
+        mock_dirty.return_value = True
+        mock_project.return_value = True
+        mock_commits.return_value = False
+
+        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
     @mock.patch("merge_repo.is_commits_ahead")
     @mock.patch("merge_repo.process_project")
