@@ -228,6 +228,7 @@ class UnitTest(unittest.TestCase):
                      "-r": "repo-name",
                      "-p": "/home/mark.j.pernot/merge/repo-name", "-M": True}
 
+    @mock.patch("merge_repo.is_commits_ahead")
     @mock.patch("merge_repo.process_project")
     @mock.patch("merge_repo.process_dirty")
     @mock.patch("merge_repo.process_untracked")
@@ -239,7 +240,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_class.Logger")
     def test_is_remote_true(self, mock_log, mock_libs, mock_isgit, mock_mail,
                             mock_git, mock_isremote, mock_untrack, mock_dirty,
-                            mock_project):
+                            mock_project, mock_commits):
 
         """Function:  test_is_remote_true
 
@@ -255,6 +256,7 @@ class UnitTest(unittest.TestCase):
             mock_untrack -> Mock Reg:  merge_repo.process_untracked
             mock_dirty -> Mock Reg:  merge_repo.process_dirty
             mock_project -> Mock Reg:  merge_repo.process_project
+            mock_commits -> Mock Reg:  merge_repo.is_commits_ahead
 
         """
 
@@ -267,6 +269,7 @@ class UnitTest(unittest.TestCase):
         mock_untrack.return_value = True
         mock_dirty.return_value = True
         mock_project.return_value = True
+        mock_commits.return_value = False
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
