@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.0.3] - 2019-04-03
+### Added
+- is_commits_ahead:  Returns count on local branch ahead of remote branch.
+
+
 ## [0.0.2] - 2019-04-02
 ### Added
 - is_remote:  Determines if the remote git repository exists.

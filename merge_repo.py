@@ -325,6 +325,29 @@ def process_project(branch, gitcmd, log, **kwargs):
     gitcmd.push("--tags")
 
 
+def is_commits_ahead(gitrepo, branch, **kwargs):
+
+    """Function:  is_commits_ahead
+
+    Description:  Compares the local branch with the remote branch and returns
+        a count on whether local branch is ahead of remote branch.
+            0 -> Local branch not ahead of remote branch.
+            >0 ->  Local branch is ahead of remote branch by N commits.
+
+    Arguments:
+        (input) gitcmd -> Git command line class instance.
+        (input) branch -> Branch being compares.
+        (input) **kwargs:
+            None
+        (output) -> N commits local branch ahead of remote branch.
+
+    """
+
+    data_str = "origin/" + branch + ".." + branch
+
+    return sum(1 for x in gitrepo.iter_commits(data_str))
+
+
 def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge
