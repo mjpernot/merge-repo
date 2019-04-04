@@ -67,7 +67,7 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
 
 # Program Descriptions:
-### Description: The merge_repo.py program is designed to take a non-local Git repository and merge it into an existing Git repository, but make the non-local Git repository the priority repository.  This is way of a non-local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
+### Description: The program is designed to take a non-local Git repository and merge it into an existing Git repository, but make the non-local Git repository the priority repository.  This is way of a non-local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
 
 
 # Program Help Function:
