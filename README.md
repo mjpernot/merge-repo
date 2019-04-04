@@ -13,8 +13,8 @@
   * Help Message
   * Testing
     - Unit
-    - Integration
-    - Blackbox
+    - Integration (Not yet implemented)
+    - Blackbox (Not yet implemented)
 
 
 # Features:
