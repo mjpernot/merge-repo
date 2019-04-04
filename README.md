@@ -85,18 +85,67 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
     Program:  merge_repo.py
 
-    Description:  
+    Description:  Merge an external non-local Git repository into an existing
+        remote Git repository.  The merge process will clean up the new
+        project using Git of dirty and untracked files and it will then pull
+        the existing remote Git branch to the local Git repository before
+        merging the non-local Git repo with the existing Git repo.  Once the
+        branches have been merged the updated branch will be pushed back to
+        the remote Git repository.
+
+        NOTE 1:  The non-local Git repo will be marked as the priority, which
+            means the non-local Git repo will have priority over the changes
+            made to the project.
+        NOTE 2:  The default branch to be merged will be the master branch.
+            This can be changed in the configuration file, but is not
+            recommended.
 
     Usage:
-`
+        merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
+            [-M] {-v | -h}
 
     Arguments:
+        -c file_name => Name of merge_repo configuration file.
+        -d directory_path => Directory path to the configuration file.
+        -M => Run the merge function.
+        -r repo_name => Repository name being merged (e.g. "hp-python-lib").
+        -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
         -h => Help and usage message.
 
         NOTE 1:  -v or -h overrides the other options.
+        NOTE 2:  If -r is not passed, will use the basename from the -p option
+            directory path to populate the -r option.
 
-    Example:
+    Notes:
+        Config file:
+            # Base URL address to remote Git repository.  Not to include
+            #   repository name.  This will be supplied by command line
+            #   arguments.
+            url="git@gitlab.code.dicelab.net:JAC-IDM/"
+
+            # Directory of where the merge will take place.
+            work_dir="{PATH_DIRECTORY}/work_dir"
+
+            # Directory where projects will be archived if encounter errors.
+            err_dir="{PATH_DIRECTORY}/error_dir"
+
+            # Directory where projects will be archived after a merge.
+            archive_dir="{PATH_DIRECTORY}/archive_dir"
+
+            # Email addresses for notification.
+            to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
+
+            # Directory where log files will be placed.
+            log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
+
+            # Do not modify unless you know what you are doing.
+            # Branch on which the merge will take place on.
+            branch="master"
+
+    Examples:
+        merge_repo.py -c merge -d config -r hp-python-lib
+            -p /opt/local/hp-python-lib -M
 
 
 # Testing:
