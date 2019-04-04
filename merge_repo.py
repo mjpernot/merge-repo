@@ -3,20 +3,22 @@
 
 """Program:  merge_repo.py
 
-    Description:  Merge an external non-local Git repository into an existing
+    Description:  Merge an external local Git repository into an existing
         remote Git repository.  The merge process will clean up the new
         project using Git of dirty and untracked files and it will then pull
         the existing remote Git branch to the local Git repository before
-        merging the non-local Git repo with the existing Git repo.  Once the
+        merging the local Git repo with the existing Git repo.  Once the
         branches have been merged the updated branch will be pushed back to
         the remote Git repository.
 
-        NOTE 1:  The non-local Git repo will be marked as the priority, which
-            means the non-local Git repo will have priority over the changes
+        NOTE 1:  The local Git repo will be marked as the priority, which
+            means the local Git repo will have priority over the changes
             made to the project.
         NOTE 2:  The default branch to be merged will be the master branch.
             This can be changed in the configuration file, but is not
             recommended.
+        NOTE 3:  The external local Git repository must come in as a detached
+            head repository with no named branches for the merge to take place.
 
     Usage:
         merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
@@ -361,8 +363,8 @@ def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge
 
-    Description:  Controls the merging of a non-local repository with a remote
-        repository, but having the non-local repository as the priority
+    Description:  Controls the merging of a local repository with a remote
+        repository, but having the local repository as the priority
         repository.
 
     Arguments:
