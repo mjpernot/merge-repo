@@ -112,48 +112,53 @@ class UnitTest(unittest.TestCase):
         self.gitrepo = GitRepo()
         self.branch = "master"
 
-    def test_is_two_ahead(self,):
+    @mock.patch("merge_repo.commits_diff")
+    def test_is_two_ahead(self, mock_diff):
 
         """Function:  test_is_two_ahead
 
         Description:  Test with two commits ahead of remote repo.
 
         Arguments:
-            None
+            mock_diff -> Mock Ref:  merge_repo.commits_diff
 
         """
 
-        self.gitrepo.commit_diff = [1, 2]
+        mock_diff.return_value = 2
 
         self.assertEqual(merge_repo.is_commits_ahead(self.gitrepo,
                                                      self.branch), 2)
 
-    def test_is_one_ahead(self,):
+    @mock.patch("merge_repo.commits_diff")
+    def test_is_one_ahead(self, mock_diff):
 
         """Function:  test_is_one_ahead
 
         Description:  Test with one commit ahead of remote repo.
 
         Arguments:
-            None
+            mock_diff -> Mock Ref:  merge_repo.commits_diff
 
         """
 
-        self.gitrepo.commit_diff = [1]
+        mock_diff.return_value = 1
 
         self.assertEqual(merge_repo.is_commits_ahead(self.gitrepo,
                                                      self.branch), 1)
 
-    def test_is_zero_ahead(self,):
+    @mock.patch("merge_repo.commits_diff")
+    def test_is_zero_ahead(self, mock_diff):
 
         """Function:  test_is_zero_ahead
 
         Description:  Test with zero commits ahead of remote repo.
 
         Arguments:
-            None
+            mock_diff -> Mock Ref:  merge_repo.commits_diff
 
         """
+
+        mock_diff.return_value = 0
 
         self.assertEqual(merge_repo.is_commits_ahead(self.gitrepo,
                                                      self.branch), 0)
