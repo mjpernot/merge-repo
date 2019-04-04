@@ -18,9 +18,10 @@
 
 
 # Features:
-  * Clean up an dirty files in the non-local repository prior to merging.
-  * Fetch the remote Git repository along side the non-local repository.
-  * Merge the non-local repository into the remote repository, but make the non-local repository the priority.
+  * Merge a non-local repository into an existing remote repository.
+  * Clean up dirty and untracked files in the non-local repository prior to merging.
+  * Ensure the non-local and remote repositories are merge compatible (i.e. check for unrelated histories).
+  * The non-local repository will have priority when merging, thus allowing outside development to take place.
   * Push the newly merged respository back to the remote Git respository.
 
 
