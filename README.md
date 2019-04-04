@@ -1,8 +1,8 @@
-# Python project for the merging of a non-local Git repository into an existing Git repository.
+# Python project for the merging of a local Git repository into an existing Git repository.
 # Classification (U)
 
 # Description:
-  This program is used to take a non-local Git repository that has been modified at a different location and merge it into an existing Git repository and make it the priority repository.
+  This program is used to take a local Git repository that has been modified at a different location and merge it into an existing Git repository and make it the priority repository.
 
 ###  This README file is broken down into the following sections:
   * Features
@@ -18,7 +18,7 @@
 
 
 # Features:
-  * Merge a non-local repository into an existing remote repository.
+  * Merge a local repository into an existing remote repository.
 
 
 # Prerequisites:
@@ -63,7 +63,7 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
 
 # Program Descriptions:
-### Description: The program is designed to take a non-local Git repository and merge it into an existing Git repository, but make the non-local Git repository the priority repository.  This is way of a non-local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
+### Description: The program is designed to take a local Git repository and merge it into an existing Git repository, but make the local Git repository the priority repository.  This is way of a local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
 
 
 # Program Help Function:
@@ -81,20 +81,22 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
     Program:  merge_repo.py
 
-    Description:  Merge an external non-local Git repository into an existing
+    Description:  Merge an external local Git repository into an existing
         remote Git repository.  The merge process will clean up the new
         project using Git of dirty and untracked files and it will then pull
         the existing remote Git branch to the local Git repository before
-        merging the non-local Git repo with the existing Git repo.  Once the
+        merging the local Git repo with the existing Git repo.  Once the
         branches have been merged the updated branch will be pushed back to
         the remote Git repository.
 
-        NOTE 1:  The non-local Git repo will be marked as the priority, which
-            means the non-local Git repo will have priority over the changes
+        NOTE 1:  The local Git repo will be marked as the priority, which
+            means the local Git repo will have priority over the changes
             made to the project.
         NOTE 2:  The default branch to be merged will be the master branch.
             This can be changed in the configuration file, but is not
             recommended.
+        NOTE 3:  The external local Git repository must come in as a detached
+            head repository with no named branches for the merge to take place.
 
     Usage:
         merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
