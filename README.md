@@ -53,7 +53,7 @@ git clone git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/merge-repo.git
 Install/upgrade system modules.
 
 ```
-cd check-log
+cd merge-repo
 sudo bash
 umask 022
 pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
@@ -67,13 +67,12 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
 
 # Program Descriptions:
-### Program: merge_repo.py
-##### Description: The merge_repo.py program is designed to take a non-local Git repository and merge it into an existing Git repository, but make the non-local Git repository the priority repository.  This is way of a non-local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the designated branch which will incur the changes.
+### Description: The merge_repo.py program is designed to take a non-local Git repository and merge it into an existing Git repository, but make the non-local Git repository the priority repository.  This is way of a non-local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
 
 
 # Program Help Function:
 
-  All of the programs, except the command and class files, will have an -h (Help option) that will show display a help message for that particular program.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
+  All of the programs, except the library and class files, will have an -h (Help option) that will show display a help message for that particular program.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
@@ -136,12 +135,9 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 # Unit test runs for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-```
-cd {Python_Project}/merge-repo
-```
-
 ### Unit tests
 ```
+cd {Python_Project}/merge-repo
 test/unit/merge_repo/help_message.py
 test/unit/merge_repo/send_mail.py
 test/unit/merge_repo/process_untracked.py
@@ -202,12 +198,9 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 # Integration test runs for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-```
-cd {Python_Project}/merge-repo
-```
-
 ### Integration tests
 ```
+cd {Python_Project}/merge-repo
 test/integration/merge_repo/NNNN.py
 test/integration/merge_repo/NNNN.py
 test/integration/merge_repo/NNNN.py
@@ -267,12 +260,9 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 # Blackbox test run for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
+### Blackbox test:  
 ```
 cd {Python_Project}/merge-repo
-```
-
-### Blackbox:  
-```
 test/blackbox/merge_repo/blackbox_test.sh
 ```
 
