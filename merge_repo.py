@@ -336,6 +336,57 @@ def process_project(branch, gitcmd, log, **kwargs):
     gitcmd.push("--tags")
 
 
+def commits_diff(gitrepo, data_str, **kwargs):
+
+    """Function:  commits_diff
+
+    Description:  Compares a branch with another branch and returns a count
+        on the number of commits difference between the two branches.
+            0 -> Branch not ahead of other branch.
+            >0 ->  Branch is ahead of other branch by N commits.
+
+    Note:
+        The data_str will contain the order of the branches being compared,
+            whether local to remote or remote to local.
+        The format of the data_str is:
+            Local to Remote:
+                "BRANCH_NAME..origin/BRANCH_NAME"
+            Remote to Local:
+                "origin/BRANCH_NAME..BRANCH_NAME"
+
+    Arguments:
+        (input) gitcmd -> Git command line class instance.
+        (input) data_str -> Contains the order of branches to be compared.
+        (input) **kwargs:
+            None
+        (output) -> N commits difference between branches.
+
+    """
+
+    return sum(1 for x in gitrepo.iter_commits(data_str))
+
+
+def is_commits_behind(gitrepo, branch, **kwargs):
+
+    """Function:  is_commits_behind
+
+    Description:  Compares the local branch with the remote branch and returns
+        a count on whether local branch is behind remote branch.
+            0 -> Local branch not behind remote branch.
+            >0 ->  Local branch is behind remote branch by N commits.
+
+    Arguments:
+        (input) gitcmd -> Git command line class instance.
+        (input) branch -> Branch being compares.
+        (input) **kwargs:
+            None
+        (output) -> N commits local branch behind remote branch.
+
+    """
+
+    return commits_diff(gitrepo, branch + "..origin/" + branch)
+
+
 def is_commits_ahead(gitrepo, branch, **kwargs):
 
     """Function:  is_commits_ahead
@@ -354,9 +405,7 @@ def is_commits_ahead(gitrepo, branch, **kwargs):
 
     """
 
-    data_str = "origin/" + branch + ".." + branch
-
-    return sum(1 for x in gitrepo.iter_commits(data_str))
+    return commits_diff(gitrepo, "origin/" + branch + ".." + branch)
 
 
 def merge(args_array, cfg, log, **kwargs):

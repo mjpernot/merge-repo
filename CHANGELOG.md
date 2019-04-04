@@ -6,7 +6,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.0.3] - 2019-04-03
 ### Added
+- commits_diff:  Returns count difference between two branches.
 - is_commits_ahead:  Returns count on local branch ahead of remote branch.
+- is_commits_behind:  Returns count on local branch behind remote branch.
 
 ### Changed
 - merge:  Added check to see if local and remote branches are in sync.
