@@ -372,6 +372,7 @@ def is_commits_behind(gitrepo, branch, **kwargs):
 
     Description:  Compares the local branch with the remote branch and returns
         a count on whether local branch is behind remote branch.
+        Output:
             0 -> Local branch not behind remote branch.
             >0 ->  Local branch is behind remote branch by N commits.
 
@@ -393,6 +394,7 @@ def is_commits_ahead(gitrepo, branch, **kwargs):
 
     Description:  Compares the local branch with the remote branch and returns
         a count on whether local branch is ahead of remote branch.
+        Output:
             0 -> Local branch not ahead of remote branch.
             >0 ->  Local branch is ahead of remote branch by N commits.
 
