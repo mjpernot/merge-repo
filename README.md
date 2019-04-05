@@ -196,6 +196,7 @@ test/unit/merge_repo/is_remote_branch.py
 test/unit/merge_repo/merge.py
 test/unit/merge_repo/process_project.py
 test/unit/merge_repo/is_commits_ahead.py
+test/unit/merge_repo/is_commits_behind.py
 test/unit/merge_repo/run_program.py
 test/unit/merge_repo/main.py
 ```
