@@ -21,6 +21,10 @@ echo "Unit test:  is_commits_behind"
 test/unit/merge_repo/is_commits_behind.py
 
 echo ""
+echo "Unit test:  commits_diff"
+test/unit/merge_repo/commits_diff.py
+
+echo ""
 echo "Unit test:  is_remote"
 test/unit/merge_repo/is_remote.py
 

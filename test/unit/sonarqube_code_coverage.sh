@@ -15,6 +15,7 @@ coverage run -a --source=merge_repo test/unit/merge_repo/process_untracked.py
 coverage run -a --source=merge_repo test/unit/merge_repo/process_dirty.py
 coverage run -a --source=merge_repo test/unit/merge_repo/is_commits_ahead.py
 coverage run -a --source=merge_repo test/unit/merge_repo/is_commits_behind.py
+coverage run -a --source=merge_repo test/unit/merge_repo/commits_diff.py
 coverage run -a --source=merge_repo test/unit/merge_repo/is_remote.py
 coverage run -a --source=merge_repo test/unit/merge_repo/is_remote_branch.py
 coverage run -a --source=merge_repo test/unit/merge_repo/is_git_repo.py
