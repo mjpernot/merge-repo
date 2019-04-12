@@ -231,9 +231,30 @@ def process_dirty(self, **kwargs):
                  if item.change_type == "M"]
 
     if chg_files:
-        gitrepo.index.add(chg_files)
+        self.gitrepo.index.add(chg_files)
 
     msg = "Added dirty files"
 
     if rm_files or chg_files:
-        gitrepo.index.commit(msg)
+        self.gitrepo.index.commit(msg)
+
+def process_untracked(self, **kwargs):
+
+    """Function:  process_untracked
+
+    Description:  Process any untracked files.
+
+    Arguments:
+        (input) **kwargs:
+            None
+
+    """
+
+    # Process new files.
+    new_files = self.gitrepo.untracked_files
+
+    msg = "Added new files"
+
+    if new_files:
+        self.gitrepo.index.add(new_files)
+        self.gitrepo.index.commit(msg)
