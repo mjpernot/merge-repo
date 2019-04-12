@@ -157,41 +157,45 @@ class GitMerge(GitClass):
         # Set by is_remote().
         self.remote_info = None
 
-    def create_gitrepo(self):
+    def create_gitrepo(self, **kwargs):
 
         """Method:  create_gitrepo
 
         Description:  Creates git repo and git command line instances.
 
         Arguments:
-            None
+            (input) **kwargs:
+                None
 
         """
 
         super(GitMerge, self).create_repo()
         super(GitMerge, self).create_cmd()
 
-    def set_remote(self):
+    def set_remote(self, **kwargs):
 
         """Method:  set_remote
 
         Description:  Sets the url to the origin to a remote git repository.
 
         Arguments:
-            None
+            (input) **kwargs:
+                None
 
         """
 
         self.gitcmd.remote("set-url", "origin",
                            self.url + self.repo_name + ".git")
 
-    def is_remote(self):
+    def is_remote(self, **kwargs):
 
         """Method:  is_remote
 
         Description:  Checks to see if remote git repository exists.
 
         Arguments:
+            (input) **kwargs:
+                None
             (output) True|False -> Whether the directory is a git repository.
 
         """
@@ -202,3 +206,34 @@ class GitMerge(GitClass):
 
         except git.exc.InvalidGitRepositoryError:
             return False
+
+def process_dirty(self, **kwargs):
+
+    """Function:  process_dirty
+
+    Description:  Process any dirty files.
+
+    Arguments:
+        (input) **kwargs:
+            None
+
+    """
+
+    # Process deleted files.
+    rm_files = [item.a_path for item in self.gitrepo.index.diff(None)
+                if item.change_type == "D"]
+
+    if rm_files:
+        gitrepo.index.remove(rm_files, working_tree=true)
+
+    # Process modified files.
+    chg_files = [item.a_path for item in self.gitrepo.index.diff(None)
+                 if item.change_type == "M"]
+
+    if chg_files:
+        gitrepo.index.add(chg_files)
+
+    msg = "Added dirty files"
+
+    if rm_files or chg_files:
+        gitrepo.index.commit(msg)
