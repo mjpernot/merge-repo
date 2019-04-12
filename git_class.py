@@ -1,24 +1,19 @@
 # Classification (U)
 
-"""Program:  gen_class.py
+"""Program:  git_class.py
 
-    Description:  Class that has class definitions for general use.
+    Description:  Class that has class definitions for git repository.
 
     Classes:
-        Daemon
-        ProgressBar
-        SingleInstanceException
-        ProgramLock
-        System
-            Mail
-        Logger
-        Yum
+        GitClass
+            GitMerge
 
 """
 
 # Libraries and Global Variables
 
 # Standard
+import os
 
 # Third-party
 import git
@@ -44,6 +39,8 @@ class GitClass(object):
 
     Methods:
         __init__ -> Class instance initilization.
+        create_repo -> Create a git.Repo instance.
+        create_cmd -> Create a git.Repo.git command line instance.
 
     """
 
@@ -107,48 +104,58 @@ class GitMerge(GitClass):
 
     Methods:
         __init__ -> Class instance initilization.
+        create_gitrepo -> Creates git repo and git command line instances.
+        set_remote -> Checks to see if remote git repository exists.
+        is_remote -> Checks to see if remote git repository exists.
 
     """
 
-    def __init__(self):
+    def __init__(self, base_url, repo_name, work_dir, git_dir, branch,
+                 tmp_branch):
 
         """Method:  __init__
 
         Description:  Initialization of an instance of the GitMerge class.
 
         Arguments:
-            None
+            base_url -> Base URL to remote git repository.
+                NOTE: Does not include the git repository name.
+            repo_name -> Name of remote git repository.
+            work_dir -> Directory path to the working directory.
+            git_dir -> Directory name of the local git repository.
+            branch -> Name of branch at remote to be merged with.
+            tmp_branch -> Name of temporary branch to be merged into remote.
 
         """
 
         super(GitMerge, self).__init__()
 
-        # os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
-        self.proj_dir = None
-
         # cfg.url
-        self.base_url = None
-
-        # cfg.url + args_array["-r"] + ".git"
-        self.url = None
+        self.base_url = base_url
 
         # args_array["-r"]
-        self.repo_name = None
+        self.repo_name = repo_name
+
+        # cfg.url + args_array["-r"] + ".git"
+        self.url = self.base_url + self.repo_name + ".git"
 
         # cfg.work_dir
-        self.work_dir = None
+        self.work_dir = work_dir
 
-        # args_array["-p"] -> Do I need this in the class?
-        self.init_path = None
+        # args_array["-p"]
+        self.git_dir = git_dir
 
-        # Set by is_git_repo().
-        self.git_path = None
+        # os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
+        self.proj_dir = os.path.join(self.work_dir, self.git_dir)
+
+        # "mod_release" -> Needs to be populated from cfg file.
+        self.tmp_branch = tmp_branch
+
+        # cfg.branch
+        self.branch = branch
 
         # Set by is_remote().
         self.remote_info = None
-
-        # "mod_release" -> Needs to be populated from cfg file.
-        self.tmp_branch = None
 
     def create_gitrepo(self):
 
@@ -177,25 +184,6 @@ class GitMerge(GitClass):
 
         self.gitcmd.remote("set-url", "origin",
                            self.url + self.repo_name + ".git")
-
-    def is_git_repo(self, path):
-
-        """Method:  is_git_repo
-
-        Description:  Checks to see if the path is a git repository.
-
-        Arguments:
-            (input) path -> Directory path.
-            (output) True|False -> Whether the directory is a git repository.
-
-        """
-
-        try:
-            self.git_path = git.Repo(path).git_dir
-            return True
-
-        except git.exc.InvalidGitRepositoryError:
-            return False
 
     def is_remote(self):
 
