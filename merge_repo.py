@@ -220,6 +220,7 @@ def is_remote_branch(gitcmd, branch, **kwargs):
         return False
 
 
+# Moved to git_class module.
 def process_dirty(gitrepo, gitcmd, **kwargs):
 
     """Function:  process_dirty
@@ -252,6 +253,7 @@ def process_dirty(gitrepo, gitcmd, **kwargs):
         gitrepo.index.commit("Add dirty files")
 
 
+# Moved to git_class module.
 def process_untracked(gitrepo, gitcmd, **kwargs):
 
     """Function:  process_untracked
