@@ -167,7 +167,7 @@ def is_git_repo(path, **kwargs):
     """
 
     try:
-        _ = git.Repo(path).git_dir
+        git.Repo(path).git_dir
         return True
 
     except git.exc.InvalidGitRepositoryError:
