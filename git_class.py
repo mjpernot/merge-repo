@@ -107,6 +107,8 @@ class GitMerge(GitClass):
         create_gitrepo -> Creates git repo and git command line instances.
         set_remote -> Checks to see if remote git repository exists.
         is_remote -> Checks to see if remote git repository exists.
+        process_dirty -> Process any dirty files.
+        process_untracked -> Process any untracked files.
 
     """
 
