@@ -198,6 +198,7 @@ def is_remote(gitcmd, url, **kwargs):
         return False
 
 
+# Moved to git_class module.
 def is_remote_branch(gitcmd, branch, **kwargs):
 
     """Function:  is_remote_branch
