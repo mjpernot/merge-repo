@@ -14,6 +14,7 @@
 
 # Standard
 import os
+import time
 
 # Third-party
 import git
@@ -262,7 +263,7 @@ def process_untracked(self, **kwargs):
         self.gitrepo.index.add(new_files)
         self.gitrepo.index.commit(msg)
 
-def is_dirty(self):
+def is_dirty(self, **kwargs):
 
     """Function:  is_dirty
 
@@ -277,7 +278,7 @@ def is_dirty(self):
     
     return self.gitrepo.is_dirty()
 
-def is_untracked(self):
+def is_untracked(self, **kwargs):
 
     """Function:  is_untracked
 
@@ -291,3 +292,42 @@ def is_untracked(self):
     """
     
     return self.gitrepo.is_dirty(untracked_files=True)
+
+def git_fetch(self, cnt=0, **kwargs):
+
+    """Function:  git_fetch
+
+    Description:  Fetch from the remote Git repository the master branch.
+
+    Arguments:
+        (input) cnt -> Number of recursive calls on method.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+
+    try:
+        self.gitcmd.fetch()
+
+    except git.exc.GitCommandError as (code):
+
+        if code.status == 128 and cnt < 5:
+
+            time.sleep(5)
+            cnt += 1
+            git_fetch(cnt)
+
+        else:
+
+            status = False
+            msg["status"] = code.status
+            msg["stderr"] = code.stderr
+            msg["command"] = code.command
+
+    return status, msg
+
