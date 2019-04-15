@@ -112,6 +112,7 @@ class GitMerge(GitClass):
         process_untracked -> Process any untracked files.
         is_dirty -> Check to see if there is any dirty objects.
         is_untracked -> Check to see if there is any new objects not tracked.
+        rename_br -> Rename the current branch to a new name.
 
     """
 
@@ -331,9 +332,9 @@ def git_fetch(self, cnt=0, **kwargs):
 
     return status, msg
 
-def name_branch(self, branch=self.new_branch, **kwargs):
+def rename_br(self, branch=self.new_branch, **kwargs):
 
-    """Function:  name_branch
+    """Function:  rename_br
 
     Description:  Rename the current branch to a new name.
 
