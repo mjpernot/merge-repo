@@ -119,6 +119,7 @@ class GitMerge(GitClass):
         commits_diff ->  Compares 2 branches & returns number of commits diff.
         is_commits_ahead -> Gets diff - local branch is ahead of remote branch.
         is_commits_behind -> Gets diff - local branch is behind remote branch.
+        is_remote_branch -> Determines if the branch exists in remote git repo.
 
     """
 
@@ -152,6 +153,9 @@ class GitMerge(GitClass):
 
         # Set by is_remote().
         self.remote_info = None
+
+        # Set by is_remote_branch().
+        self.br_commit = None
 
     def create_gitrepo(self, **kwargs):
 
@@ -534,3 +538,24 @@ def is_commits_behind(self, branch, **kwargs):
     """
 
     return commits_diff(branch + "..origin/" + branch)
+
+def is_remote_branch(self, branch, **kwargs):
+
+    """Function:  is_remote_branch
+
+    Description:  Determines if the branch exist in remote git repository.
+
+    Arguments:
+        (input) branch -> Branch name.
+        (input) **kwargs:
+            None
+        (output) True|False -> The branch is in the remote git repo.
+
+    """
+
+    try:
+        self.br_commit = gitcmd.rev_parse("--verify", branch)
+        return True
+
+    except git.exc.GitCommandError:
+        return False
