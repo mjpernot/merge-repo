@@ -255,8 +255,37 @@ def process_untracked(self, **kwargs):
     # Process new files.
     new_files = self.gitrepo.untracked_files
 
-    msg = "Added new files"
-
     if new_files:
+        msg = "Added new files"
         self.gitrepo.index.add(new_files)
         self.gitrepo.index.commit(msg)
+
+def is_dirty(self):
+
+    """Function:  is_dirty
+
+    Description:  Check to see if there is any dirty objects.
+
+    Arguments:
+        (input) **kwargs:
+            None
+        (output) True|False -> If dirty objects detected.
+
+    """
+    
+    return self.gitrepo.is_dirty()
+
+def is_untracked(self):
+
+    """Function:  is_untracked
+
+    Description:  Check to see if there is any new objects not tracked.
+
+    Arguments:
+        (input) **kwargs:
+            None
+        (output) True|False -> If untracked objects detected.
+
+    """
+    
+    return self.gitrepo.is_dirty(untracked_files=True)
