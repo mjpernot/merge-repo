@@ -115,6 +115,7 @@ class GitMerge(GitClass):
         rename_br -> Rename the current branch to a new name.
         git_co -> Git checkout to another branch.
         priority_merge -> Merge of branch with priority of existing branch.
+        git_pu -> Git push to remote respository.
 
     """
 
@@ -424,5 +425,48 @@ def priority_merge(self, branch=self.new_branch, **kwargs):
         msg["status"] = code.status
         msg["stdout"] = code.stdout
         msg["command"] = code.command
+
+    return status, msg
+
+def git_pu(self, cnt=0, tags=False, **kwargs):
+
+    """Function:  git_pu
+
+    Description:  Git push to remote respository.
+
+    Arguments:
+        (input) cnt -> Number of recursive calls on method.
+        (input) tags -> True|False - Push tags instead.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+    option = ""
+
+    if tags:
+        option = "--tags"
+    
+    try:
+        self.gitcmd.push(option)
+
+    except git.exc.GitCommandError as (code):
+
+        if code.status == 128 and cnt < 5:
+
+            time.sleep(5)
+            cnt += 1
+            git_pu(cnt)
+
+        else:
+
+            status = False
+            msg["status"] = code.status
+            msg["stderr"] = code.stderr
+            msg["command"] = code.command
 
     return status, msg
