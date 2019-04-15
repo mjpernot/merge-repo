@@ -325,20 +325,30 @@ def process_project(branch, gitcmd, log, **kwargs):
     """
 
     log.log_info("Fetching and setting up branches.")
+
+    # Moved to git_class module.
     gitcmd.fetch()
+
+    # Moved to git_class module.
     gitcmd.branch("mod_release")
+
+    # Moved to git_class module.
     gitcmd.checkout(branch)
 
     log.log_info("Merging new repo into branch: %s" % (branch))
+
+    # Moved to git_class module.
     gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
 
     log.log_info("Pushing local repo to remote repo.")
 
-    # Push changes and then push tags.
+    # Moved to git_class module.
     gitcmd.push()
+    # Moved to git_class module.  Part of the git_pu method.
     gitcmd.push("--tags")
 
 
+# Moved to git_class module.
 def commits_diff(gitrepo, data_str, **kwargs):
 
     """Function:  commits_diff
@@ -369,6 +379,7 @@ def commits_diff(gitrepo, data_str, **kwargs):
     return sum(1 for x in gitrepo.iter_commits(data_str))
 
 
+# Moved to git_class module.
 def is_commits_behind(gitrepo, branch, **kwargs):
 
     """Function:  is_commits_behind
@@ -391,6 +402,7 @@ def is_commits_behind(gitrepo, branch, **kwargs):
     return commits_diff(gitrepo, branch + "..origin/" + branch)
 
 
+# Moved to git_class module.
 def is_commits_ahead(gitrepo, branch, **kwargs):
 
     """Function:  is_commits_ahead
@@ -411,6 +423,67 @@ def is_commits_ahead(gitrepo, branch, **kwargs):
     """
 
     return commits_diff(gitrepo, "origin/" + branch + ".." + branch)
+
+
+def prepare_mail(status=True, msg=None, data_list=None, **kwargs):
+
+    """Function:  prepare_mail
+
+    Description:  Prepare email body with a set header.
+
+    Arguments:
+        (input) status -> True|False - Status success of Git command.
+        (input) msg -> Dictionary of error message from Git command.
+        (input) data_list -> List of lines to add to email body.
+        (input) **kwargs:
+            None
+        (output) body -> Body of the email.
+
+    """
+
+    if data_list is None:
+        data_list = []
+
+    body = []
+
+    if not status:
+        body.append("Merge of project has been completed.")
+
+    else:
+        body.append("Merge of project has failed.")
+
+        for line in data_list:
+            body.append(line)
+
+        if msg:
+
+            for key in msg.keys():
+                body.append("%s: %s" % (key, msg[key]))
+
+        body.append("Remote URL: " + gitrepo.remotes.origin.url)
+        body.append("Project Dir: " + proj_dir)
+        body.append("Branch: " + cfg.branch)
+
+
+    body.append = ["DTG: "
+                   + datetime.datetime.strftime(datetime.datetime.now(),
+                                                "%Y-%m-%d %H:%M:%S")]
+
+    return body
+
+    # This is what will go into the data_list for each Body N noted.
+    # Body 1
+    #data_list = ["Local branch not in sync with remote branch",
+    #             "Local branch is N commits ahead of remote."]
+
+    # Body 2
+    #data_list = []
+
+    # Body 3
+    #data_list = ["Branch does not exist at remote Git."]
+
+    # Body 4
+    #data_list = ["Local Git repository does not exist."]
 
 
 def merge(args_array, cfg, log, **kwargs):
@@ -467,6 +540,8 @@ def merge(args_array, cfg, log, **kwargs):
 
                 # Send notification of error.
                 subj = "Merge error for: " + args_array["-r"]
+
+                # Body 1
                 body = ["DTG: "
                         + datetime.datetime.strftime(datetime.datetime.now(),
                                                      "%Y-%m-%d %H:%M:%S")]
@@ -487,6 +562,8 @@ def merge(args_array, cfg, log, **kwargs):
 
                 # Send notification of completion.
                 subj = "Merge completed for: " + args_array["-r"]
+
+                # Body 2
                 body = ["DTG: "
                         + datetime.datetime.strftime(datetime.datetime.now(),
                                                      "%Y-%m-%d %H:%M:%S")]
@@ -503,6 +580,8 @@ def merge(args_array, cfg, log, **kwargs):
 
             # Send notification of error.
             subj = "Merge error for: " + args_array["-r"]
+
+            # Body 3
             body = ["DTG: "
                     + datetime.datetime.strftime(datetime.datetime.now(),
                                                  "%Y-%m-%d %H:%M:%S")]
@@ -522,6 +601,8 @@ def merge(args_array, cfg, log, **kwargs):
 
         # Send notification of error.
         subj = "Merge error for: " + args_array["-r"]
+
+        # Body 4
         body = ["DTG: " +
                 datetime.datetime.strftime(datetime.datetime.now(),
                                            "%Y-%m-%d %H:%M:%S")]
