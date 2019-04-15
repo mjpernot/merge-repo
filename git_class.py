@@ -213,7 +213,7 @@ class GitMerge(GitClass):
             self.remote_info = git.gitcmd.ls_remote(self.url)
             return True
 
-        except git.exc.InvalidGitRepositoryError:
+        except git.exc.GitCommandError:
             return False
 
 def process_dirty(self, **kwargs):
