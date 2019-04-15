@@ -117,7 +117,8 @@ class GitMerge(GitClass):
         priority_merge -> Merge of branch with priority of existing branch.
         git_pu -> Git push to remote respository.
         commits_diff ->  Compares 2 branches & returns number of commits diff.
-        is_commits_ahead -> Gets number of diff between local to remote branch.
+        is_commits_ahead -> Gets diff - local branch is ahead of remote branch.
+        is_commits_behind -> Gets diff - local branch is behind remote branch.
 
     """
 
@@ -520,3 +521,23 @@ def is_commits_ahead(self, branch, **kwargs):
     """
 
     return commits_diff("origin/" + branch + ".." + branch)
+
+def is_commits_behind(self, branch, **kwargs):
+
+    """Function:  is_commits_behind
+
+    Description:  Compares the local branch with the remote branch and returns
+        a count on whether local branch is behind remote branch.
+        Output:
+            0 -> Local branch not behind remote branch.
+            >0 ->  Local branch is behind remote branch by N commits.
+
+    Arguments:
+        (input) branch -> Branch being compares.
+        (input) **kwargs:
+            None
+        (output) -> N commits local branch behind remote branch.
+
+    """
+
+    return commits_diff(branch + "..origin/" + branch)
