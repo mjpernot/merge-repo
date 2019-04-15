@@ -122,19 +122,15 @@ class GitMerge(GitClass):
 
     """
 
-    def __init__(self, base_url, repo_name, work_dir, git_dir, branch,
-                 new_branch):
+    def __init__(self, git_dir, url, branch, new_branch):
 
         """Method:  __init__
 
         Description:  Initialization of an instance of the GitMerge class.
 
         Arguments:
-            base_url -> Base URL to remote git repository.
-                NOTE: Does not include the git repository name.
-            repo_name -> Name of remote git repository.
-            work_dir -> Directory path to the working directory.
-            git_dir -> Directory name of the local git repository.
+            git_dir -> Directory path to the local git repo.
+            url -> URL to the remote git repository.
             branch -> Name of branch at remote to be merged with.
             new_branch -> Name of branch to be merged into remote.
 
@@ -142,23 +138,11 @@ class GitMerge(GitClass):
 
         super(GitMerge, self).__init__()
 
-        # cfg.url
-        self.base_url = base_url
-
-        # args_array["-r"]
-        self.repo_name = repo_name
-
-        # cfg.url + args_array["-r"] + ".git"
-        self.url = self.base_url + self.repo_name + ".git"
-
-        # cfg.work_dir
-        self.work_dir = work_dir
-
-        # args_array["-p"]
+        # os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
         self.git_dir = git_dir
 
-        # os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
-        self.proj_dir = os.path.join(self.work_dir, self.git_dir)
+        # cfg.url + args_array["-r"] + ".git"
+        self.url = url
 
         # "mod_release" -> Needs to be populated from cfg file.
         self.new_branch = new_branch
