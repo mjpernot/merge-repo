@@ -14,6 +14,7 @@
 
 # Standard
 import os
+import time
 
 # Third-party
 import git
@@ -107,11 +108,19 @@ class GitMerge(GitClass):
         create_gitrepo -> Creates git repo and git command line instances.
         set_remote -> Checks to see if remote git repository exists.
         is_remote -> Checks to see if remote git repository exists.
+        process_dirty -> Process any dirty files.
+        process_untracked -> Process any untracked files.
+        is_dirty -> Check to see if there is any dirty objects.
+        is_untracked -> Check to see if there is any new objects not tracked.
+        rename_br -> Rename the current branch to a new name.
+        git_co -> Git checkout to another branch.
+        priority_merge -> Merge of branch with priority of existing branch.
+        git_pu -> Git push to remote respository.
 
     """
 
     def __init__(self, base_url, repo_name, work_dir, git_dir, branch,
-                 tmp_branch):
+                 new_branch):
 
         """Method:  __init__
 
@@ -124,7 +133,7 @@ class GitMerge(GitClass):
             work_dir -> Directory path to the working directory.
             git_dir -> Directory name of the local git repository.
             branch -> Name of branch at remote to be merged with.
-            tmp_branch -> Name of temporary branch to be merged into remote.
+            new_branch -> Name of branch to be merged into remote.
 
         """
 
@@ -149,7 +158,7 @@ class GitMerge(GitClass):
         self.proj_dir = os.path.join(self.work_dir, self.git_dir)
 
         # "mod_release" -> Needs to be populated from cfg file.
-        self.tmp_branch = tmp_branch
+        self.new_branch = new_branch
 
         # cfg.branch
         self.branch = branch
@@ -253,8 +262,211 @@ def process_untracked(self, **kwargs):
     # Process new files.
     new_files = self.gitrepo.untracked_files
 
-    msg = "Added new files"
-
     if new_files:
+        msg = "Added new files"
         self.gitrepo.index.add(new_files)
         self.gitrepo.index.commit(msg)
+
+def is_dirty(self, **kwargs):
+
+    """Function:  is_dirty
+
+    Description:  Check to see if there is any dirty objects.
+
+    Arguments:
+        (input) **kwargs:
+            None
+        (output) True|False -> If dirty objects detected.
+
+    """
+    
+    return self.gitrepo.is_dirty()
+
+def is_untracked(self, **kwargs):
+
+    """Function:  is_untracked
+
+    Description:  Check to see if there is any new objects not tracked.
+
+    Arguments:
+        (input) **kwargs:
+            None
+        (output) True|False -> If untracked objects detected.
+
+    """
+    
+    return self.gitrepo.is_dirty(untracked_files=True)
+
+def git_fetch(self, cnt=0, **kwargs):
+
+    """Function:  git_fetch
+
+    Description:  Fetch from the remote Git repository the master branch.
+
+    Arguments:
+        (input) cnt -> Number of recursive calls on method.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+
+    try:
+        self.gitcmd.fetch()
+
+    except git.exc.GitCommandError as (code):
+
+        if code.status == 128 and cnt < 5:
+
+            time.sleep(5)
+            cnt += 1
+            git_fetch(cnt)
+
+        else:
+
+            status = False
+            msg["status"] = code.status
+            msg["stderr"] = code.stderr
+            msg["command"] = code.command
+
+    return status, msg
+
+def rename_br(self, branch=self.new_branch, **kwargs):
+
+    """Function:  rename_br
+
+    Description:  Rename the current branch to a new name.
+
+    Arguments:
+        (input) brach -> Name of new branch.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+
+    try:
+        self.gitcmd.branch(branch)
+
+    except git.exc.GitCommandError as (code):
+
+        status = False
+        msg["status"] = code.status
+        msg["stderr"] = code.stderr
+        msg["command"] = code.command
+
+    return status, msg
+
+def git_co(self, branch=self.branch, **kwargs):
+
+    """Function:  git_co
+
+    Description:  Git checkout to another branch.
+
+    Arguments:
+        (input) brach -> Name of branch to checkout.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+
+    try:
+        self.gitcmd.checkout(branch)
+
+    except git.exc.GitCommandError as (code):
+
+        status = False
+        msg["status"] = code.status
+        msg["stderr"] = code.stderr
+        msg["command"] = code.command
+
+    return status, msg
+
+def priority_merge(self, branch=self.new_branch, **kwargs):
+
+    """Function:  priority_merge
+
+    Description:  Merge of branch with priority of existing branch.
+    
+    NOTE:  The branch will have priority over the existing branch.
+
+    Arguments:
+        (input) branch -> Name of branch to merge with current branch.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+
+    try:
+        self.gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs",
+                          branch)
+
+    except git.exc.GitCommandError as (code):
+
+        status = False
+        msg["status"] = code.status
+        msg["stdout"] = code.stdout
+        msg["command"] = code.command
+
+    return status, msg
+
+def git_pu(self, cnt=0, tags=False, **kwargs):
+
+    """Function:  git_pu
+
+    Description:  Git push to remote respository.
+
+    Arguments:
+        (input) cnt -> Number of recursive calls on method.
+        (input) tags -> True|False - Push tags instead.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+    option = ""
+
+    if tags:
+        option = "--tags"
+    
+    try:
+        self.gitcmd.push(option)
+
+    except git.exc.GitCommandError as (code):
+
+        if code.status == 128 and cnt < 5:
+
+            time.sleep(5)
+            cnt += 1
+            git_pu(cnt)
+
+        else:
+
+            status = False
+            msg["status"] = code.status
+            msg["stderr"] = code.stderr
+            msg["command"] = code.command
+
+    return status, msg

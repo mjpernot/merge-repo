@@ -451,11 +451,11 @@ def merge(args_array, cfg, log, **kwargs):
         # Does remote git repo exist.
         if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
 
-            log.log_info("Processing untracked files")
-            process_untracked(gitrepo, gitcmd)
-
             log.log_info("Processing dirty files")
             process_dirty(gitrepo, gitcmd)
+
+            log.log_info("Processing untracked files")
+            process_untracked(gitrepo, gitcmd)
 
             process_project(cfg.branch, gitcmd, log)
 
@@ -463,8 +463,6 @@ def merge(args_array, cfg, log, **kwargs):
 
                 log.log_err("Local branch: %s not in sync with remote repo" \
                             % (cfg.branch))
-
-                gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
                 # Send notification of error.
                 subj = "Merge error for: " + args_array["-r"]
@@ -481,8 +479,9 @@ def merge(args_array, cfg, log, **kwargs):
 
                 send_mail(cfg, subj, body)
 
+                gen_libs.mv_file2(proj_dir, cfg.err_dir)
+
             else:
-                gen_libs.mv_file2(proj_dir, cfg.archive_dir)
                 log.log_info("Processing of: %s complete." % (proj_dir))
 
                 # Send notification of completion.
@@ -494,12 +493,12 @@ def merge(args_array, cfg, log, **kwargs):
 
                 send_mail(cfg, subj, body)
 
+                gen_libs.mv_file2(proj_dir, cfg.archive_dir)
+
         else:
 
             log.log_err("%s.%s does not exist at remote repo: %s" %
                         (proj_dir, cfg.branch, (gitrepo.remotes.origin.url)))
-
-            gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
             # Send notification of error.
             subj = "Merge error for: " + args_array["-r"]
@@ -514,11 +513,11 @@ def merge(args_array, cfg, log, **kwargs):
 
             send_mail(cfg, subj, body)
 
+            gen_libs.mv_file2(proj_dir, cfg.err_dir)
+
     else:
 
         log.log_err("%s is not a Git repository" % (proj_dir))
-
-        gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
         # Send notification of error.
         subj = "Merge error for: " + args_array["-r"]
@@ -530,6 +529,8 @@ def merge(args_array, cfg, log, **kwargs):
         body.append("Project Dir: " + proj_dir)
 
         send_mail(cfg, subj, body)
+
+        gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
 
 def run_program(args_array, func_dict, **kwargs):
