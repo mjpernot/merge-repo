@@ -109,6 +109,8 @@ class GitMerge(GitClass):
         is_remote -> Checks to see if remote git repository exists.
         process_dirty -> Process any dirty files.
         process_untracked -> Process any untracked files.
+        is_dirty -> Check to see if there is any dirty objects.
+        is_untracked -> Check to see if there is any new objects not tracked.
 
     """
 
