@@ -451,11 +451,11 @@ def merge(args_array, cfg, log, **kwargs):
         # Does remote git repo exist.
         if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
 
-            log.log_info("Processing untracked files")
-            process_untracked(gitrepo, gitcmd)
-
             log.log_info("Processing dirty files")
             process_dirty(gitrepo, gitcmd)
+
+            log.log_info("Processing untracked files")
+            process_untracked(gitrepo, gitcmd)
 
             process_project(cfg.branch, gitcmd, log)
 
