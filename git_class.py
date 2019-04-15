@@ -136,10 +136,10 @@ class GitMerge(GitClass):
 
         """
 
-        super(GitMerge, self).__init__()
-
         # os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
         self.git_dir = git_dir
+
+        super(GitMerge, self).__init__(self.git_dir)
 
         # cfg.url + args_array["-r"] + ".git"
         self.url = url
