@@ -338,7 +338,7 @@ class GitMerge(GitClass):
 
         return status, msg
 
-    def rename_br(self, branch=self.new_branch, **kwargs):
+    def rename_br(self, branch=None, **kwargs):
 
         """Function:  rename_br
 
@@ -356,6 +356,9 @@ class GitMerge(GitClass):
         status = True
         msg = {}
 
+        if not branch:
+            branch = self.new_branch
+
         try:
             self.gitcmd.branch(branch)
 
@@ -368,7 +371,7 @@ class GitMerge(GitClass):
 
         return status, msg
 
-    def git_co(self, branch=self.branch, **kwargs):
+    def git_co(self, branch=None, **kwargs):
 
         """Function:  git_co
 
@@ -386,6 +389,9 @@ class GitMerge(GitClass):
         status = True
         msg = {}
 
+        if not branch:
+            branch = self.branch
+
         try:
             self.gitcmd.checkout(branch)
 
@@ -398,7 +404,7 @@ class GitMerge(GitClass):
 
         return status, msg
 
-    def priority_merge(self, branch=self.new_branch, **kwargs):
+    def priority_merge(self, branch=None, **kwargs):
 
         """Function:  priority_merge
 
@@ -417,6 +423,9 @@ class GitMerge(GitClass):
 
         status = True
         msg = {}
+
+        if not branch:
+            branch = self.new_branch
 
         try:
             self.gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs",
