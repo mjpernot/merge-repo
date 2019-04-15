@@ -116,7 +116,7 @@ class GitMerge(GitClass):
     """
 
     def __init__(self, base_url, repo_name, work_dir, git_dir, branch,
-                 tmp_branch):
+                 new_branch):
 
         """Method:  __init__
 
@@ -129,7 +129,7 @@ class GitMerge(GitClass):
             work_dir -> Directory path to the working directory.
             git_dir -> Directory name of the local git repository.
             branch -> Name of branch at remote to be merged with.
-            tmp_branch -> Name of temporary branch to be merged into remote.
+            new_branch -> Name of branch to be merged into remote.
 
         """
 
@@ -154,7 +154,7 @@ class GitMerge(GitClass):
         self.proj_dir = os.path.join(self.work_dir, self.git_dir)
 
         # "mod_release" -> Needs to be populated from cfg file.
-        self.tmp_branch = tmp_branch
+        self.new_branch = new_branch
 
         # cfg.branch
         self.branch = branch
@@ -331,3 +331,32 @@ def git_fetch(self, cnt=0, **kwargs):
 
     return status, msg
 
+def name_branch(self, branch=self.new_branch, **kwargs):
+
+    """Function:  name_branch
+
+    Description:  Rename the current branch to a new name.
+
+    Arguments:
+        (input) brach -> Name of new branch.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+
+    try:
+        self.gitcmd.branch(branch)
+
+    except git.exc.GitCommandError as (code):
+
+        status = False
+        msg["status"] = code.status
+        msg["stderr"] = code.stderr
+        msg["command"] = code.command
+
+    return status, msg
