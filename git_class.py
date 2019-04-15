@@ -113,6 +113,7 @@ class GitMerge(GitClass):
         is_dirty -> Check to see if there is any dirty objects.
         is_untracked -> Check to see if there is any new objects not tracked.
         rename_br -> Rename the current branch to a new name.
+        git_co -> Git checkout to another branch.
 
     """
 
@@ -352,6 +353,36 @@ def rename_br(self, branch=self.new_branch, **kwargs):
 
     try:
         self.gitcmd.branch(branch)
+
+    except git.exc.GitCommandError as (code):
+
+        status = False
+        msg["status"] = code.status
+        msg["stderr"] = code.stderr
+        msg["command"] = code.command
+
+    return status, msg
+
+def git_co(self, branch=self.branch, **kwargs):
+
+    """Function:  git_co
+
+    Description:  Git checkout to another branch.
+
+    Arguments:
+        (input) brach -> Name of branch to checkout.
+        (input) **kwargs:
+            None
+        (output) status -> True|False - Success of command.
+        (output) msg -> Dictionary of return error code.
+
+    """
+
+    status = True
+    msg = {}
+
+    try:
+        self.gitcmd.checkout(branch)
 
     except git.exc.GitCommandError as (code):
 
