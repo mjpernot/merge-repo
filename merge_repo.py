@@ -295,6 +295,50 @@ def post_process(gitr, cfg, status, line_list=None, msg=None,
         move(gitr.git_dir, cfg.err_dir)
 
 
+def post_check(gitr, cfg, log, **kwargs):
+
+    """Function:  post_check
+
+    Description:  Check to see the local Git is in sync with the remote Git.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    log.log_info("Post checking...")
+
+    ahead = gitr.is_commits_ahead()
+    behind = gitr.is_commits_behind()
+
+    if ahead or behind:
+
+        log.log_err("Local repo is not in sync with remote repo")
+
+        if ahead:
+
+            log.log_err("Local repo is %s commits ahead of remote." % (ahead))
+            line_list = ["Local repo is %s commits ahead of remote." % (ahead)]
+
+        else:
+
+            log.log_err("Local repo is %s commits behind remote." % (behind))
+            line_list = ["Local repo is %s commits behind remote." % (behind)]
+
+        post_process(gitr, cfg, False, line_list)
+
+    else:
+
+        log.log_info("Processing of: %s completed." % (gitr.git_dir))
+        line_list = ["Processing of: %s completed." % (gitr.git_dir)]
+
+        post_process(gitr, cfg, True, line_list)
+
+
 def merge_project(gitr, cfg, log, **kwargs):
 
     """Function:  merge_project
@@ -325,7 +369,7 @@ def merge_project(gitr, cfg, log, **kwargs):
 
             if status:
 
-                post_check(gitr, log)
+                post_check(gitr, cfg, log)
 
             else:
                 log.log_err("Failure to push tags to remote git.")
@@ -391,22 +435,6 @@ def process_project(gitr, cfg, log, **kwargs):
         log.log_err("Failure to fetch from remote Git repo.")
         line_list = ["Failure to fetch from remote Git repo."]
         post_process(gitr, cfg, status, line_list, msg)
-
-        
-
-##################################################
-
-    log.log_info("Merging new repo into branch: %s" % (branch))
-
-    # Moved to git_class module.
-    gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
-
-    log.log_info("Pushing local repo to remote repo.")
-
-    # Moved to git_class module.
-    gitcmd.push()
-    # Moved to git_class module.  Part of the git_pu method.
-    gitcmd.push("--tags")
 
 
 def merge(args_array, cfg, log, **kwargs):
@@ -480,47 +508,6 @@ def merge(args_array, cfg, log, **kwargs):
         send_mail(cfg.to_line, subj, body)
 
         move(git_dir, cfg.err_dir)
-
-################################################
-            if is_commits_ahead(gitrepo, cfg.branch):
-
-                log.log_err("Local branch: %s not in sync with remote repo" \
-                            % (cfg.branch))
-
-                # Send notification of error.
-                subj = "Merge error for: " + args_array["-r"]
-
-                # Body 1
-                body = ["DTG: "
-                        + datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d %H:%M:%S")]
-                body.append("Local branch: %s not in sync with remote repo." \
-                            % (cfg.branch))
-                body.append("Local branch is %s commits ahead of remote." \
-                            % (is_commits_ahead(gitrepo, cfg.branch)))
-                body.append("Remote URL: " + gitrepo.remotes.origin.url)
-                body.append("Project Dir: " + proj_dir)
-                body.append("Branch: " + cfg.branch)
-
-                send_mail(cfg, subj, body)
-
-                gen_libs.mv_file2(proj_dir, cfg.err_dir)
-
-            else:
-                log.log_info("Processing of: %s complete." % (proj_dir))
-
-                # Send notification of completion.
-                subj = "Merge completed for: " + args_array["-r"]
-
-                # Body 2
-                body = ["DTG: "
-                        + datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d %H:%M:%S")]
-                body.append("Merge of project has been completed.")
-
-                send_mail(cfg, subj, body)
-
-                gen_libs.mv_file2(proj_dir, cfg.archive_dir)
 
 
 def run_program(args_array, func_dict, **kwargs):
