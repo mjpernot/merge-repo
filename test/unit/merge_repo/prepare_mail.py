@@ -45,7 +45,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_msg_data -> 
+        test_msg_data -> Test with msg with data.
         test_linelist_empty -> Test with line_list with empty list.
         test_linelist_data -> Test with line_list with data.
         test_status_true -> Test with status set to True.
