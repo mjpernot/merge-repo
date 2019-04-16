@@ -175,8 +175,7 @@ class GitMerge(GitClass):
 
         """
 
-        self.gitcmd.remote("set-url", "origin",
-                           self.url + self.repo_name + ".git")
+        self.gitcmd.remote("set-url", "origin", self.url)
 
     def is_remote(self, **kwargs):
 
