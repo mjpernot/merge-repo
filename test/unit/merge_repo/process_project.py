@@ -37,96 +37,6 @@ import version
 __version__ = version.__version__
 
 
-class GitCmd(object):
-
-    """Class:  GitCmd
-
-    Description:  Class stub holder for GitCmd class.
-
-    Super-Class:  None
-
-    Sub-Classes:  None
-
-    Methods:
-        fetch -> Stub holder for fetch method.
-        branch -> Stub holder for branch method.
-        checkout -> Stub holder for checkout method.
-        merge -> Stub holder for merge method.
-        push -> Stub holder for push method.
-
-    """
-
-    def fetch(self):
-
-        """Method:  fetch
-
-        Description:  Stub holder for fetch method.
-
-        Arguments:
-                None
-
-        """
-
-        return True
-
-    def branch(self, arg1):
-
-        """Method:  branch
-
-        Description:  Stub holder for branch method.
-
-        Arguments:
-            (input) arg1 -> Stub holder for argument.
-
-        """
-
-        return True
-
-    def checkout(self, arg1):
-
-        """Method:  checkout
-
-        Description:  Stub holder for checkout method.
-
-        Arguments:
-            (input) arg1 -> Stub holder for argument.
-
-        """
-
-        return True
-
-    def merge(self, arg1, arg2, arg3, arg4, arg5, arg6):
-
-        """Method:  merge
-
-        Description:  Stub holder for merge method.
-
-        Arguments:
-            (input) arg1 -> Stub holder for argument.
-            (input) arg2 -> Stub holder for argument.
-            (input) arg3 -> Stub holder for argument.
-            (input) arg4 -> Stub holder for argument.
-            (input) arg5 -> Stub holder for argument.
-            (input) arg6 -> Stub holder for argument.
-
-        """
-
-        return True
-
-    def push(self, arg1=None):
-
-        """Method:  push
-
-        Description:  Stub holder for push method.
-
-        Arguments:
-            (input) arg1 -> Stub holder for argument.
-
-        """
-
-        return True
-
-
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -139,7 +49,12 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_process_project -> Test test_process_project function.
+        test_status3_true -> Test with status3 set to True.
+        test_status3_false -> Test with status3 set to False.
+        test_status2_true -> Test with status2 set to True.
+        test_status2_false -> Test with status2 set to False.
+        test_status1_true -> Test with status1 set to True.
+        test_status1_false -> Test with status1 set to False.
 
     """
 
@@ -154,24 +69,182 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.branch = "test-master"
-        self.gitcmd = GitCmd()
+        class CfgTest(object):
 
+            """Class:  CfgTest
+
+            Description:  Class which is a representation of a cfg module.
+
+            Super-Class:  object
+
+            Sub-Classes:  None
+
+            Methods:
+                __init__ -> Initialize configuration environment.
+
+            """
+
+            def __init__(self):
+
+                """Method:  __init__
+
+                Description:  Initialization instance of the CfgTest class.
+
+                Arguments:
+                        None
+
+                """
+
+                self.archive_dir = "/Arhive/Directory"
+                self.err_dir = "/Error/Directory"
+                self.to_line = "to@domain"
+
+        self.cfg = CfgTest()
+        self.status = True
+        self.status2 = False
+        self.msg = {}
+        self.msg2 = {"Error": "Code"}
+
+    @mock.patch("merge_repo.merge_project")
+    @mock.patch("merge_repo.git_class.GitMerge")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_process_project(self, mock_log):
+    def test_status3_true(self, mock_log, mock_git, mock_merge):
 
-        """Function:  test_process_project
+        """Function:  test_status3_true
 
-        Description:  Test test_process_project function.
+        Description:  Test with status3 set to True.
 
         Arguments:
-            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
+            None
 
         """
 
         mock_log.return_value = True
+        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.rename_br.return_value = (self.status, self.msg)
+        mock_git.git_co.return_value = (self.status, self.msg)
+        mock_merge.return_value = True
 
-        self.assertFalse(merge_repo.process_project(self.branch, self.gitcmd,
+        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
+                                                    mock_log))
+
+    @mock.patch("merge_repo.post_process")
+    @mock.patch("merge_repo.git_class.GitMerge")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_status3_false(self, mock_log, mock_git, mock_post):
+
+        """Function:  test_status3_false
+
+        Description:  Test with status3 set to False.
+
+        Arguments:
+            None
+
+        """
+
+        mock_log.return_value = True
+        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.rename_br.return_value = (self.status, self.msg)
+        mock_git.git_co.return_value = (self.status2, self.msg2)
+        mock_git.mod_branch.return_value = "Mod_Branch"
+        mock_git.branch.return_value = "Master"
+        mock_post.return_value = True
+
+        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
+                                                    mock_log))
+
+    @mock.patch("merge_repo.post_process")
+    @mock.patch("merge_repo.git_class.GitMerge")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_status2_true(self, mock_log, mock_git, mock_post):
+
+        """Function:  test_status2_true
+
+        Description:  Test with status2 set to True.
+
+        Arguments:
+            None
+
+        """
+
+        mock_log.return_value = True
+        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.rename_br.return_value = (self.status, self.msg)
+        mock_git.git_co.return_value = (self.status2, self.msg2)
+        mock_git.mod_branch.return_value = "Mod_Branch"
+        mock_git.branch.return_value = "Master"
+        mock_post.return_value = True
+
+        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
+                                                    mock_log))
+
+    @mock.patch("merge_repo.post_process")
+    @mock.patch("merge_repo.git_class.GitMerge")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_status2_false(self, mock_log, mock_git, mock_post):
+
+        """Function:  test_status2_false
+
+        Description:  Test with status2 set to False.
+
+        Arguments:
+            None
+
+        """
+
+        mock_log.return_value = True
+        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.rename_br.return_value = (self.status2, self.msg2)
+        mock_git.mod_branch.return_value = "Mod_Branch"
+        mock_git.branch.return_value = "Master"
+        mock_post.return_value = True
+
+        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
+                                                    mock_log))
+
+    @mock.patch("merge_repo.post_process")
+    @mock.patch("merge_repo.git_class.GitMerge")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_status1_true(self, mock_log, mock_git, mock_post):
+
+        """Function:  test_status1_true
+
+        Description:  Test with status1 set to True.
+
+        Arguments:
+            None
+
+        """
+
+        mock_log.return_value = True
+        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.rename_br.return_value = (self.status2, self.msg2)
+        mock_git.mod_branch.return_value = "Mod_Branch"
+        mock_git.branch.return_value = "Master"
+        mock_post.return_value = True
+
+        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
+                                                    mock_log))
+
+    @mock.patch("merge_repo.post_process")
+    @mock.patch("merge_repo.git_class.GitMerge")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_status1_false(self, mock_log, mock_git, mock_post):
+
+        """Function:  test_status1_false
+
+        Description:  Test with status1 set to False.
+
+        Arguments:
+            None
+
+        """
+
+        mock_log.return_value = True
+        mock_git.fetch.return_value = (self.status2, self.msg2)
+        mock_post.return_value = True
+
+        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
                                                     mock_log))
 
 
