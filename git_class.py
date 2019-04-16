@@ -143,16 +143,9 @@ class GitMerge(GitClass):
 
         self.url = url
 
-        # "mod_release" -> Needs to be populated from cfg file.
         self.mod_branch = mod_branch
-
-        # cfg.branch
         self.branch = branch
-
-        # Set by is_remote().
         self.remote_info = None
-
-        # Set by is_remote_branch().
         self.br_commit = None
 
     def create_gitrepo(self, **kwargs):
