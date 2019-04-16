@@ -87,6 +87,7 @@ import git
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.gen_class as gen_class
+import git_class
 import version
 
 # Version
@@ -174,115 +175,6 @@ def is_git_repo(path, **kwargs):
         return False
 
 
-# Moved to git_class module.
-def is_remote(gitcmd, url, **kwargs):
-
-    """Function:  is_remote
-
-    Description:  Determines if the remote git repository exists.
-
-    Arguments:
-        (input) gitcmd -> Git command instance.
-        (input) url -> Git URL address.
-        (input) **kwargs:
-            None
-        (output)  True|False -> If the remote git repository exists.
-
-    """
-
-    try:
-        _ = gitcmd.ls_remote(url)
-        return True
-
-    except git.exc.GitCommandError:
-        return False
-
-
-# Moved to git_class module.
-def is_remote_branch(gitcmd, branch, **kwargs):
-
-    """Function:  is_remote_branch
-
-    Description:  Determines if the branch exist in remote git repository.
-
-    Arguments:
-        (input) gitcmd -> Git command instance.
-        (input) branch -> Git branch name.
-        (input) **kwargs:
-            None
-        (output)  True|False -> If the branch in remote git repository.
-
-    """
-
-    try:
-        gitcmd.rev_parse('--verify', branch)
-        return True
-
-    except git.exc.GitCommandError:
-        return False
-
-
-# Moved to git_class module.
-def process_dirty(gitrepo, gitcmd, **kwargs):
-
-    """Function:  process_dirty
-
-    Description:  Check for and process dirty files.
-
-    Arguments:
-        (input) gitrepo -> Git repo class instance.
-        (input) gitcmd -> Git command line class instance.
-        (input) **kwargs:
-            None
-
-    """
-
-    if gitrepo.is_dirty():
-
-        for f_git in gitrepo.index.diff(None):
-
-            if f_git.change_type == "D":
-
-                # Test this code, not been tested before.
-                gitcmd.rm([f_git], working_tree=True)
-
-            elif f_git.change_type == "M":
-
-                # Check this code works.
-                gitcmd.add(f_git)
-
-        # Can I stipulate what is in the comments dynamically?
-        gitrepo.index.commit("Add dirty files")
-
-
-# Moved to git_class module.
-def process_untracked(gitrepo, gitcmd, **kwargs):
-
-    """Function:  process_untracked
-
-    Description:  Check for and process untracked files.
-
-    Arguments:
-        (input) gitrepo -> Git repo class instance.
-        (input) gitcmd -> Git command line class instance.
-        (input) **kwargs:
-            None
-
-    """
-
-    if gitrepo.is_dirty(untracked_files=True):
-
-        for f_git in gitrepo.untracked_files:
-
-            # Check this code works.
-            gitcmd.add(f_git)
-
-        if gitrepo.untracked_files:
-
-            # Can I stipulate what is in the comments dynamically?
-            gitrepo.index.commit("Add untracked files")
-
-
 def send_mail(cfg, subj, email_body, **kwargs):
 
     """Function:  send_mail
@@ -347,83 +239,6 @@ def process_project(branch, gitcmd, log, **kwargs):
     gitcmd.push()
     # Moved to git_class module.  Part of the git_pu method.
     gitcmd.push("--tags")
-
-
-# Moved to git_class module.
-def commits_diff(gitrepo, data_str, **kwargs):
-
-    """Function:  commits_diff
-
-    Description:  Compares a branch with another branch and returns a count
-        on the number of commits difference between the two branches.
-            0 -> Branch not ahead of other branch.
-            >0 ->  Branch is ahead of other branch by N commits.
-
-    Note:
-        The data_str will contain the order of the branches being compared,
-            whether local to remote or remote to local.
-        The format of the data_str is:
-            Local to Remote:
-                "BRANCH_NAME..origin/BRANCH_NAME"
-            Remote to Local:
-                "origin/BRANCH_NAME..BRANCH_NAME"
-
-    Arguments:
-        (input) gitcmd -> Git command line class instance.
-        (input) data_str -> Contains the order of branches to be compared.
-        (input) **kwargs:
-            None
-        (output) -> N commits difference between branches.
-
-    """
-
-    return sum(1 for x in gitrepo.iter_commits(data_str))
-
-
-# Moved to git_class module.
-def is_commits_behind(gitrepo, branch, **kwargs):
-
-    """Function:  is_commits_behind
-
-    Description:  Compares the local branch with the remote branch and returns
-        a count on whether local branch is behind remote branch.
-        Output:
-            0 -> Local branch not behind remote branch.
-            >0 ->  Local branch is behind remote branch by N commits.
-
-    Arguments:
-        (input) gitcmd -> Git command line class instance.
-        (input) branch -> Branch being compares.
-        (input) **kwargs:
-            None
-        (output) -> N commits local branch behind remote branch.
-
-    """
-
-    return commits_diff(gitrepo, branch + "..origin/" + branch)
-
-
-# Moved to git_class module.
-def is_commits_ahead(gitrepo, branch, **kwargs):
-
-    """Function:  is_commits_ahead
-
-    Description:  Compares the local branch with the remote branch and returns
-        a count on whether local branch is ahead of remote branch.
-        Output:
-            0 -> Local branch not ahead of remote branch.
-            >0 ->  Local branch is ahead of remote branch by N commits.
-
-    Arguments:
-        (input) gitcmd -> Git command line class instance.
-        (input) branch -> Branch being compares.
-        (input) **kwargs:
-            None
-        (output) -> N commits local branch ahead of remote branch.
-
-    """
-
-    return commits_diff(gitrepo, "origin/" + branch + ".." + branch)
 
 
 def prepare_mail(status=True, msg=None, data_list=None, **kwargs):
