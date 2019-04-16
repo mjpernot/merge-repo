@@ -239,7 +239,7 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
             for key in msg.keys():
                 body.append("%s: %s" % (key, msg[key]))
 
-        body.append("URL: " + gitr.remotes.origin.url)
+        body.append("URL: " + gitr.url)
         body.append("Git Dir: " + gitr.git_dir)
         body.append("Branch: " + gitr.branch)
 
