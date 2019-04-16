@@ -119,7 +119,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test log_file check returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
@@ -138,7 +138,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test log_file check returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
@@ -157,7 +157,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test archive_dir check returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
@@ -177,7 +177,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test archive_dir check returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
@@ -196,7 +196,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test err_dir check returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
@@ -216,7 +216,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test err_dir check returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
@@ -235,7 +235,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test work_dir check returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
@@ -255,7 +255,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test work_dir check returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  merge_repo.gen_libs
+            None
 
         """
 
