@@ -267,7 +267,7 @@ def move(from_dir, to_dir, **kwargs):
     gen_libs.mv_file2(from_dir, to_dir)
 
 
-def post_process(gitr, cfg, status, line_list=None, msg=None, 
+def post_process(gitr, cfg, status, line_list=None, msg=None,
                  **kwargs):
 
     """Function:  post_process
@@ -383,9 +383,9 @@ def merge_project(gitr, cfg, log, **kwargs):
 
     else:
         log.log_err("Failure to merge branch %s into %s." % (gitr.mod_branch,
-                                                              gitr.branch))
+                                                             gitr.branch))
         line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
-                                                               gitr.branch)]
+                                                              gitr.branch)]
         post_process(gitr, cfg, status, line_list, msg)
 
 
@@ -498,7 +498,7 @@ def merge(args_array, cfg, log, **kwargs):
     else:
         log.log_err("%s is not a local Git repository" % (git_dir))
 
-        subj = "Merge error for: " + 
+        subj = "Merge error for: " + git_dir
         body = ["Local directory is not a Git repository.",
                 "Project Dir: " + git_dir]
         body.append("DTG: "
