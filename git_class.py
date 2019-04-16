@@ -489,63 +489,63 @@ class GitMerge(GitClass):
 
         return sum(1 for x in self.gitrepo.iter_commits(data_str))
 
-def is_commits_ahead(self, branch, **kwargs):
+    def is_commits_ahead(self, branch, **kwargs):
 
-    """Function:  is_commits_ahead
+        """Function:  is_commits_ahead
 
-    Description:  Compares the local branch with the remote branch and returns
-        a count on whether local branch is ahead of remote branch.
-        Output:
-            0 -> Local branch not ahead of remote branch.
-            >0 ->  Local branch is ahead of remote branch by N commits.
+        Description:  Compares the local branch with the remote branch and
+            returns a count on whether local branch is ahead of remote branch.
+            Output:
+                0 -> Local branch not ahead of remote branch.
+                >0 ->  Local branch is ahead of remote branch by N commits.
 
-    Arguments:
-        (input) branch -> Branch being compared.
-        (input) **kwargs:
-            None
-        (output) -> N commits local branch ahead of remote branch.
+        Arguments:
+            (input) branch -> Branch being compared.
+            (input) **kwargs:
+                None
+            (output) -> N commits local branch ahead of remote branch.
 
-    """
+        """
 
-    return commits_diff("origin/" + branch + ".." + branch)
+        return commits_diff("origin/" + branch + ".." + branch)
 
-def is_commits_behind(self, branch, **kwargs):
+    def is_commits_behind(self, branch, **kwargs):
 
-    """Function:  is_commits_behind
+        """Function:  is_commits_behind
 
-    Description:  Compares the local branch with the remote branch and returns
-        a count on whether local branch is behind remote branch.
-        Output:
-            0 -> Local branch not behind remote branch.
-            >0 ->  Local branch is behind remote branch by N commits.
+        Description:  Compares the local branch with the remote branch and
+            returns a count on whether local branch is behind remote branch.
+            Output:
+                0 -> Local branch not behind remote branch.
+                >0 ->  Local branch is behind remote branch by N commits.
 
-    Arguments:
-        (input) branch -> Branch being compares.
-        (input) **kwargs:
-            None
-        (output) -> N commits local branch behind remote branch.
+        Arguments:
+            (input) branch -> Branch being compares.
+            (input) **kwargs:
+                None
+            (output) -> N commits local branch behind remote branch.
 
-    """
+        """
 
-    return commits_diff(branch + "..origin/" + branch)
+        return commits_diff(branch + "..origin/" + branch)
 
-def is_remote_branch(self, branch, **kwargs):
+    def is_remote_branch(self, branch, **kwargs):
 
-    """Function:  is_remote_branch
+        """Function:  is_remote_branch
 
-    Description:  Determines if the branch exist in remote git repository.
+        Description:  Determines if the branch exist in remote git repository.
 
-    Arguments:
-        (input) branch -> Branch name.
-        (input) **kwargs:
-            None
-        (output) True|False -> The branch is in the remote git repo.
+        Arguments:
+            (input) branch -> Branch name.
+            (input) **kwargs:
+                None
+            (output) True|False -> The branch is in the remote git repo.
 
-    """
+        """
 
-    try:
-        self.br_commit = gitcmd.rev_parse("--verify", branch)
-        return True
+        try:
+            self.br_commit = gitcmd.rev_parse("--verify", branch)
+            return True
 
-    except git.exc.GitCommandError:
-        return False
+        except git.exc.GitCommandError:
+            return False
