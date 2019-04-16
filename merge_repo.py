@@ -175,45 +175,6 @@ def is_git_repo(path, **kwargs):
         return False
 
 
-def process_project(gitr, log, **kwargs):
-
-    """Function:  process_project
-
-    Description:  Fetch, merge, and push the project to the
-        remote Git repo.
-
-    Arguments:
-        (input) gitr -> Git class instance.
-        (input) log -> Log class instance.
-        (input) **kwargs:
-            None
-
-    """
-
-    log.log_info("Fetching and setting up branches.")
-
-    # Moved to git_class module.
-    gitcmd.fetch()
-
-    # Moved to git_class module.
-    gitcmd.branch("mod_release")
-
-    # Moved to git_class module.
-    gitcmd.checkout(branch)
-
-    log.log_info("Merging new repo into branch: %s" % (branch))
-
-    # Moved to git_class module.
-    gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
-
-    log.log_info("Pushing local repo to remote repo.")
-
-    # Moved to git_class module.
-    gitcmd.push()
-    # Moved to git_class module.  Part of the git_pu method.
-    gitcmd.push("--tags")
-
-
 def send_mail(to_line, subj, mail_body, **kwargs):
 
     """Function:  send_mail
@@ -334,6 +295,71 @@ def post_process(gitr, cfg, status, line_list=None, msg=None,
         move(gitr.git_dir, cfg.err_dir)
 
 
+def process_project(gitr, cfg, log, **kwargs):
+
+    """Function:  process_project
+
+    Description:  Fetch, merge, and push the project to the
+        remote Git repo.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    log.log_info("Fetching and setting up branches.")
+    status, msg = gitr.fetch()
+
+    if status:
+
+        log.log_info("Renaming branch to: %s." % (gitr.mod_branch))
+        status, msg = gitr.rename_br()
+
+        if status:
+
+            log.log_info("Checking out branch: %s." % (gitr.branch))
+            status, msg = gitr.git_co()
+
+            if status:
+
+                merge_project(gitr, cfg, log)
+
+            else:
+                log.log_err("Failure to checkout branch: %s." % (gitr.branch))
+                line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
+                post_process(gitr, cfg, status, line_list, msg)
+
+        else:
+            log.log_err("Failure rename branch to: %s." % (gitr.mod_branch))
+            line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
+            post_process(gitr, cfg, status, line_list, msg)
+
+    else:
+        log.log_err("Failure to fetch from remote Git repo.")
+        line_list = ["Failure to fetch from remote Git repo."]
+        post_process(gitr, cfg, status, line_list, msg)
+
+        
+
+##################################################
+
+    log.log_info("Merging new repo into branch: %s" % (branch))
+
+    # Moved to git_class module.
+    gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
+
+    log.log_info("Pushing local repo to remote repo.")
+
+    # Moved to git_class module.
+    gitcmd.push()
+    # Moved to git_class module.  Part of the git_pu method.
+    gitcmd.push("--tags")
+
+
 def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge
@@ -380,20 +406,16 @@ def merge(args_array, cfg, log, **kwargs):
 
             if not gitr.is_dirty() or not gitr.is_untracked():
 
-                process_project(gitr, log)
+                process_project(gitr, cfg, log)
 
             else:
                 log.log_err("There is still dirty entries in local repo.")
-
                 line_list = ["There is still dirty entries in local repo."]
-
                 post_process(gitr, cfg, False, line_list)
 
         else:
             log.log_err("%s does not exist at remote repo." % (gitr.url))
-
             line_list = ["Remote git repository does not exist"]
-
             post_process(gitr, cfg, False, line_list)
 
     else:
@@ -450,12 +472,6 @@ def merge(args_array, cfg, log, **kwargs):
                 send_mail(cfg, subj, body)
 
                 gen_libs.mv_file2(proj_dir, cfg.archive_dir)
-
-
-    # This is what will go into the line_list for each Body N noted.
-    # Body 1
-    #line_list = ["Local branch not in sync with remote branch",
-    #             "Local branch is N commits ahead of remote."]
 
 
 def run_program(args_array, func_dict, **kwargs):
