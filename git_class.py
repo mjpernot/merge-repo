@@ -123,13 +123,14 @@ class GitMerge(GitClass):
 
     """
 
-    def __init__(self, git_dir, url, branch, mod_branch):
+    def __init__(self, repo_name, git_dir, url, branch, mod_branch):
 
         """Method:  __init__
 
         Description:  Initialization of an instance of the GitMerge class.
 
         Arguments:
+            repo_name -> Name of repository.
             git_dir -> Directory path to the local git repo.
             url -> URL to the remote git repository.
             branch -> Name of branch at remote to be merged with.
@@ -141,8 +142,8 @@ class GitMerge(GitClass):
 
         super(GitMerge, self).__init__(self.git_dir)
 
+        self.repo_name = repo_name
         self.url = url
-
         self.mod_branch = mod_branch
         self.branch = branch
         self.remote_info = None
