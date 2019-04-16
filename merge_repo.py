@@ -201,7 +201,7 @@ def send_mail(cfg, subj, email_body, **kwargs):
     email.send_mail()
 
 
-def process_project(branch, gitcmd, log, **kwargs):
+def process_project(log, **kwargs):
 
     """Function:  process_project
 
@@ -209,8 +209,6 @@ def process_project(branch, gitcmd, log, **kwargs):
         remote Git repo.
 
     Arguments:
-        (input) branch -> Branch being merge into.
-        (input) gitcmd -> Git command line class instance.
         (input) log -> Log class instance.
         (input) **kwargs:
             None
@@ -323,23 +321,30 @@ def merge(args_array, cfg, log, **kwargs):
 
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
 
-    proj_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
+    git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
-    # Is directory a git repo.
-    if is_git_repo(proj_dir):
+    if is_git_repo(git_dir):
 
-        log.log_info("Processing: %s directory" % (proj_dir))
+        log.log_info("Processing: %s directory" % (git_dir))
 
-        gitrepo = git.Repo(proj_dir)
-        gitcmd = gitrepo.git
+        url = cfg.url + args_array["-r"] + ".git"
 
-        # Set the url to the remote Git repo.
-        # gitcmd.remote('set-url', 'origin',
-        #               'git@gitlab.code.dicelab.net:JAC-IDM/test-merge.git')
-        gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
+        gitr = git_class.GitMerge(git_dir, url, cfg.branch, cfg.mod_branch)
+        gitr.create_gitrepo()
+        gitr.set_remote()
 
-        # Does remote git repo exist.
-        if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
+        if gitr.is_remote():
+
+            if gitr.is_dirty() or gitr.is_untracked():
+
+                gitr.process_dirty()
+                gitr.process_untracked()
+
+            if not gitr.is_dirty() or not gitr.is_untracked():
+
+                process_project(log)
+                # STOPPED HERE
+
 
             log.log_info("Processing dirty files")
             process_dirty(gitrepo, gitcmd)
