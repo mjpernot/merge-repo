@@ -232,7 +232,7 @@ class GitMerge(GitClass):
 
         """Function:  process_untracked
 
-        Description:  Process any untracked files.
+        Description:  Process any untracked (new) files.
 
         Arguments:
             (input) **kwargs:
@@ -240,7 +240,6 @@ class GitMerge(GitClass):
 
         """
 
-        # Process new files.
         new_files = self.gitrepo.untracked_files
 
         if new_files:
