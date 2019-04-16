@@ -354,38 +354,38 @@ def merge_project(gitr, cfg, log, **kwargs):
     """
 
     log.log_info("Fetching and setting up branches.")
-    status, msg = gitr.priority_merge()
+    status1, msg1 = gitr.priority_merge()
 
-    if status:
+    if status1:
 
         log.log_info("Pushing changes to remote Git.")
-        status, msg = gitr.git_pu()
+        status2, msg2 = gitr.git_pu()
 
-        if status:
+        if status2:
 
             log.log_info("Pushing tags to remote Git.")
-            status, msg = gitr.git_pu(tags=True)
+            status3, msg3 = gitr.git_pu(tags=True)
 
-            if status:
+            if status3:
 
                 post_check(gitr, cfg, log)
 
             else:
                 log.log_err("Failure to push tags to remote git.")
                 line_list = ["Failure to push tags to remote git."]
-                post_process(gitr, cfg, status, line_list, msg)
+                post_process(gitr, cfg, status3, line_list, msg3)
 
         else:
             log.log_err("Failure to push to remote git.")
             line_list = ["Failure to push to remote git."]
-            post_process(gitr, cfg, status, line_list, msg)
+            post_process(gitr, cfg, status2, line_list, msg2)
 
     else:
         log.log_err("Failure to merge branch %s into %s." % (gitr.mod_branch,
                                                              gitr.branch))
         line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
                                                               gitr.branch)]
-        post_process(gitr, cfg, status, line_list, msg)
+        post_process(gitr, cfg, status1, line_list, msg1)
 
 
 def process_project(gitr, cfg, log, **kwargs):
@@ -404,36 +404,36 @@ def process_project(gitr, cfg, log, **kwargs):
     """
 
     log.log_info("Fetching and setting up branches.")
-    status, msg = gitr.fetch()
+    status1, msg1 = gitr.fetch()
 
-    if status:
+    if status1:
 
         log.log_info("Renaming branch to: %s." % (gitr.mod_branch))
-        status, msg = gitr.rename_br()
+        status2, msg2 = gitr.rename_br()
 
-        if status:
+        if status2:
 
             log.log_info("Checking out branch: %s." % (gitr.branch))
-            status, msg = gitr.git_co()
+            status3, msg3 = gitr.git_co()
 
-            if status:
+            if status3:
 
                 merge_project(gitr, cfg, log)
 
             else:
                 log.log_err("Failure to checkout branch: %s." % (gitr.branch))
                 line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
-                post_process(gitr, cfg, status, line_list, msg)
+                post_process(gitr, cfg, status3, line_list, msg3)
 
         else:
             log.log_err("Failure rename branch to: %s." % (gitr.mod_branch))
             line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
-            post_process(gitr, cfg, status, line_list, msg)
+            post_process(gitr, cfg, status2, line_list, msg2)
 
     else:
         log.log_err("Failure to fetch from remote Git repo.")
         line_list = ["Failure to fetch from remote Git repo."]
-        post_process(gitr, cfg, status, line_list, msg)
+        post_process(gitr, cfg, status1, line_list, msg1)
 
 
 def merge(args_array, cfg, log, **kwargs):
