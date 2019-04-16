@@ -295,12 +295,61 @@ def post_process(gitr, cfg, status, line_list=None, msg=None,
         move(gitr.git_dir, cfg.err_dir)
 
 
+def merge_project(gitr, cfg, log, **kwargs):
+
+    """Function:  merge_project
+
+    Description:  Merge, and push the project to the remote Git repo.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    log.log_info("Fetching and setting up branches.")
+    status, msg = gitr.priority_merge()
+
+    if status:
+
+        log.log_info("Pushing changes to remote Git.")
+        status, msg = gitr.git_pu()
+
+        if status:
+
+            log.log_info("Pushing tags to remote Git.")
+            status, msg = gitr.git_pu(tags=True)
+
+            if status:
+
+                post_check(gitr, log)
+
+            else:
+                log.log_err("Failure to push tags to remote git.")
+                line_list = ["Failure to push tags to remote git."]
+                post_process(gitr, cfg, status, line_list, msg)
+
+        else:
+            log.log_err("Failure to push to remote git.")
+            line_list = ["Failure to push to remote git."]
+            post_process(gitr, cfg, status, line_list, msg)
+
+    else:
+        log.log_err("Failure to merge branch %s into %s." % (gitr.mod_branch,
+                                                              gitr.branch))
+        line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
+                                                               gitr.branch)]
+        post_process(gitr, cfg, status, line_list, msg)
+
+
 def process_project(gitr, cfg, log, **kwargs):
 
     """Function:  process_project
 
-    Description:  Fetch, merge, and push the project to the
-        remote Git repo.
+    Description:  Prepare for the merge of the project.
 
     Arguments:
         (input) gitr -> Git class instance.
