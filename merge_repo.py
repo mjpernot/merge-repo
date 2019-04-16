@@ -201,8 +201,7 @@ def send_mail(to_line, subj, mail_body, **kwargs):
     email.send_mail()
 
 
-def prepare_mail(gitr, status, line_list=None, msg=None, line_list=None,
-                 **kwargs):
+def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
 
     """Function:  prepare_mail
 
