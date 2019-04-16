@@ -123,7 +123,7 @@ class GitMerge(GitClass):
 
     """
 
-    def __init__(self, git_dir, url, branch, new_branch):
+    def __init__(self, git_dir, url, branch, mod_branch):
 
         """Method:  __init__
 
@@ -133,20 +133,18 @@ class GitMerge(GitClass):
             git_dir -> Directory path to the local git repo.
             url -> URL to the remote git repository.
             branch -> Name of branch at remote to be merged with.
-            new_branch -> Name of branch to be merged into remote.
+            mod_branch -> Name of branch to be merged into remote.
 
         """
 
-        # os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
         self.git_dir = git_dir
 
         super(GitMerge, self).__init__(self.git_dir)
 
-        # cfg.url + args_array["-r"] + ".git"
         self.url = url
 
         # "mod_release" -> Needs to be populated from cfg file.
-        self.new_branch = new_branch
+        self.mod_branch = mod_branch
 
         # cfg.branch
         self.branch = branch
@@ -345,7 +343,7 @@ class GitMerge(GitClass):
         msg = {}
 
         if not branch:
-            branch = self.new_branch
+            branch = self.mod_branch
 
         try:
             self.gitcmd.branch(branch)
@@ -413,7 +411,7 @@ class GitMerge(GitClass):
         msg = {}
 
         if not branch:
-            branch = self.new_branch
+            branch = self.mod_branch
 
         try:
             self.gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs",
