@@ -72,7 +72,7 @@ class GitClass(object):
         """
 
         if repo_dir:
-           self.repo_dir = repo_dir
+            self.repo_dir = repo_dir
 
         self.gitrepo = git.Repo(self.repo_dir)
 
@@ -260,7 +260,7 @@ class GitMerge(GitClass):
             (output) True|False -> If dirty objects detected.
 
         """
-        
+
         return self.gitrepo.is_dirty()
 
     def is_untracked(self, **kwargs):
@@ -275,7 +275,7 @@ class GitMerge(GitClass):
             (output) True|False -> If untracked objects detected.
 
         """
-        
+
         return self.gitrepo.is_dirty(untracked_files=True)
 
     def git_fetch(self, cnt=0, **kwargs):
@@ -387,7 +387,7 @@ class GitMerge(GitClass):
         """Function:  priority_merge
 
         Description:  Merge of branch with priority of existing branch.
-        
+
         NOTE:  The branch will have priority over the existing branch.
 
         Arguments:
@@ -440,7 +440,7 @@ class GitMerge(GitClass):
 
         if tags:
             option = "--tags"
-        
+
         try:
             self.gitcmd.push(option)
 
