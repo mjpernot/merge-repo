@@ -240,7 +240,8 @@ def send_mail(to_line, subj, mail_body, **kwargs):
     email.send_mail()
 
 
-def prepare_mail(gitr, status=True, msg=None, line_list=None, **kwargs):
+def prepare_mail(gitr, status, line_list=None, msg=None, line_list=None,
+                 **kwargs):
 
     """Function:  prepare_mail
 
@@ -249,8 +250,8 @@ def prepare_mail(gitr, status=True, msg=None, line_list=None, **kwargs):
     Arguments:
         (input) gitr -> Git class instance.
         (input) status -> True|False - Status success of Git command.
-        (input) msg -> Dictionary of error message from Git command.
         (input) line_list -> List of lines to add to email body.
+        (input) msg -> Dictionary of error message from Git command.
         (input) **kwargs:
             None
         (output) body -> Body of the email.
@@ -282,10 +283,8 @@ def prepare_mail(gitr, status=True, msg=None, line_list=None, **kwargs):
         body.append("Git Dir: " + gitr.git_dir)
         body.append("Branch: " + gitr.branch)
 
-
-    body.append = ["DTG: "
-                   + datetime.datetime.strftime(datetime.datetime.now(),
-                                                "%Y-%m-%d %H:%M:%S")]
+    body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S"))
 
     return subj, body
 
@@ -307,7 +306,7 @@ def move(from_dir, to_dir, **kwargs):
     gen_libs.mv_file2(from_dir, to_dir)
 
 
-def post_process(gitr, cfg, status=True, msg=None, line_list=None,
+def post_process(gitr, cfg, status, line_list=None, msg=None, 
                  **kwargs):
 
     """Function:  post_process
@@ -317,15 +316,15 @@ def post_process(gitr, cfg, status=True, msg=None, line_list=None,
     Arguments:
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
-        (input) status -> True|False - Status success of Git command.
-        (input) msg -> Dictionary of error message from Git command.
+        (input) status -> True|False - Status success of command.
         (input) line_list -> List of lines to add to email body.
+        (input) msg -> Dictionary of error message from Git command.
         (input) **kwargs:
             None
 
     """
 
-    subj, body = prepare_mail(gitr, status, msg, line_list)
+    subj, body = prepare_mail(gitr, status, line_list, msg)
     send_mail(cfg.to_line, subj, body)
 
     if status:
@@ -384,18 +383,34 @@ def merge(args_array, cfg, log, **kwargs):
                 process_project(gitr, log)
 
             else:
-                post_process(gitr, cfg)
-            #STOPPED HERE
+                log.log_err("There is still dirty entries in local repo.")
 
+                line_list = ["There is still dirty entries in local repo."]
 
-            
-            process_dirty(gitrepo, gitcmd)
+                post_process(gitr, cfg, False, line_list)
 
-            
-            process_untracked(gitrepo, gitcmd)
+        else:
+            log.log_err("%s does not exist at remote repo." % (gitr.url))
 
-            process_project(cfg.branch, gitcmd, log)
+            line_list = ["Remote git repository does not exist"]
 
+            post_process(gitr, cfg, False, line_list)
+
+    else:
+        log.log_err("%s is not a local Git repository" % (git_dir))
+
+        subj = "Merge error for: " + 
+        body = ["Local directory is not a Git repository.",
+                "Project Dir: " + git_dir]
+        body.append("DTG: "
+                    + datetime.datetime.strftime(datetime.datetime.now(),
+                                                 "%Y-%m-%d %H:%M:%S"))
+
+        send_mail(cfg.to_line, subj, body)
+
+        move(git_dir, cfg.err_dir)
+
+################################################
             if is_commits_ahead(gitrepo, cfg.branch):
 
                 log.log_err("Local branch: %s not in sync with remote repo" \
@@ -436,60 +451,11 @@ def merge(args_array, cfg, log, **kwargs):
 
                 gen_libs.mv_file2(proj_dir, cfg.archive_dir)
 
-        else:
-
-            log.log_err("%s.%s does not exist at remote repo: %s" %
-                        (proj_dir, cfg.branch, (gitrepo.remotes.origin.url)))
-
-            # Send notification of error.
-            subj = "Merge error for: " + args_array["-r"]
-
-            # Body 3
-            body = ["DTG: "
-                    + datetime.datetime.strftime(datetime.datetime.now(),
-                                                 "%Y-%m-%d %H:%M:%S")]
-            body.append("Merge of project has failed.")
-            body.append("Branch does not exist at remote Git.")
-            body.append("Remote URL: " + gitrepo.remotes.origin.url)
-            body.append("Project Dir: " + proj_dir)
-            body.append("Branch: " + cfg.branch)
-
-            send_mail(cfg, subj, body)
-
-            gen_libs.mv_file2(proj_dir, cfg.err_dir)
-
-    else:
-
-        log.log_err("%s is not a Git repository" % (proj_dir))
-
-        # Send notification of error.
-        subj = "Merge error for: " + args_array["-r"]
-
-        # Body 4
-        body = ["DTG: " +
-                datetime.datetime.strftime(datetime.datetime.now(),
-                                           "%Y-%m-%d %H:%M:%S")]
-        body.append("Merge of project has failed.")
-        body.append("Local Git repository does not exist.")
-        body.append("Project Dir: " + proj_dir)
-
-        send_mail(cfg, subj, body)
-
-        gen_libs.mv_file2(proj_dir, cfg.err_dir)
 
     # This is what will go into the line_list for each Body N noted.
     # Body 1
     #line_list = ["Local branch not in sync with remote branch",
     #             "Local branch is N commits ahead of remote."]
-
-    # Body 2
-    #line_list = []
-
-    # Body 3
-    #line_list = ["Branch does not exist at remote Git."]
-
-    # Body 4
-    #line_list = ["Local Git repository does not exist."]
 
 
 def run_program(args_array, func_dict, **kwargs):
