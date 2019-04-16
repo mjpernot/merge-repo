@@ -480,7 +480,7 @@ def merge(args_array, cfg, log, **kwargs):
                 log.log_info("Processing untracked files")
                 gitr.process_untracked()
 
-            if not gitr.is_dirty() or not gitr.is_untracked():
+            if not gitr.is_dirty() and not gitr.is_untracked():
 
                 process_project(gitr, cfg, log)
 
