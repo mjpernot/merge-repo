@@ -19,11 +19,11 @@ pipeline {
                 ./test/unit/merge_repo/help_message.py
                 ./test/unit/merge_repo/load_cfg.py
                 ./test/unit/merge_repo/is_git_repo.py
-                ./test/unit/merge_repo/is_commits_ahead.py
-                ./test/unit/merge_repo/is_remote.py
-                ./test/unit/merge_repo/is_remote_branch.py
-                ./test/unit/merge_repo/process_dirty.py
-                ./test/unit/merge_repo/process_untracked.py
+                ./test/unit/merge_repo/prepare_mail.py
+                ./test/unit/merge_repo/move.py
+                ./test/unit/merge_repo/post_process.py
+                ./test/unit/merge_repo/post_check.py
+                ./test/unit/merge_repo/merge_project.py
                 ./test/unit/merge_repo/send_mail.py
                 ./test/unit/merge_repo/process_project.py
                 ./test/unit/merge_repo/merge.py

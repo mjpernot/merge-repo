@@ -13,32 +13,24 @@ echo "Unit test:  is_git_repo"
 test/unit/merge_repo/is_git_repo.py
 
 echo ""
-echo "Unit test:  is_commits_ahead"
-test/unit/merge_repo/is_commits_ahead.py
+echo "Unit test:  prepare_mail"
+test/unit/merge_repo/prepare_mail.py
 
 echo ""
-echo "Unit test:  is_commits_behind"
-test/unit/merge_repo/is_commits_behind.py
+echo "Unit test:  move"
+test/unit/merge_repo/move.py
 
 echo ""
-echo "Unit test:  commits_diff"
-test/unit/merge_repo/commits_diff.py
+echo "Unit test:  post_process"
+test/unit/merge_repo/post_process.py
 
 echo ""
-echo "Unit test:  is_remote"
-test/unit/merge_repo/is_remote.py
+echo "Unit test:  post_check"
+test/unit/merge_repo/post_check.py
 
 echo ""
-echo "Unit test:  is_remote_branch"
-test/unit/merge_repo/is_remote_branch.py
-
-echo ""
-echo "Unit test:  process_dirty"
-test/unit/merge_repo/process_dirty.py
-
-echo ""
-echo "Unit test:  process_untracked"
-test/unit/merge_repo/process_untracked.py
+echo "Unit test:  merge_project"
+test/unit/merge_repo/merge_project.py
 
 echo ""
 echo "Unit test:  send_mail"
