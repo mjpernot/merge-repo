@@ -78,9 +78,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        gitr = git_class.GitClass(self.repo_dir)
+        gitc = git_class.GitClass(self.repo_dir)
 
-        self.assertEqual((gitr.gitrepo, gitr.gitcmd, gitr.repo_dir),
+        self.assertEqual((gitc.gitrepo, gitc.gitcmd, gitc.repo_dir),
                          (None, None, self.repo_dir))
 
     def test_init_default(self):
@@ -94,9 +94,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        gitr = git_class.GitClass()
+        gitc = git_class.GitClass()
 
-        self.assertEqual((gitr.gitrepo, gitr.gitcmd, gitr.repo_dir),
+        self.assertEqual((gitc.gitrepo, gitc.gitcmd, gitc.repo_dir),
                          (None, None, "."))
 
 
