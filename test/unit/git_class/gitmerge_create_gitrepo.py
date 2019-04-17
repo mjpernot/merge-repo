@@ -49,7 +49,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_init_default -> Test with default values set.
+        test_create_gitrepo -> Test with default values settings.
 
     """
 
@@ -72,11 +72,11 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("git_class.GitClass.create_repo")
     @mock.patch("git_class.GitClass.create_cmd")
-    def test_init_default(self, mock_gitc, mock_gitr):
+    def test_create_gitrepo(self, mock_gitc, mock_gitr):
 
-        """Function:  test_init_default
+        """Function:  test_create_gitrepo
 
-        Description:  Test with default values set.
+        Description:  Test with default values settings.
 
         Arguments:
             None
