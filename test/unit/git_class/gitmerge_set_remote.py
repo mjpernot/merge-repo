@@ -105,7 +105,15 @@ class UnitTest(unittest.TestCase):
         print(self.gitr.gitcmd.remote)
         # It works, but not sure how as it is passing through remote() to
         #   remote2() which is accepting the arguments from
-        #   self.gitcmd.remote("set-url", "origin", self.url)
+        #   self.gitcmd.remote("set-url", "origin", self.url) in GitMerge
+        #   class.
+        #  Need to test to see what is being set at each stage and then test
+        #   it as the commands progress.
+        #  NOTE:  Run 'git remote -v' as somehow the testing program changed
+        #   the merge-repo git repo to TESTURL.
+        #  To change it back:
+        #git remote set-url origin git@gitlab.dicelab.net:JAC-IDM/merge-repo.git
+        #  Make sure it's set to this before pushing anything.
 
         self.gitr.set_remote()
         #gits = TestGitClass()
