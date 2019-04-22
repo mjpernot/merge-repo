@@ -26,6 +26,7 @@ else:
 
 # Third-party
 import mock
+import git
 import collections
 
 # Local
@@ -38,9 +39,23 @@ import version
 __version__ = version.__version__
 
 
+def ls_remote2(arg1):
+
+    """Function:  ls_remote2
+
+    Description:  Method stub holder for git.Repo.git.ls_remote().
+
+    Arguments:
+        arg1 -> Stub holder for URL address.
+
+    """
+
+    raise git.exc.GitCommandError('git', 128)
+
+
 def ls_remote(arg1):
 
-    """Function:  remote
+    """Function:  ls_remote
 
     Description:  Method stub holder for git.Repo.git.ls_remote().
 
@@ -64,6 +79,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_is_remote_false -> Test with exception raised from ls_remote call.
         test_is_remote_true -> Test with successful ls_remote call.
 
     """
@@ -87,6 +103,22 @@ class UnitTest(unittest.TestCase):
 
         self.gitr = git_class.GitMerge(self.repo_name, self.git_dir, self.url,
                                        self.branch, self.mod_branch)
+
+    def test_is_remote_false(self):
+
+        """Function:  test_is_remote_false
+
+        Description:  Test with exception raised from ls_remote call.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'ls_remote')
+        self.gitr.gitcmd = GIT(ls_remote2)
+
+        self.assertFalse(self.gitr.is_remote())
 
     def test_is_remote_true(self):
 
