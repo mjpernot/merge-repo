@@ -14,6 +14,12 @@ pipeline {
                 sh """
                 pip2 install mock --user
                 pip2 install gitpython --user
+                ./test/unit/git_class/gitmerge_init.py
+                ./test/unit/git_class/gitmerge_create_gitrepo.py
+                ./test/unit/git_class/gitmerge_set_remote.py
+                ./test/unit/git_class/gitclass_init.py
+                ./test/unit/git_class/gitclass_create_repo.py
+                ./test/unit/git_class/gitclass_create_cmd.py
                 ./test/unit/merge_repo/main.py
                 ./test/unit/merge_repo/run_program.py
                 ./test/unit/merge_repo/help_message.py
