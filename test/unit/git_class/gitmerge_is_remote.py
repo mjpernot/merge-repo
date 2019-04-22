@@ -102,8 +102,7 @@ class UnitTest(unittest.TestCase):
         GIT = collections.namedtuple('GIT', 'ls_remote')
         self.gitr.gitcmd = GIT(ls_remote)
 
-        self.gitr.is_remote()
-        #self.assertFalse(self.gitr.is_remote())
+        self.assertTrue(self.gitr.is_remote())
 
 
 if __name__ == "__main__":
