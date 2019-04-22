@@ -26,6 +26,7 @@ else:
 
 # Third-party
 import mock
+import collections
 
 # Local
 sys.path.append(os.getcwd())
@@ -37,15 +38,15 @@ import version
 __version__ = version.__version__
 
 
-class TestGitClass(object):
-    def __init__(self):
-        pass
+#class TestGitClass(object):
+#    def __init__(self):
+#        pass
 
-def remote2(arg1, arg2, arg3):
+def remote(arg1, arg2, arg3):
     pass
 
-def remote():
-    return remote2
+#def remote():
+#    return remote2
 
 
 class UnitTest(unittest.TestCase):
@@ -99,10 +100,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        import collections
         GIT = collections.namedtuple('GIT', 'remote')
-        self.gitr.gitcmd = GIT(remote())
-        print(self.gitr.gitcmd.remote)
+        self.gitr.gitcmd = GIT(remote)
+        self.assertFalse(self.gitr.set_remote())
+
+        #import collections
+        #self.gitr.gitcmd = GIT(remote())
+        #print(self.gitr.gitcmd)
+        #print(self.gitr.gitcmd.remote)
         # It works, but not sure how as it is passing through remote() to
         #   remote2() which is accepting the arguments from
         #   self.gitcmd.remote("set-url", "origin", self.url) in GitMerge
@@ -115,7 +120,6 @@ class UnitTest(unittest.TestCase):
         #git remote set-url origin git@gitlab.dicelab.net:JAC-IDM/merge-repo.git
         #  Make sure it's set to this before pushing anything.
 
-        self.gitr.set_remote()
         #gits = TestGitClass()
         #mock_gitc.remote.return_value = gits
         #mock_gitc.return_value = self.gitr
