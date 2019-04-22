@@ -38,15 +38,20 @@ import version
 __version__ = version.__version__
 
 
-#class TestGitClass(object):
-#    def __init__(self):
-#        pass
-
 def remote(arg1, arg2, arg3):
-    pass
 
-#def remote():
-#    return remote2
+    """Function:  remote
+
+    Description:  Method stub holder for git.Repo.git.remote().
+
+    Arguments:
+        arg1 -> Stub holder for option "set-url".
+        arg2 -> Stub holder for remote "origin".
+        arg3 -> Stub holder for URL address.
+
+    """
+
+    pass
 
 
 class UnitTest(unittest.TestCase):
@@ -84,11 +89,7 @@ class UnitTest(unittest.TestCase):
 
         self.gitr = git_class.GitMerge(self.repo_name, self.git_dir, self.url,
                                        self.branch, self.mod_branch)
-        #self.gitc = git_class.GitClass(self.git_dir)
-        #self.gitcmd = git_class.GitMerge()
 
-    #@mock.patch("git_class.GitClass")
-    #@mock.patch("git_class.GitMerge")
     def test_set_remote(self):
 
         """Function:  test_set_remote
@@ -102,29 +103,8 @@ class UnitTest(unittest.TestCase):
 
         GIT = collections.namedtuple('GIT', 'remote')
         self.gitr.gitcmd = GIT(remote)
+
         self.assertFalse(self.gitr.set_remote())
-
-        #import collections
-        #self.gitr.gitcmd = GIT(remote())
-        #print(self.gitr.gitcmd)
-        #print(self.gitr.gitcmd.remote)
-        # It works, but not sure how as it is passing through remote() to
-        #   remote2() which is accepting the arguments from
-        #   self.gitcmd.remote("set-url", "origin", self.url) in GitMerge
-        #   class.
-        #  Need to test to see what is being set at each stage and then test
-        #   it as the commands progress.
-        #  NOTE:  Run 'git remote -v' as somehow the testing program changed
-        #   the merge-repo git repo to TESTURL.
-        #  To change it back:
-        #git remote set-url origin git@gitlab.dicelab.net:JAC-IDM/merge-repo.git
-        #  Make sure it's set to this before pushing anything.
-
-        #gits = TestGitClass()
-        #mock_gitc.remote.return_value = gits
-        #mock_gitc.return_value = self.gitr
-
-        #self.assertFalse(self.gitr.set_remote())
 
 
 if __name__ == "__main__":
