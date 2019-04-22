@@ -192,7 +192,7 @@ class GitMerge(GitClass):
         """
 
         try:
-            self.remote_info = git.gitcmd.ls_remote(self.url)
+            self.remote_info = self.git.gitcmd.ls_remote(self.url)
             return True
 
         except git.exc.GitCommandError:
