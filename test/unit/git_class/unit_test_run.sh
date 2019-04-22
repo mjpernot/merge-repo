@@ -17,6 +17,10 @@ echo "Unit test:  gitmerge_set_remote"
 test/unit/git_class/gitmerge_set_remote.py
 
 echo ""
+echo "Unit test:  gitmerge_is_remote"
+test/unit/git_class/gitmerge_is_remote.py
+
+echo ""
 echo "Unit test:  gitclass_init"
 test/unit/git_class/gitclass_init.py
 

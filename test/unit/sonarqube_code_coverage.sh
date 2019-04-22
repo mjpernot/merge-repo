@@ -11,6 +11,7 @@ echo "Running unit test modules in conjunction with coverage"
 coverage run -a --source=git_class test/unit/git_class/gitmerge_init.py
 coverage run -a --source=git_class test/unit/git_class/gitmerge_create_gitrepo.py
 coverage run -a --source=git_class test/unit/git_class/gitmerge_set_remote.py
+coverage run -a --source=git_class test/unit/git_class/gitmerge_is_remote.py
 coverage run -a --source=git_class test/unit/git_class/gitclass_init.py
 coverage run -a --source=git_class test/unit/git_class/gitclass_create_repo.py
 coverage run -a --source=git_class test/unit/git_class/gitclass_create_cmd.py
