@@ -61,6 +61,10 @@ echo "Unit test:  gitmerge_commits_diff"
 test/unit/git_class/gitmerge_commits_diff.py
 
 echo ""
+echo "Unit test:  gitmerge_is_commits_ahead"
+test/unit/git_class/gitmerge_is_commits_ahead.py
+
+echo ""
 echo "Unit test:  gitclass_init"
 test/unit/git_class/gitclass_init.py
 
