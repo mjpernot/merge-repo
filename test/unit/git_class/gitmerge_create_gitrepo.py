@@ -89,7 +89,6 @@ class UnitTest(unittest.TestCase):
         mock_gitc.return_value = True
         mock_gitr.return_value = True
 
-
         self.gitr.create_gitrepo()
 
         self.assertEqual((self.gitr.git_dir, self.gitr.repo_name,
