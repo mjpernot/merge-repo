@@ -527,7 +527,7 @@ class GitMerge(GitClass):
 
         """
 
-        return commits_diff(branch + "..origin/" + branch)
+        return self.commits_diff(branch + "..origin/" + branch)
 
     def is_remote_branch(self, branch, **kwargs):
 
