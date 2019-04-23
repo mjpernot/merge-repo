@@ -39,23 +39,68 @@ import version
 __version__ = version.__version__
 
 
-def diff(arg1):
+#def diff2():
+#    INDEX = collections.namedtuple('INDEX', 'a_path change_type')
+#    file_list = []
+#    file_list.append(INDEX('file1', 'D'))
+#    file_list.append(INDEX('file2', 'M'))
 
-    """Function:  diff
+    #for x in file_list:
+    #    yield x
 
-    Description:  Method stub holder for git.Repo.index.diff().
+#    return file_list
+    
+#def diff(arg1):
 
-    Arguments:
-        arg1 -> Stub holder.
+#    diff2()
 
-    """
+    #INDEX = collections.namedtuple('INDEX', 'a_path change_type')
+    #file_list = []
+    #file_list.append(INDEX('file1', 'D'))
+    #file_list.append(INDEX('file2', 'M'))
 
-    INDEX = collections.namedtuple('INDEX', 'a_path change_type')
-    file_list = []
-    file_list.append(INDEX('file1', 'D'))
-    file_list.append(INDEX('file2', 'M'))
+    ##for x in file_list:
+    ##    yield x
 
-    return file_list
+    #return file_list
+
+#class Index(object):
+
+#    def __init__(self):
+
+#        self.diff = diff(None)
+
+
+class Index(object):
+    def __init__(self):
+        pass
+        #self.diff = diff()
+
+class Diff(Index):
+    def __init__(self):
+        super(Diff, self).__init__()
+
+    def diff(self, arg1):
+        INDEX = collections.namedtuple('INDEX', 'a_path change_type')
+        file_list = []
+        file_list.append(INDEX('file1', 'D'))
+        file_list.append(INDEX('file2', 'M'))
+
+        #for x in file_list:
+        #    yield x
+        #return [True]
+
+        return file_list
+
+    def remove(self, rm_files, working_tree):
+        return True
+
+    def add(self, chg_files):
+        return True
+
+    def commit(self, msg):
+        return True
+    
 
 
 class UnitTest(unittest.TestCase):
@@ -71,7 +116,7 @@ class UnitTest(unittest.TestCase):
     Methods:
         setUp -> Unit testing initilization.
         test_process_dirty_false -> Test with exception raised from ls_remote call.
-        test_process_dirty_true -> Test with successful ls_remote call.
+        test_process_all_true -> Test with all if statements are True.
 
     """
 
@@ -112,23 +157,32 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(self.gitr.process_dirty())
 
-    def test_process_dirty_true(self):
+    def test_process_all_true(self):
 
-        """Function:  test_process_dirty_true
+        """Function:  test_process_all_true
 
-        Description:  Test with successful ls_remote call.
+        Description:  Test with all if statements are True.
 
         Arguments:
             None
 
         """
 
-        GIT = collections.namedtuple("GIT", "diff")
-        INDEX = collections.namedtuple("GITR", "index")
+        #GIT = collections.namedtuple("GIT", "index")
+        #INDEX = Index()
         
-        self.gitr.gitrepo = INDEX(index)
+        #self.gitr.gitrepo = GIT(INDEX)
 
-        self.assertTrue(self.gitr.process_dirty())
+        #self.assertTrue(self.gitr.process_dirty())
+
+        GIT = collections.namedtuple('GIT', 'index')
+        #INDEX = Index()
+        DIFF = Diff()
+
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty()
+
 
 
 if __name__ == "__main__":
