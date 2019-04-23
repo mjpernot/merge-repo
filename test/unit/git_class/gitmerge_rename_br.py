@@ -81,7 +81,7 @@ class UnitTest(unittest.TestCase):
         setUp -> Unit testing initilization.
         test_rename_br_branch -> Test with branch parameter passed.
         test_rename_br_exception -> Test with raised exception.
-        test_rename_br_true -> Test with successful ls_remote call.
+        test_rename_br_true -> Test with successful branch call.
 
     """
 
