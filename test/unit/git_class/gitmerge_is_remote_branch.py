@@ -81,7 +81,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_is_remote_branch_false -> Test with exception raised from ls_remote call.
+        test_is_remote_branch_false -> Test with exception from rev_parse call.
         test_is_remote_branch_true -> Test with successful ls_remote call.
 
     """
