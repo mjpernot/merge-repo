@@ -26,6 +26,7 @@ pipeline {
                 ./test/unit/git_class/gitmerge_rename_br.py
                 ./test/unit/git_class/gitmerge_git_co.py
                 ./test/unit/git_class/gitmerge_priority_merge.py
+                ./test/unit/git_class/gitmerge_git_pu.py
                 ./test/unit/git_class/gitclass_init.py
                 ./test/unit/git_class/gitclass_create_repo.py
                 ./test/unit/git_class/gitclass_create_cmd.py
