@@ -19,6 +19,7 @@ pipeline {
                 ./test/unit/git_class/gitmerge_set_remote.py
                 ./test/unit/git_class/gitmerge_is_remote.py
                 ./test/unit/git_class/gitmerge_process_dirty.py
+                ./test/unit/git_class/gitmerge_process_untracked.py
                 ./test/unit/git_class/gitclass_init.py
                 ./test/unit/git_class/gitclass_create_repo.py
                 ./test/unit/git_class/gitclass_create_cmd.py
