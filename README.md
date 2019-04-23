@@ -1,8 +1,8 @@
-# Python project for the merging of a non-local Git repository into an existing Git repository.
+# Python project for the merging of a local Git repository into an existing Git repository.
 # Classification (U)
 
 # Description:
-  This program is used to take a non-local Git repository that has been modified at a different location and merge it into an existing Git repository and make it the priority repository.
+  This program is used to take a local Git repository that has been modified at a different location and merge it into an existing Git repository and make it the priority repository.
 
 ###  This README file is broken down into the following sections:
   * Features
@@ -13,15 +13,12 @@
   * Help Message
   * Testing
     - Unit
-    - Integration
-    - Blackbox
+    - Integration (Not yet implemented)
+    - Blackbox (Not yet implemented)
 
 
 # Features:
-  * Clean up an dirty files in the non-local repository prior to merging.
-  * Fetch the remote Git repository along side the non-local repository.
-  * Merge the non-local repository into the remote repository, but make the non-local repository the priority.
-  * Push the newly merged respository back to the remote Git respository.
+  * Merge a local repository into an existing remote repository.
 
 
 # Prerequisites:
@@ -52,7 +49,7 @@ git clone git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/merge-repo.git
 Install/upgrade system modules.
 
 ```
-cd check-log
+cd merge-repo
 sudo bash
 umask 022
 pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
@@ -66,13 +63,12 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
 
 # Program Descriptions:
-### Program: merge_repo.py
-##### Description: The merge_repo.py program is designed to take a non-local Git repository and merge it into an existing Git repository, but make the non-local Git repository the priority repository.  This is way of a non-local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the designated branch which will incur the changes.
+### Description: The program is designed to take a local Git repository and merge it into an existing Git repository, but make the local Git repository the priority repository.  This is way of a local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
 
 
 # Program Help Function:
 
-  All of the programs, except the command and class files, will have an -h (Help option) that will show display a help message for that particular program.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
+  All of the programs, except the library and class files, will have an -h (Help option) that will show display a help message for that particular program.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
@@ -85,18 +81,69 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
     Program:  merge_repo.py
 
-    Description:  
+    Description:  Merge an external local Git repository into an existing
+        remote Git repository.  The merge process will clean up the new
+        project using Git of dirty and untracked files and it will then pull
+        the existing remote Git branch to the local Git repository before
+        merging the local Git repo with the existing Git repo.  Once the
+        branches have been merged the updated branch will be pushed back to
+        the remote Git repository.
+
+        NOTE 1:  The local Git repo will be marked as the priority, which
+            means the local Git repo will have priority over the changes
+            made to the project.
+        NOTE 2:  The default branch to be merged will be the master branch.
+            This can be changed in the configuration file, but is not
+            recommended.
+        NOTE 3:  The external local Git repository must come in as a detached
+            head repository with no named branches for the merge to take place.
 
     Usage:
-`
+        merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
+            [-M] {-v | -h}
 
     Arguments:
+        -c file_name => Name of merge_repo configuration file.
+        -d directory_path => Directory path to the configuration file.
+        -M => Run the merge function.
+        -r repo_name => Repository name being merged (e.g. "hp-python-lib").
+        -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
         -h => Help and usage message.
 
         NOTE 1:  -v or -h overrides the other options.
+        NOTE 2:  If -r is not passed, will use the basename from the -p option
+            directory path to populate the -r option.
 
-    Example:
+    Notes:
+        Config file:
+            # Base URL address to remote Git repository.  Not to include
+            #   repository name.  This will be supplied by command line
+            #   arguments.
+            url="git@gitlab.code.dicelab.net:JAC-IDM/"
+
+            # Directory of where the merge will take place.
+            work_dir="{PATH_DIRECTORY}/work_dir"
+
+            # Directory where projects will be archived if encounter errors.
+            err_dir="{PATH_DIRECTORY}/error_dir"
+
+            # Directory where projects will be archived after a merge.
+            archive_dir="{PATH_DIRECTORY}/archive_dir"
+
+            # Email addresses for notification.
+            to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
+
+            # Directory where log files will be placed.
+            log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
+
+            # Do not modify unless you know what you are doing.
+            # Branch on which the merge will take place on.
+            branch="master"
+
+    Examples:
+        merge_repo.py -c merge -d config -r hp-python-lib
+            -p /opt/local/hp-python-lib -M
 
 
 # Testing:
@@ -135,23 +182,20 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 # Unit test runs for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-```
-cd {Python_Project}/merge-repo
-```
-
 ### Unit tests
 ```
+cd {Python_Project}/merge-repo
+test/unit/merge_repo/merge_project.py
+test/unit/merge_repo/is_git_repo.py
+test/unit/merge_repo/post_check.py
+test/unit/merge_repo/post_process.py
+test/unit/merge_repo/move.py
+test/unit/merge_repo/prepare_mail.py
+test/unit/merge_repo/send_mail.py
+test/unit/merge_repo/load_cfg.py
+test/unit/merge_repo/merge.py
+test/unit/merge_repo/process_project.py
 test/unit/merge_repo/help_message.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
-test/unit/merge_repo/NNNN.py
 test/unit/merge_repo/run_program.py
 test/unit/merge_repo/main.py
 ```
@@ -201,12 +245,9 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 # Integration test runs for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-```
-cd {Python_Project}/merge-repo
-```
-
 ### Integration tests
 ```
+cd {Python_Project}/merge-repo
 test/integration/merge_repo/NNNN.py
 test/integration/merge_repo/NNNN.py
 test/integration/merge_repo/NNNN.py
@@ -266,12 +307,9 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 # Blackbox test run for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
+### Blackbox test:  
 ```
 cd {Python_Project}/merge-repo
-```
-
-### Blackbox:  
-```
 test/blackbox/merge_repo/blackbox_test.sh
 ```
 

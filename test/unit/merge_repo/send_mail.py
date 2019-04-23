@@ -111,7 +111,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test send_mail function.
 
         Arguments:
-            mock_mail -> Mock Ref:  check_log.gen_class.Mail
+            None
 
         """
 
