@@ -507,7 +507,7 @@ class GitMerge(GitClass):
 
         """
 
-        return commits_diff("origin/" + branch + ".." + branch)
+        return self.commits_diff("origin/" + branch + ".." + branch)
 
     def is_commits_behind(self, branch, **kwargs):
 
