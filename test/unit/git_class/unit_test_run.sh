@@ -41,6 +41,10 @@ echo "Unit test:  gitmerge_git_fetch"
 test/unit/git_class/gitmerge_git_fetch.py
 
 echo ""
+echo "Unit test:  gitmerge_rename_br"
+test/unit/git_class/gitmerge_rename_br.py
+
+echo ""
 echo "Unit test:  gitclass_init"
 test/unit/git_class/gitclass_init.py
 
