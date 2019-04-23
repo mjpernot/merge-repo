@@ -39,32 +39,6 @@ import version
 __version__ = version.__version__
 
 
-class Index(object):
-
-    """Class:  Index
-
-    Description:  Class stub holder for git.gitrepo.index.
-
-    Methods:
-        __init -> Class initilization.
-
-    """
-
-    def __init__(self):
-
-        """Function:  __init__
-
-        Description:  Initialization of class instance.
-
-        Arguments:
-            None
-
-        """
-
-        pass
-
-
-#class Diff(Index):
 class Commits(object):
 
     """Class:  Diff
@@ -86,8 +60,6 @@ class Commits(object):
             test_type -> Determine type of test to be created.
 
         """
-
-        #super(Diff, self).__init__()
 
         self.test_type = test_type
 
