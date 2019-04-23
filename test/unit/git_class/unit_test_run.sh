@@ -49,6 +49,10 @@ echo "Unit test:  gitmerge_git_co"
 test/unit/git_class/gitmerge_git_co.py
 
 echo ""
+echo "Unit test:  gitmerge_priority_merge"
+test/unit/git_class/gitmerge_priority_merge.py
+
+echo ""
 echo "Unit test:  gitclass_init"
 test/unit/git_class/gitclass_init.py
 
