@@ -3,57 +3,68 @@
 
 """Program:  merge_repo.py
 
-    Description:  Merge an external non-local Git repository into an existing
-        Git repository.  The merge process will clean up the new project using
-        Git and then pull the existing remote Git branch to the local Git
-        repository before merging the non-local Git repo with the existing Git
-        repo.  Once the changes have been merged then the updated branch will
-        be pushed back to the remote Git repository.
-        NOTE:  The non-local Git repo will be marked as the priority, which
-            means the non-local Git repo will have priority over the changes
+    Description:  Merge an external local Git repository into an existing
+        remote Git repository.  The merge process will clean up the new
+        project using Git of dirty and untracked files and it will then pull
+        the existing remote Git branch to the local Git repository before
+        merging the local Git repo with the existing Git repo.  Once the
+        branches have been merged the updated branch will be pushed back to
+        the remote Git repository.
+
+        NOTE 1:  The local Git repo will be marked as the priority, which
+            means the local Git repo will have priority over the changes
             made to the project.
+        NOTE 2:  The default branch to be merged will be the master branch.
+            This can be changed in the configuration file, but is not
+            recommended.
+        NOTE 3:  The external local Git repository must come in as a detached
+            head repository with no named branches for the merge to take place.
 
     Usage:
-        merge_repo.py -c config -d config_dir -r repo_name -p repo_directory
+        merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
             [-M] {-v | -h}
 
     Arguments:
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
-        -M => Run merge function.
-        -r repo_name => Repository name (e.g. "test-merge").
+        -M => Run the merge function.
+        -r repo_name => Repository name being merged (e.g. "hp-python-lib").
         -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
         -h => Help and usage message.
 
         NOTE 1:  -v or -h overrides the other options.
+        NOTE 2:  If -r is not passed, will use the basename from the -p option
+            directory path to populate the -r option.
 
     Notes:
         Config file:
-            # Base URL address to remote Git repository.
+            # Base URL address to remote Git repository.  Not to include
+            #   repository name.  This will be supplied by command line
+            #   arguments.
             url="git@gitlab.code.dicelab.net:JAC-IDM/"
 
             # Directory of where the merge will take place.
-            work_dir="/home/mark.j.pernot/merge/work_dir"
+            work_dir="{PATH_DIRECTORY}/work_dir"
 
             # Directory where projects will be archived if encounter errors.
-            err_dir="/home/mark.j.pernot/merge/error_dir"
+            err_dir="{PATH_DIRECTORY}/error_dir"
 
             # Directory where projects will be archived after a merge.
-            archive_dir="/home/mark.j.pernot/merge/archive_dir"
+            archive_dir="{PATH_DIRECTORY}/archive_dir"
 
             # Email addresses for notification.
-            to_line="Mark.J.Pernot@coe.ic.gov"
+            to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
 
             # Directory where log files will be placed.
-            log_file="/home/mark.j.pernot/merge/logs/merge-repo.log"
+            log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
 
             # Do not modify unless you know what you are doing.
             # Branch on which the merge will take place on.
             branch="master"
 
     Examples:
-        merge_repo.py -c merge_cfg -d config -r hp-python-lib
+        merge_repo.py -c merge -d config -r hp-python-lib
             -p /opt/local/hp-python-lib -M
 
 """
@@ -76,6 +87,7 @@ import git
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.gen_class as gen_class
+import git_class
 import version
 
 # Version
@@ -156,137 +168,32 @@ def is_git_repo(path, **kwargs):
     """
 
     try:
-        _ = git.Repo(path).git_dir
+        git.Repo(path).git_dir
         return True
 
     except git.exc.InvalidGitRepositoryError:
         return False
 
 
-def is_remote(gitcmd, url, **kwargs):
-
-    """Function:  is_remote
-
-    Description:  Determines if the remote git repository exists.
-
-    Arguments:
-        (input) gitcmd -> Git command instance.
-        (input) url -> Git URL address.
-        (input) **kwargs:
-            None
-        (output)  True|False -> If the remote git repository exists.
-
-    """
-
-    try:
-        _ = gitcmd.ls_remote(url)
-        return True
-
-    except git.exc.GitCommandError:
-        return False
-
-
-def is_remote_branch(gitcmd, branch, **kwargs):
-
-    """Function:  is_remote_branch
-
-    Description:  Determines if the branch exist in remote git repository.
-
-    Arguments:
-        (input) gitcmd -> Git command instance.
-        (input) branch -> Git branch name.
-        (input) **kwargs:
-            None
-        (output)  True|False -> If the branch in remote git repository.
-
-    """
-
-    try:
-        gitcmd.rev_parse('--verify', branch)
-        return True
-
-    except git.exc.GitCommandError:
-        return False
-
-
-def process_dirty(gitrepo, gitcmd, **kwargs):
-
-    """Function:  process_dirty
-
-    Description:  Check for and process dirty files.
-
-    Arguments:
-        (input) gitrepo -> Git repo class instance.
-        (input) gitcmd -> Git command line class instance.
-        (input) **kwargs:
-            None
-
-    """
-
-    if gitrepo.is_dirty():
-
-        for f_git in gitrepo.index.diff(None):
-
-            if f_git.change_type == "D":
-
-                # Test this code, not been tested before.
-                gitcmd.rm([f_git], working_tree=True)
-
-            elif f_git.change_type == "M":
-
-                # Check this code works.
-                gitcmd.add(f_git)
-
-        # Can I stipulate what is in the comments dynamically?
-        gitrepo.index.commit("Add dirty files")
-
-
-def process_untracked(gitrepo, gitcmd, **kwargs):
-
-    """Function:  process_untracked
-
-    Description:  Check for and process untracked files.
-
-    Arguments:
-        (input) gitrepo -> Git repo class instance.
-        (input) gitcmd -> Git command line class instance.
-        (input) **kwargs:
-            None
-
-    """
-
-    if gitrepo.is_dirty(untracked_files=True):
-
-        for f_git in gitrepo.untracked_files:
-
-            # Check this code works.
-            gitcmd.add(f_git)
-
-        if gitrepo.untracked_files:
-
-            # Can I stipulate what is in the comments dynamically?
-            gitrepo.index.commit("Add untracked files")
-
-
-def send_mail(cfg, subj, email_body, **kwargs):
+def send_mail(to_line, subj, mail_body, **kwargs):
 
     """Function:  send_mail
 
     Description:  Compiles and sends out an email notification message.
 
     Arguments:
-        (input) cfg -> Configuration settings module for the program.
+        (input) to_line -> Email's to line.
         (input) subj -> Email subject line.
-        (input) email_body -> Email body list.
+        (input) mail_body -> Email body list.
         (input) **kwargs:
             None
 
     """
 
-    body = list(email_body)
+    body = list(mail_body)
     frm_line = getpass.getuser() + "@" + socket.gethostname()
 
-    email = gen_class.Mail(cfg.to_line, subj, frm_line)
+    email = gen_class.Mail(to_line, subj, frm_line)
 
     for line in body:
         email.add_2_msg(line)
@@ -294,16 +201,152 @@ def send_mail(cfg, subj, email_body, **kwargs):
     email.send_mail()
 
 
-def process_project(branch, gitcmd, log, **kwargs):
+def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
 
-    """Function:  process_project
+    """Function:  prepare_mail
 
-    Description:  Fetch, merge, and push the project to the
-        remote Git repo.
+    Description:  Prepare email body with a set header.
 
     Arguments:
-        (input) branch -> Branch being merge into.
-        (input) gitcmd -> Git command line class instance.
+        (input) gitr -> Git class instance.
+        (input) status -> True|False - Status success of Git command.
+        (input) line_list -> List of lines to add to email body.
+        (input) msg -> Dictionary of error message from Git command.
+        (input) **kwargs:
+            None
+        (output) body -> Body of the email.
+
+    """
+
+    if line_list is None:
+        line_list = []
+
+    body = []
+
+    if not status:
+        subj = "Merge completed for: " + gitr.repo_name
+        body.append("Merge of project has been completed.")
+
+    else:
+        subj = "Merge error for: " + gitr.repo_name
+        body.append("Merge of project has failed.")
+
+        for line in line_list:
+            body.append(line)
+
+        if msg:
+
+            for key in msg.keys():
+                body.append("%s: %s" % (key, msg[key]))
+
+        body.append("URL: " + gitr.url)
+        body.append("Git Dir: " + gitr.git_dir)
+        body.append("Branch: " + gitr.branch)
+
+    body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S"))
+
+    return subj, body
+
+
+def move(from_dir, to_dir, **kwargs):
+
+    """Function:  move
+
+    Description:  Move of git repo to proper directory for storage.
+
+    Arguments:
+        (input) from_dir -> Source directory.
+        (input) to_dir -> Desitination directory.
+        (input) **kwargs:
+            None
+
+    """
+
+    gen_libs.mv_file2(from_dir, to_dir)
+
+
+def post_process(gitr, cfg, status, line_list=None, msg=None,
+                 **kwargs):
+
+    """Function:  post_process
+
+    Description:  Post processing of the git repository.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) status -> True|False - Status success of command.
+        (input) line_list -> List of lines to add to email body.
+        (input) msg -> Dictionary of error message from Git command.
+        (input) **kwargs:
+            None
+
+    """
+
+    subj, body = prepare_mail(gitr, status, line_list, msg)
+    send_mail(cfg.to_line, subj, body)
+
+    if status:
+        move(gitr.git_dir, cfg.archive_dir)
+
+    else:
+        move(gitr.git_dir, cfg.err_dir)
+
+
+def post_check(gitr, cfg, log, **kwargs):
+
+    """Function:  post_check
+
+    Description:  Check to see the local Git is in sync with the remote Git.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    log.log_info("Post checking...")
+
+    ahead = gitr.is_commits_ahead()
+    behind = gitr.is_commits_behind()
+
+    if ahead or behind:
+
+        log.log_err("Local repo is not in sync with remote repo")
+
+        if ahead:
+
+            log.log_err("Local repo is %s commits ahead of remote." % (ahead))
+            line_list = ["Local repo is %s commits ahead of remote." % (ahead)]
+
+        else:
+
+            log.log_err("Local repo is %s commits behind remote." % (behind))
+            line_list = ["Local repo is %s commits behind remote." % (behind)]
+
+        post_process(gitr, cfg, False, line_list)
+
+    else:
+
+        log.log_info("Processing of: %s completed." % (gitr.git_dir))
+        line_list = ["Processing of: %s completed." % (gitr.git_dir)]
+
+        post_process(gitr, cfg, True, line_list)
+
+
+def merge_project(gitr, cfg, log, **kwargs):
+
+    """Function:  merge_project
+
+    Description:  Merge, and push the project to the remote Git repo.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
         (input) **kwargs:
             None
@@ -311,26 +354,94 @@ def process_project(branch, gitcmd, log, **kwargs):
     """
 
     log.log_info("Fetching and setting up branches.")
-    gitcmd.fetch()
-    gitcmd.branch("mod_release")
-    gitcmd.checkout(branch)
+    status1, msg1 = gitr.priority_merge()
 
-    log.log_info("Merging new repo into branch: %s" % (branch))
-    gitcmd.merge("--no-ff", "-s", "recursive", "-X", "theirs", "mod_release")
+    if status1:
 
-    log.log_info("Pushing local repo to remote repo.")
+        log.log_info("Pushing changes to remote Git.")
+        status2, msg2 = gitr.git_pu()
 
-    # Push changes and then push tags.
-    gitcmd.push()
-    gitcmd.push("--tags")
+        if status2:
+
+            log.log_info("Pushing tags to remote Git.")
+            status3, msg3 = gitr.git_pu(tags=True)
+
+            if status3:
+
+                post_check(gitr, cfg, log)
+
+            else:
+                log.log_err("Failure to push tags to remote git.")
+                line_list = ["Failure to push tags to remote git."]
+                post_process(gitr, cfg, status3, line_list, msg3)
+
+        else:
+            log.log_err("Failure to push to remote git.")
+            line_list = ["Failure to push to remote git."]
+            post_process(gitr, cfg, status2, line_list, msg2)
+
+    else:
+        log.log_err("Failure to merge branch %s into %s." % (gitr.mod_branch,
+                                                             gitr.branch))
+        line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
+                                                              gitr.branch)]
+        post_process(gitr, cfg, status1, line_list, msg1)
+
+
+def process_project(gitr, cfg, log, **kwargs):
+
+    """Function:  process_project
+
+    Description:  Prepare for the merge of the project.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    log.log_info("Fetching and setting up branches.")
+    status1, msg1 = gitr.fetch()
+
+    if status1:
+
+        log.log_info("Renaming branch to: %s." % (gitr.mod_branch))
+        status2, msg2 = gitr.rename_br()
+
+        if status2:
+
+            log.log_info("Checking out branch: %s." % (gitr.branch))
+            status3, msg3 = gitr.git_co()
+
+            if status3:
+
+                merge_project(gitr, cfg, log)
+
+            else:
+                log.log_err("Failure to checkout branch: %s." % (gitr.branch))
+                line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
+                post_process(gitr, cfg, status3, line_list, msg3)
+
+        else:
+            log.log_err("Failure rename branch to: %s." % (gitr.mod_branch))
+            line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
+            post_process(gitr, cfg, status2, line_list, msg2)
+
+    else:
+        log.log_err("Failure to fetch from remote Git repo.")
+        line_list = ["Failure to fetch from remote Git repo."]
+        post_process(gitr, cfg, status1, line_list, msg1)
 
 
 def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge
 
-    Description:  Controls the merging of a non-local repository with a remote
-        repository, but having the non-local repository as the priority
+    Description:  Controls the merging of a local repository with a remote
+        repository, but having the local repository as the priority
         repository.
 
     Arguments:
@@ -346,81 +457,56 @@ def merge(args_array, cfg, log, **kwargs):
 
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
 
-    proj_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
+    git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
-    # Is directory a git repo.
-    if is_git_repo(proj_dir):
+    if is_git_repo(git_dir):
 
-        log.log_info("Processing: %s directory" % (proj_dir))
+        log.log_info("Processing: %s directory" % (git_dir))
 
-        gitrepo = git.Repo(proj_dir)
-        gitcmd = gitrepo.git
+        url = cfg.url + args_array["-r"] + ".git"
 
-        # Set the url to the remote Git repo.
-        # gitcmd.remote('set-url', 'origin',
-        #               'git@gitlab.code.dicelab.net:JAC-IDM/test-merge.git')
-        gitcmd.remote("set-url", "origin", cfg.url + args_array["-r"] + ".git")
+        gitr = git_class.GitMerge(args_array["-r"], git_dir, url, cfg.branch,
+                                  cfg.mod_branch)
+        gitr.create_gitrepo()
+        gitr.set_remote()
 
-        # Does remote git repo exist.
-        if is_remote(gitcmd, cfg.url + args_array["-r"] + ".git"):
+        if gitr.is_remote():
 
-            log.log_info("Processing untracked files")
-            process_untracked(gitrepo, gitcmd)
+            if gitr.is_dirty() or gitr.is_untracked():
 
-            log.log_info("Processing dirty files")
-            process_dirty(gitrepo, gitcmd)
+                log.log_info("Processing dirty files")
+                gitr.process_dirty()
 
-            process_project(cfg.branch, gitcmd, log)
-            gen_libs.mv_file2(proj_dir, cfg.archive_dir)
-            log.log_info("Processing of: %s complete." % (proj_dir))
+                log.log_info("Processing untracked files")
+                gitr.process_untracked()
 
-            # Send notification of completion.
-            subj = "Merge completed for: " + args_array["-r"]
-            body = ["DTG: "
-                    + datetime.datetime.strftime(datetime.datetime.now(),
-                                                 "%Y-%m-%d %H:%M:%S")]
-            body.append("Merge of project has been completed.")
+            if not gitr.is_dirty() and not gitr.is_untracked():
 
-            send_mail(cfg, subj, body)
+                process_project(gitr, cfg, log)
+
+            else:
+                log.log_err("There is still dirty entries in local repo.")
+                line_list = ["There is still dirty entries in local repo."]
+                post_process(gitr, cfg, False, line_list)
 
         else:
-
-            log.log_err("%s.%s does not exist at remote repo: %s" %
-                        (proj_dir, cfg.branch, (gitrepo.remotes.origin.url)))
-
-            # Archive the problem project.
-            gen_libs.mv_file2(proj_dir, cfg.err_dir)
-
-            # Send notification of error.
-            subj = "Merge error for: " + args_array["-r"]
-            body = ["DTG: "
-                    + datetime.datetime.strftime(datetime.datetime.now(),
-                                                 "%Y-%m-%d %H:%M:%S")]
-            body.append("Merge of project has failed.")
-            body.append("Branch does not exist at remote Git.")
-            body.append("Remote URL: " + gitrepo.remotes.origin.url)
-            body.append("Project Dir: " + proj_dir)
-            body.append("Branch: " + cfg.branch)
-
-            send_mail(cfg, subj, body)
+            log.log_err("%s does not exist at remote repo." % (gitr.url))
+            line_list = ["Remote git repository does not exist"]
+            post_process(gitr, cfg, False, line_list)
 
     else:
+        log.log_err("%s is not a local Git repository" % (git_dir))
 
-        log.log_err("%s is not a Git repository" % (proj_dir))
+        subj = "Merge error for: " + git_dir
+        body = ["Local directory is not a Git repository.",
+                "Project Dir: " + git_dir]
+        body.append("DTG: "
+                    + datetime.datetime.strftime(datetime.datetime.now(),
+                                                 "%Y-%m-%d %H:%M:%S"))
 
-        # Archive the problem project.
-        gen_libs.mv_file2(proj_dir, cfg.err_dir)
+        send_mail(cfg.to_line, subj, body)
 
-        # Send notification of error.
-        subj = "Merge error for: " + args_array["-r"]
-        body = ["DTG: " +
-                datetime.datetime.strftime(datetime.datetime.now(),
-                                           "%Y-%m-%d %H:%M:%S")]
-        body.append("Merge of project has failed.")
-        body.append("Local Git repository does not exist.")
-        body.append("Project Dir: " + proj_dir)
-
-        send_mail(cfg, subj, body)
+        move(git_dir, cfg.err_dir)
 
 
 def run_program(args_array, func_dict, **kwargs):

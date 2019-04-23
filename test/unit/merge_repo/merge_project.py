@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  process_project.py
+"""Program:  merge_project.py
 
-    Description:  Unit testing of process_project in merge_repo.py.
+    Description:  Unit testing of merge_project in merge_repo.py.
 
     Usage:
-        test/unit/merge_repo/process_project.py
+        test/unit/merge_repo/merge_project.py
 
     Arguments:
         None
@@ -105,10 +105,10 @@ class UnitTest(unittest.TestCase):
         self.msg = {}
         self.msg2 = {"Error": "Code"}
 
-    @mock.patch("merge_repo.merge_project")
+    @mock.patch("merge_repo.post_check")
     @mock.patch("merge_repo.git_class.GitMerge")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_status3_true(self, mock_log, mock_git, mock_merge):
+    def test_status3_true(self, mock_log, mock_git, mock_check):
 
         """Function:  test_status3_true
 
@@ -120,13 +120,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
-        mock_git.rename_br.return_value = (self.status, self.msg)
-        mock_git.git_co.return_value = (self.status, self.msg)
-        mock_merge.return_value = True
+        mock_git.priority_merge.return_value = (self.status, self.msg)
+        mock_git.git_pu.side_effect = [(self.status, self.msg),
+                                       (self.status, self.msg)]
+        mock_check.return_value = True
 
-        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
-                                                    mock_log))
+        self.assertFalse(merge_repo.merge_project(mock_git, self.cfg,
+                                                  mock_log))
 
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class.GitMerge")
@@ -143,15 +143,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
-        mock_git.rename_br.return_value = (self.status, self.msg)
-        mock_git.git_co.return_value = (self.status2, self.msg2)
-        mock_git.mod_branch.return_value = "Mod_Branch"
-        mock_git.branch.return_value = "Master"
+        mock_git.priority_merge.return_value = (self.status, self.msg)
+        mock_git.git_pu.side_effect = [(self.status, self.msg),
+                                       (self.status2, self.msg2)]
         mock_post.return_value = True
 
-        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
-                                                    mock_log))
+        self.assertFalse(merge_repo.merge_project(mock_git, self.cfg,
+                                                  mock_log))
 
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class.GitMerge")
@@ -168,15 +166,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
-        mock_git.rename_br.return_value = (self.status, self.msg)
-        mock_git.git_co.return_value = (self.status2, self.msg2)
-        mock_git.mod_branch.return_value = "Mod_Branch"
-        mock_git.branch.return_value = "Master"
+        mock_git.priority_merge.return_value = (self.status, self.msg)
+        mock_git.git_pu.side_effect = [(self.status, self.msg),
+                                       (self.status2, self.msg2)]
         mock_post.return_value = True
 
-        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
-                                                    mock_log))
+        self.assertFalse(merge_repo.merge_project(mock_git, self.cfg,
+                                                  mock_log))
 
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class.GitMerge")
@@ -193,14 +189,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
-        mock_git.rename_br.return_value = (self.status2, self.msg2)
-        mock_git.mod_branch.return_value = "Mod_Branch"
-        mock_git.branch.return_value = "Master"
+        mock_git.priority_merge.return_value = (self.status, self.msg)
+        mock_git.git_pu.return_value = (self.status2, self.msg2)
         mock_post.return_value = True
 
-        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
-                                                    mock_log))
+        self.assertFalse(merge_repo.merge_project(mock_git, self.cfg,
+                                                  mock_log))
 
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class.GitMerge")
@@ -217,14 +211,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
-        mock_git.rename_br.return_value = (self.status2, self.msg2)
-        mock_git.mod_branch.return_value = "Mod_Branch"
-        mock_git.branch.return_value = "Master"
+        mock_git.priority_merge.return_value = (self.status, self.msg)
+        mock_git.git_pu.return_value = (self.status2, self.msg2)
         mock_post.return_value = True
 
-        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
-                                                    mock_log))
+        self.assertFalse(merge_repo.merge_project(mock_git, self.cfg,
+                                                  mock_log))
 
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class.GitMerge")
@@ -241,11 +233,13 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status2, self.msg2)
+        mock_git.priority_merge.return_value = (self.status2, self.msg2)
+        mock_git.mod_branch.return_value = "Mod_Branch"
+        mock_git.branch.return_value = "Master"
         mock_post.return_value = True
 
-        self.assertFalse(merge_repo.process_project(mock_git, self.cfg,
-                                                    mock_log))
+        self.assertFalse(merge_repo.merge_project(mock_git, self.cfg,
+                                                  mock_log))
 
 
 if __name__ == "__main__":

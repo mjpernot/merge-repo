@@ -21,5 +21,8 @@ to_line="Mark.J.Pernot@coe.ic.gov"
 log_file="/home/mark.j.pernot/merge/logs/merge-repo.log"
 
 # Do not modify unless you know what you are doing.
-# Branch on which the merge will take place on.
-branch="master"
+# Remote branch on which the merge will take place on.
+branch="develop"
+
+# Name of temporary branch on local git repo.
+mod_branch="mod_release"

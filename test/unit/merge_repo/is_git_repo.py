@@ -103,7 +103,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test is_git_repo function.
 
         Arguments:
-            mock_git -> Mock Ref:  merge_repo.git
+            None
 
         """
 
