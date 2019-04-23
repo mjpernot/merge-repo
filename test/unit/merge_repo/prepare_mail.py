@@ -132,7 +132,6 @@ class UnitTest(unittest.TestCase):
         for key in self.msg.keys():
             test_body.append("%s: %s" % (key, self.msg[key]))
 
-
         test_body.append("URL: " + self.gitr.url)
         test_body.append("Git Dir: " + self.gitr.git_dir)
         test_body.append("Branch: " + self.gitr.branch)
