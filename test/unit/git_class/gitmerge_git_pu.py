@@ -93,6 +93,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_git_pu_tags -> Test with passing tags option.
         test_git_pu_2 -> Test with raised exception - 2 status.
         test_git_pu_128 -> Test with raised exception - 128 status.
         test_git_pu_true -> Test with successful ls_remote call.
@@ -118,6 +119,23 @@ class UnitTest(unittest.TestCase):
 
         self.gitr = git_class.GitMerge(self.repo_name, self.git_dir, self.url,
                                        self.branch, self.mod_branch)
+
+    def test_git_pu_tags(self):
+
+        """Function:  test_git_pu_tags
+
+        Description:  Test with passing tags option.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'push')
+        self.gitr.gitcmd = GIT(push)
+
+        status, msg = self.gitr.git_pu(tags=True)
+        self.assertEqual((status, msg), (True, {}))
 
     def test_git_pu_2(self):
 
