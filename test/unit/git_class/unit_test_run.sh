@@ -21,6 +21,10 @@ echo "Unit test:  gitmerge_is_remote"
 test/unit/git_class/gitmerge_is_remote.py
 
 echo ""
+echo "Unit test:  gitmerge_process_dirty"
+test/unit/git_class/gitmerge_process_dirty.py
+
+echo ""
 echo "Unit test:  gitclass_init"
 test/unit/git_class/gitclass_init.py
 
