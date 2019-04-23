@@ -450,7 +450,7 @@ class GitMerge(GitClass):
 
                 time.sleep(5)
                 cnt += 1
-                git_pu(cnt)
+                status, msg = self.git_pu(cnt)
 
             else:
 
