@@ -210,7 +210,6 @@ class GitMerge(GitClass):
 
         """
 
-        print(type(self.gitrepo))
         # Process deleted files.
         rm_files = [item.a_path for item in self.gitrepo.index.diff(None)
                     if item.change_type == "D"]
