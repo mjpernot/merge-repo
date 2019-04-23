@@ -157,7 +157,7 @@ class UnitTest(unittest.TestCase):
 
         """Function:  test_git_fetch_true
 
-        Description:  Test with successful ls_remote call.
+        Description:  Test with successful git_fetch call.
 
         Arguments:
             None
