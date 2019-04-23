@@ -21,6 +21,7 @@ coverage run -a --source=git_class test/unit/git_class/gitmerge_rename_br.py
 coverage run -a --source=git_class test/unit/git_class/gitmerge_git_co.py
 coverage run -a --source=git_class test/unit/git_class/gitmerge_priority_merge.py
 coverage run -a --source=git_class test/unit/git_class/gitmerge_git_pu.py
+coverage run -a --source=git_class test/unit/git_class/gitmerge_commits_diff.py
 coverage run -a --source=git_class test/unit/git_class/gitclass_init.py
 coverage run -a --source=git_class test/unit/git_class/gitclass_create_repo.py
 coverage run -a --source=git_class test/unit/git_class/gitclass_create_cmd.py
