@@ -544,7 +544,7 @@ class GitMerge(GitClass):
         """
 
         try:
-            self.br_commit = gitcmd.rev_parse("--verify", branch)
+            self.br_commit = self.gitcmd.rev_parse("--verify", branch)
             return True
 
         except git.exc.GitCommandError:
