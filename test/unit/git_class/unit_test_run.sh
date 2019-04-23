@@ -69,6 +69,10 @@ echo "Unit test:  gitmerge_is_commits_behind"
 test/unit/git_class/gitmerge_is_commits_behind.py
 
 echo ""
+echo "Unit test:  gitmerge_is_remote_branch"
+test/unit/git_class/gitmerge_is_remote_branch.py
+
+echo ""
 echo "Unit test:  gitclass_init"
 test/unit/git_class/gitclass_init.py
 
