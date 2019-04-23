@@ -29,6 +29,7 @@ pipeline {
                 ./test/unit/git_class/gitmerge_git_pu.py
                 ./test/unit/git_class/gitmerge_commits_diff.py
                 ./test/unit/git_class/gitmerge_is_commits_ahead.py
+                ./test/unit/git_class/gitmerge_is_commits_behind.py
                 ./test/unit/git_class/gitclass_init.py
                 ./test/unit/git_class/gitclass_create_repo.py
                 ./test/unit/git_class/gitclass_create_cmd.py
