@@ -305,7 +305,7 @@ class GitMerge(GitClass):
 
                 time.sleep(5)
                 cnt += 1
-                git_fetch(cnt)
+                status, msg = self.git_fetch(cnt)
 
             else:
 
