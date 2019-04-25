@@ -289,6 +289,12 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
 
     """
 
+    if line_list is not None:
+        line_list = list(line_list)
+
+    if msg is not None:
+        msg = dict(msg)
+
     subj, body = prepare_mail(gitr, status, line_list, msg)
     send_mail(cfg.to_line, subj, body)
 
