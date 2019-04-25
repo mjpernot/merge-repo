@@ -299,8 +299,7 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
     send_mail(cfg.to_line, subj, body)
 
     dest_dir = os.path.basename(gitr.git_dir) + "." \
-               + datetime.datetime.strftime(datetime.datetime.now(),
-                                            "%Y%m%d_%H%M%S")
+        + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
 
     if status:
         move(gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
@@ -530,9 +529,8 @@ def merge(args_array, cfg, log, **kwargs):
         send_mail(cfg.to_line, subj, body)
 
         dest_dir = os.path.basename(git_dir) + "." \
-                   + datetime.datetime.strftime(datetime.datetime.now(),
-                                                "%Y%m%d_%H%M%S")
-
+            + datetime.datetime.strftime(datetime.datetime.now(),
+                                         "%Y%m%d_%H%M%S")
 
         move(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
