@@ -11,6 +11,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - send_mail:  Added newline for each line in email.
 - post_check:  Added branch name as arg to is_commits_ahead and is_commits_behind calls.
 
+### Changed
+- merge_project:  Added additional logging error statements.
+
 
 ## [0.0.3] - 2019-04-03
 ### Added
