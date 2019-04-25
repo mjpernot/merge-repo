@@ -266,8 +266,7 @@ def move(from_dir, to_dir, **kwargs):
     gen_libs.mv_file2(from_dir, to_dir)
 
 
-def post_process(gitr, cfg, status, line_list=None, msg=None,
-                 **kwargs):
+def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
 
     """Function:  post_process
 
