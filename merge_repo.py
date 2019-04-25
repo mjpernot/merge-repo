@@ -223,7 +223,7 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
 
     body = []
 
-    if not status:
+    if status:
         subj = "Merge completed for: " + gitr.repo_name
         body.append("Merge of project has been completed.")
 

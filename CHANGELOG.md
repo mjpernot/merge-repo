@@ -7,6 +7,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [0.0.4] - 2019-04-24
 ### Fixed
 - process_project:  Corrected call to git_fetch method.
+- prepare_mail:  Corrected logic in 'if' statement.
 
 
 ## [0.0.3] - 2019-04-03
