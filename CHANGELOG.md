@@ -11,6 +11,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - prepare_mail:  Fixed problem with mutable default arguments issue.
 - post_process:  Fixed problem with mutable default arguments issue.
 - merge:  Fixed problem with mutable default arguments issue.
+- run_program:  Fixed problem with mutable default arguments issue.
 - send_mail:  Added newline for each line in email.
 - post_check:  Added branch name as arg to is_commits_ahead and is_commits_behind calls.
 
