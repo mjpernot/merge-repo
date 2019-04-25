@@ -196,7 +196,7 @@ def send_mail(to_line, subj, mail_body, **kwargs):
     email = gen_class.Mail(to_line, subj, frm_line)
 
     for line in body:
-        email.add_2_msg(line)
+        email.add_2_msg(line + "\n")
 
     email.send_mail()
 
