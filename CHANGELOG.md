@@ -13,6 +13,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - merge_project:  Added additional logging error statements.
+- process_project:  Added additional logging error statements.
 
 
 ## [0.0.3] - 2019-04-03
