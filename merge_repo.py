@@ -221,6 +221,12 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
     if line_list is None:
         line_list = []
 
+    else:
+        line_list = list(line_list)
+
+    if msg is not None:
+        msg = dict(msg)
+
     body = []
 
     if status:
