@@ -298,11 +298,15 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
     subj, body = prepare_mail(gitr, status, line_list, msg)
     send_mail(cfg.to_line, subj, body)
 
+    dest_dir = os.path.basename(gitr.git_dir) + "." \
+               + datetime.datetime.strftime(datetime.datetime.now(),
+                                            "%Y%m%d_%H%M%S")
+
     if status:
-        move(gitr.git_dir, cfg.archive_dir)
+        move(gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
 
     else:
-        move(gitr.git_dir, cfg.err_dir)
+        move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
 def post_check(gitr, cfg, log, **kwargs):
