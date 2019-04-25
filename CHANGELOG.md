@@ -17,6 +17,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - post_process:  Added datetime to destination directory for the archiving of the repo.
+- merge:  Added datetime to destination directory for the archiving of the repo.
 - merge_project:  Added additional logging error statements.
 - process_project:  Added additional logging error statements.
 

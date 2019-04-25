@@ -529,7 +529,12 @@ def merge(args_array, cfg, log, **kwargs):
 
         send_mail(cfg.to_line, subj, body)
 
-        move(git_dir, cfg.err_dir)
+        dest_dir = os.path.basename(git_dir) + "." \
+                   + datetime.datetime.strftime(datetime.datetime.now(),
+                                                "%Y%m%d_%H%M%S")
+
+
+        move(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
 def run_program(args_array, func_dict, **kwargs):
