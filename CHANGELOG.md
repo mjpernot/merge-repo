@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - process_project:  Corrected call to git_fetch method.
 - prepare_mail:  Corrected logic in 'if' statement.
 - send_mail:  Added newline for each line in email.
+- post_check:  Added branch name as arg to is_commits_ahead and is_commits_behind calls.
 
 
 ## [0.0.3] - 2019-04-03

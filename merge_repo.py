@@ -310,8 +310,8 @@ def post_check(gitr, cfg, log, **kwargs):
 
     log.log_info("Post checking...")
 
-    ahead = gitr.is_commits_ahead()
-    behind = gitr.is_commits_behind()
+    ahead = gitr.is_commits_ahead(gitr.branch)
+    behind = gitr.is_commits_behind(gitr.branch)
 
     if ahead or behind:
 
