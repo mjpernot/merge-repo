@@ -470,6 +470,8 @@ def merge(args_array, cfg, log, **kwargs):
 
     """
 
+    args_array = dict(args_array)
+
     log.log_info("Starting merge of:  %s" % (args_array["-r"]))
 
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
