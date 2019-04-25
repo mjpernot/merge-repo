@@ -404,7 +404,7 @@ def process_project(gitr, cfg, log, **kwargs):
     """
 
     log.log_info("Fetching and setting up branches.")
-    status1, msg1 = gitr.fetch()
+    status1, msg1 = gitr.git_fetch()
 
     if status1:
 
