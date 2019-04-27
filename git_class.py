@@ -436,7 +436,7 @@ class GitMerge(GitClass):
 
         status = True
         msg = {}
-        option = ""
+        option = None
 
         if tags:
             option = "--tags"
