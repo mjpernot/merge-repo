@@ -11,14 +11,11 @@
         branches have been merged the updated branch will be pushed back to
         the remote Git repository.
 
-        NOTE 1:  The local Git repo will be marked as the priority, which
-            means the local Git repo will have priority over the changes
-            made to the project.
-        NOTE 2:  The default branch to be merged will be the master branch.
-            This can be changed in the configuration file, but is not
-            recommended.
-        NOTE 3:  The external local Git repository must come in as a detached
-            head repository with no named branches for the merge to take place.
+        NOTE 1:  The external Git repo being imported will have priority during
+            the merge.  This means that the imported Git repo will have
+            precedence over the changes made to the remote Git repo.
+        NOTE 2:  The external local Git repository must come in as a detached
+            head repository and with no named branches in the repository.
 
     Usage:
         merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
@@ -61,7 +58,10 @@
 
             # Do not modify unless you know what you are doing.
             # Branch on which the merge will take place on.
-            branch="master"
+            branch="develop"
+
+            # Name of temporary branch on local git repo.
+            mod_branch="mod_release"
 
     Examples:
         merge_repo.py -c merge -d config -r hp-python-lib
