@@ -266,7 +266,7 @@ class GitMerge(GitClass):
         if self.new_files:
 
             if option == "add":
-                self.gitrepo.index.add(new_files)
+                self.gitrepo.index.add(self.new_files)
                 self.gitrepo.index.commit("Add new files")
 
             elif option == "remove":
