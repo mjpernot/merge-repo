@@ -135,14 +135,15 @@ class Diff(Index):
 
         return True
 
-    def add(self, chg_files):
+    def checkout(self, chg_files, force):
 
-        """Method:  add
+        """Method:  checkout
 
-        Description:  Method stub holder for git.gitrepo.index.add().
+        Description:  Method stub holder for git.gitrepo.index.checkout().
 
         Arguments:
             chg_files -> Stub holder.
+            force -> Stub holder.
 
         """
 
@@ -178,6 +179,8 @@ class UnitTest(unittest.TestCase):
         test_process_no_chgfiles -> Test with no chg_files present.
         test_process_no_rmfiles -> Test with no rm_files present.
         test_process_all_true -> Test with all if statements are True.
+        test_chg_files_empty -> Test with chg_files is empty,
+        test_rm_files_empty -> Test with rm_files is empty.
 
     """
 
@@ -197,6 +200,8 @@ class UnitTest(unittest.TestCase):
         self.url = "URL"
         self.branch = "Remote_branch"
         self.mod_branch = "Mod_branch"
+        self.rm_files = []
+        self.chg_files = []
 
         self.gitr = git_class.GitMerge(self.repo_name, self.git_dir, self.url,
                                        self.branch, self.mod_branch)
@@ -265,6 +270,40 @@ class UnitTest(unittest.TestCase):
 
         GIT = collections.namedtuple('GIT', 'index')
         DIFF = Diff(1)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.assertFalse(self.gitr.process_dirty())
+
+    def test_chg_files_empty(self):
+
+        """Function:  test_chg_files_empty
+
+        Description:  Test with chg_files is empty.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(3)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.assertFalse(self.gitr.process_dirty())
+
+    def test_rm_files_empty(self):
+
+        """Function:  test_rm_files_empty
+
+        Description:  Test with rm_files is empty.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(3)
         self.gitr.gitrepo = GIT(DIFF)
 
         self.assertFalse(self.gitr.process_dirty())
