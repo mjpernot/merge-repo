@@ -77,6 +77,10 @@ echo "Unit test:  gitmerge_get_dirty"
 test/unit/git_class/gitmerge_get_dirty.py
 
 echo ""
+echo "Unit test:  gitmerge_get_untracked"
+test/unit/git_class/gitmerge_get_untracked.py
+
+echo ""
 echo "Unit test:  gitclass_init"
 test/unit/git_class/gitclass_init.py
 
