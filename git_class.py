@@ -20,6 +20,7 @@ import time
 import git
 
 # Local
+import lib.gen_libs as gen_libs
 import version
 
 # Version
@@ -246,7 +247,7 @@ class GitMerge(GitClass):
                 self.gitrepo.index.add(self.chg_files)
                 self.gitrepo.index.commit("Commit modified files")
 
-    def process_untracked(self, option=None, **kwargs):
+    def process_untracked(self, option="remove", **kwargs):
 
         """Function:  process_untracked
 
