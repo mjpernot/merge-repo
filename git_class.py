@@ -110,6 +110,8 @@ class GitMerge(GitClass):
         is_remote -> Checks to see if remote git repository exists.
         process_dirty -> Process any dirty files.
         process_untracked -> Process any untracked files.
+        get_dirty -> Find any dirty (i.e. removed or modified) files.
+        get_untracked -> Find any untracked (i.e. new) files.
         is_dirty -> Check to see if there is any dirty objects.
         is_untracked -> Check to see if there is any new objects not tracked.
         rename_br -> Rename the current branch to a new name.
@@ -148,6 +150,9 @@ class GitMerge(GitClass):
         self.branch = branch
         self.remote_info = None
         self.br_commit = None
+        self.rm_files = []
+        self.chg_files = []
+        self.new_files = []
 
     def create_gitrepo(self, **kwargs):
 
@@ -198,42 +203,88 @@ class GitMerge(GitClass):
         except git.exc.GitCommandError:
             return False
 
-    def process_dirty(self, **kwargs):
+    def process_dirty(self, option="revert", **kwargs):
 
         """Function:  process_dirty
 
         Description:  Process any dirty files.
 
         Arguments:
+            (input) option -> revert|commit - options for the changes.
             (input) **kwargs:
                 None
 
         """
 
         # Process deleted files.
-        rm_files = [item.a_path for item in self.gitrepo.index.diff(None)
-                    if item.change_type == "D"]
+        if not self.rm_files:
+            self.rm_files = [item.a_path
+                             for item in self.gitrepo.index.diff(None)
+                             if item.change_type == "D"]
 
-        if rm_files:
-            self.gitrepo.index.remove(rm_files, working_tree=True)
+        if self.rm_files:
+
+            if option == "revert":
+                self.gitrepo.index.checkout(self.rm_files, force=True)
+
+            elif option == "commit":
+                self.gitrepo.index.remove(self.rm_files, working_tree=True)
 
         # Process modified files.
-        chg_files = [item.a_path for item in self.gitrepo.index.diff(None)
-                     if item.change_type == "M"]
+        if not self.chg_files:
+            self.chg_files = [item.a_path
+                              for item in self.gitrepo.index.diff(None)
+                              if item.change_type == "M"]
 
-        if chg_files:
-            self.gitrepo.index.add(chg_files)
+        if self.chg_files:
 
-        msg = "Added dirty files"
+            if option == "revert":
+                self.gitrepo.index.checkout(self.chg_files, force=True)
 
-        if rm_files or chg_files:
+            elif option == "commit":
+                self.gitrepo.index.add(self.chg_files)
+
+            self.gitrepo.index.checkout(self.chg_files, force=True)
+
+        msg = "Cleaned up dirty files"
+
+        if self.rm_files:
             self.gitrepo.index.commit(msg)
 
-    def process_untracked(self, **kwargs):
+    def process_untracked(self, option=None, **kwargs):
 
         """Function:  process_untracked
 
         Description:  Process any untracked (new) files.
+
+        Arguments:
+            (input) option -> add|remove - Options allowed for untracked files.
+            (input) **kwargs:
+                None
+
+        """
+
+        if not self.new_files:
+            self.new_files = self.gitrepo.untracked_files
+
+        if self.new_files:
+
+            if option == "add":
+                msg = "Added new files"
+                self.gitrepo.index.add(new_files)
+                self.gitrepo.index.commit(msg)
+
+            elif option == "remove":
+
+                for f_name in self.new_files:
+                    gen_libs.rm_file(os.path.join(self.git_dir, f_name))
+
+    def get_dirty(self, **kwargs):
+
+        """Function:  get_dirty
+
+        Description:  Find any dirty (i.e. removed or modified) files and
+            update appropriate attributes.
 
         Arguments:
             (input) **kwargs:
@@ -241,12 +292,28 @@ class GitMerge(GitClass):
 
         """
 
-        new_files = self.gitrepo.untracked_files
+        # Deleted files.
+        self.rm_files = [item.a_path for item in self.gitrepo.index.diff(None)
+                         if item.change_type == "D"]
 
-        if new_files:
-            msg = "Added new files"
-            self.gitrepo.index.add(new_files)
-            self.gitrepo.index.commit(msg)
+        # Modified files.
+        self.chg_files = [item.a_path for item in self.gitrepo.index.diff(None)
+                          if item.change_type == "M"]
+
+    def get_untracked(self, **kwargs):
+
+        """Function:  get_untracked
+
+        Description:  Find any untracked (i.e. new) files and update
+            appropriate attribute.
+
+        Arguments:
+            (input) **kwargs:
+                None
+
+        """
+
+        self.new_files = self.gitrepo.untracked_files
 
     def is_dirty(self, **kwargs):
 
