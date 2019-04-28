@@ -229,6 +229,7 @@ class GitMerge(GitClass):
 
             elif option == "commit":
                 self.gitrepo.index.remove(self.rm_files, working_tree=True)
+                self.gitrepo.index.commit("Commit removed files")
 
         # Process modified files.
         if not self.chg_files:
@@ -243,13 +244,7 @@ class GitMerge(GitClass):
 
             elif option == "commit":
                 self.gitrepo.index.add(self.chg_files)
-
-            self.gitrepo.index.checkout(self.chg_files, force=True)
-
-        msg = "Cleaned up dirty files"
-
-        if self.rm_files:
-            self.gitrepo.index.commit(msg)
+                self.gitrepo.index.commit("Commit modified files")
 
     def process_untracked(self, option=None, **kwargs):
 
