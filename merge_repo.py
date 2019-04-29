@@ -49,6 +49,9 @@
 
             # Directory where projects will be archived after a merge.
             archive_dir="{PATH_DIRECTORY}/archive_dir"
+            
+            # Directory where project items will be quarantined.
+            quar_dir="/home/mark.j.pernot/merge/quarantine"
 
             # Email addresses for notification.
             to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
