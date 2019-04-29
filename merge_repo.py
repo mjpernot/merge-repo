@@ -606,6 +606,9 @@ def merge(args_array, cfg, log, **kwargs):
         if gitr.is_remote():
 
             if gitr.is_dirty() or gitr.is_untracked():
+                
+                log.log_info("Quarantine process running")
+                quarantine(gitr, cfg, log)
 
                 log.log_info("Processing dirty files")
                 gitr.process_dirty()
