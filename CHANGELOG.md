@@ -22,6 +22,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - merge:  Added quarantine function call to quarantine new/modified files.
+- prepare_mail:  Replaced post body mail lines with call to post_body function.
 - post_process:  Added datetime to destination directory for the archiving of the repo.
 - merge:  Added datetime to destination directory for the archiving of the repo.
 - merge_project:  Added additional logging error statements.
