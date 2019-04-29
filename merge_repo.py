@@ -383,6 +383,59 @@ def post_check(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, True, line_list)
 
 
+def quarantine_files(gitr, cfg, log, status=None, **kwargs):
+
+    """Function:  quarantine_files
+
+    Description:  Copy files out of Git repo into a quarantine directory.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) status -> added|modified - Status of the file for quarantine.
+        (input) **kwargs:
+            None
+
+    """
+    
+    if status == "added":
+        file_list = list(gitr.new_files)
+    
+    elif status == "modified":
+        file_list = list(gitr.cchf_files)
+    
+    else:
+        file_list = []
+    
+    for item in file_list:
+        
+        log.log_info("Quarantine %s file: %s to %s" % 
+            (status, item, cfg.quarantine))
+        
+        q_file = item + gitr.repo_name \
+            + datetime.datetime.strftime(datetime.datetime.now(),
+                                         "%Y%m%d_%H%M%S")
+        
+        # Need to check this func call, might be cp_file2.
+        # Or do I create a repo_name dir and place the item in there?
+        gen_libs.cp_file(os.join.path(gitr.git_dir, item),
+                         os.join.path(cfg.quar_dir, q_file))
+        
+        subj = "File quaratine: %s in Git Repo: %s" %
+            (item, gitr.repo_name))
+        
+        body = []
+        body.append("Git Repo: %s" % (gitr.repo_name))
+        body.append("File: %s quaratine to %s" % 
+            (item, os.join.path(cfg.quar_dir, q_file)))
+        body.append("Reason:  File has been %s" % (status))
+        
+        body = post_body(gitr, body)
+        
+        send_mail(cfg.to_line, subj, body)
+
+
 def merge_project(gitr, cfg, log, **kwargs):
 
     """Function:  merge_project
