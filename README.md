@@ -63,7 +63,7 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
 
 # Program Descriptions:
-### Description: The program is designed to take a local Git repository and merge it into an existing Git repository, but make the local Git repository the priority repository.  This is way of a local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
+### Description: The program is designed to take a local Git repository and merge it into an existing Git repository, but make the local Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
 
 
 # Program Help Function:
