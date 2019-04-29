@@ -436,6 +436,33 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         send_mail(cfg.to_line, subj, body)
 
 
+def quarantine(gitr, cfg, log, **kwargs):
+
+    """Function:  quarantine_files
+
+    Description:  Get dirty and untracked files and quarantine them.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+    
+    log.log_info("Quarantine process running")
+    
+    gitr.get_dirty()
+    gitr.get_untracked()
+    
+    if gitr.chg_files:
+        quarantine_files(gitr, cfg, log, status="modified")
+    
+    if gitr.new_files:
+        quarantine_files(gitr, cfg, log, status="added")
+    
+
 def merge_project(gitr, cfg, log, **kwargs):
 
     """Function:  merge_project
