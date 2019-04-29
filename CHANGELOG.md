@@ -8,6 +8,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Added
 - post_body:  Append default post-header to mail body.
 - quarantine_files:  Copy files out of Git repo into a quarantine directory.
+- quarantine:  Get dirty and untracked files and quarantine them.
 
 ### Fixed
 - process_project:  Corrected call to git_fetch method.
