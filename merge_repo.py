@@ -426,8 +426,7 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         gen_libs.cp_file(os.join.path(gitr.git_dir, item),
                          os.join.path(cfg.quar_dir, q_file))
         
-        subj = "File quaratine: %s in Git Repo: %s" %
-            (item, gitr.repo_name))
+        subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
         
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
