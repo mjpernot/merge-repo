@@ -33,6 +33,7 @@ coverage run -a --source=git_class test/unit/git_class/gitclass_create_cmd.py
 coverage run -a --source=merge_repo test/unit/merge_repo/merge.py
 coverage run -a --source=merge_repo test/unit/merge_repo/process_project.py
 coverage run -a --source=merge_repo test/unit/merge_repo/send_mail.py
+coverage run -a --source=merge_repo test/unit/merge_repo/post_body.py
 coverage run -a --source=merge_repo test/unit/merge_repo/prepare_mail.py
 coverage run -a --source=merge_repo test/unit/merge_repo/move.py
 coverage run -a --source=merge_repo test/unit/merge_repo/post_process.py

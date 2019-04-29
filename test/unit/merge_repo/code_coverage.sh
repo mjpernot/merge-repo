@@ -18,6 +18,7 @@ coverage run -a --source=merge_repo test/unit/merge_repo/post_process.py
 coverage run -a --source=merge_repo test/unit/merge_repo/post_check.py
 coverage run -a --source=merge_repo test/unit/merge_repo/merge_project.py
 coverage run -a --source=merge_repo test/unit/merge_repo/send_mail.py
+coverage run -a --source=merge_repo test/unit/merge_repo/post_body.py
 coverage run -a --source=merge_repo test/unit/merge_repo/help_message.py
 coverage run -a --source=merge_repo test/unit/merge_repo/run_program.py
 coverage run -a --source=merge_repo test/unit/merge_repo/main.py
