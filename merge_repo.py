@@ -201,6 +201,37 @@ def send_mail(to_line, subj, mail_body, **kwargs):
     email.send_mail()
 
 
+def post_body(gitr, body=None, **kwargs):
+
+    """Function:  post_body
+
+    Description:  Append default post-header to mail body.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) body -> Mail list body.
+        (input) **kwargs:
+            None
+        (output) body -> Body of the email.
+
+    """
+
+    if body is None:
+        body = []
+
+    else:
+        body = list(body)
+    
+    body.append("URL: " + gitr.url)
+    body.append("Git Dir: " + gitr.git_dir)
+    body.append("Branch: " + gitr.branch)
+
+    body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S"))
+
+    return body
+
+
 def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
 
     """Function:  prepare_mail
