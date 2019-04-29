@@ -276,12 +276,13 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
             for key in msg.keys():
                 body.append("%s: %s" % (key, msg[key]))
 
-        body.append("URL: " + gitr.url)
-        body.append("Git Dir: " + gitr.git_dir)
-        body.append("Branch: " + gitr.branch)
+    body = post_body(gitr, body)
 
-    body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d %H:%M:%S"))
+    #body.append("URL: " + gitr.url)
+    #body.append("Git Dir: " + gitr.git_dir)
+    #body.append("Branch: " + gitr.branch)
+    #body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+    #                                                 "%Y-%m-%d %H:%M:%S"))
 
     return subj, body
 
