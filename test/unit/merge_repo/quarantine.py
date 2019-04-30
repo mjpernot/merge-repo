@@ -49,7 +49,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_status3_true -> Test with status3 set to True.
+        test_empty_lists -> Test with chg_files & new_files are empty lists.
 
     """
 
@@ -94,16 +94,73 @@ class UnitTest(unittest.TestCase):
                 self.err_dir = "/Error/Directory"
                 self.to_line = "to@domain"
 
+        class GitMerge(object):
+
+            """Class:  GitMerge
+
+            Description:  Class which is a representation of GitMerge module.
+
+            Super-Class:  object
+
+            Sub-Classes:  None
+
+            Methods:
+                __init__ -> Initialize configuration environment.
+                get_dirty -> Stub holder for the GitMerge.get_dirty method.
+                get_untracked -> Stub holder for GitMerge.get_untracked method.
+
+            """
+
+            def __init__(self):
+
+                """Method:  __init__
+
+                Description:  Initialization instance of the GitMerge class.
+
+                Arguments:
+                        None
+
+                """
+
+                self.chg_files = []
+                self.new_files = []
+
+            def get_dirty(self):
+
+                """Method:  get_dirty
+
+                Description:  Stub holder for the GitMerge.get_dirty method.
+
+                Arguments:
+                        None
+
+                """
+
+                return True
+
+            def get_untracked(self):
+
+                """Method:  get_untracked
+
+                Description:  Stub holder for GitMerge.get_untracked method.
+
+                Arguments:
+                        None
+
+                """
+
+                return True
+
+        self.gitr = GitMerge()
         self.cfg = CfgTest()
 
     @mock.patch("merge_repo.quarantine_files")
-    @mock.patch("merge_repo.git_class.GitMerge")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_status3_true(self, mock_log, mock_git, mock_quar):
+    def test_empty_lists(self, mock_log, mock_quar):
 
-        """Function:  test_status3_true
+        """Function:  test_empty_lists
 
-        Description:  Test with status3 set to True.
+        Description:  Test with both chg_files and new_files are empty lists.
 
         Arguments:
             None
@@ -111,12 +168,9 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.get_dirty.return_value = True
-        mock_git.get_untracked.return_value = True
         mock_quar.return_value = True
 
-        self.assertFalse(merge_repo.quarantine(mock_git, self.cfg,
-                                                    mock_log))
+        self.assertFalse(merge_repo.quarantine(self.gitr, self.cfg, mock_log))
 
 
 if __name__ == "__main__":
