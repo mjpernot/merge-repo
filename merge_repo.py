@@ -401,7 +401,7 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         file_list = list(gitr.new_files)
     
     elif status == "modified":
-        file_list = list(gitr.cchf_files)
+        file_list = list(gitr.chg_files)
     
     else:
         file_list = []
