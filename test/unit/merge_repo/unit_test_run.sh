@@ -37,6 +37,14 @@ echo "Unit test:  send_mail"
 test/unit/merge_repo/send_mail.py
 
 echo ""
+echo "Unit test:  quarantine_files"
+test/unit/merge_repo/quarantine_files.py
+
+echo ""
+echo "Unit test:  quarantine"
+test/unit/merge_repo/quarantine.py
+
+echo ""
 echo "Unit test:  post_body"
 test/unit/merge_repo/post_body.py
 
