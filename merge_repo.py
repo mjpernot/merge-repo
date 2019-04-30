@@ -710,11 +710,15 @@ def main():
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
-    opt_req_list = ["-c", "-d", "-p", "-r"]
+    opt_req_list = ["-c", "-d", "-p"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+
+    # Set Repo Name if not passed
+    if "-r" not in args_array.keys():
+        args_array["-r"] = os.path.basename(args_array["-p"])
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
