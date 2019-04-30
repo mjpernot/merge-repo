@@ -49,6 +49,9 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_both_lists -> Test with both lists with data.
+        test_newfiles_list -> Test with new_files list with data.
+        test_chgfiles_list -> Test with chg_files list with data.
         test_empty_lists -> Test with chg_files & new_files are empty lists.
 
     """
@@ -153,6 +156,67 @@ class UnitTest(unittest.TestCase):
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()
+
+    @mock.patch("merge_repo.quarantine_files")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_both_lists(self, mock_log, mock_quar):
+
+        """Function:  test_both_lists
+
+        Description:  Test with both lists with data.
+
+        Arguments:
+            None
+
+        """
+        
+        self.gitr.new_files = ["File1"]
+        self.gitr.chg_files = ["File2"]
+
+        mock_log.return_value = True
+        mock_quar.return_value = True
+
+        self.assertFalse(merge_repo.quarantine(self.gitr, self.cfg, mock_log))
+
+    @mock.patch("merge_repo.quarantine_files")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_newfiles_list(self, mock_log, mock_quar):
+
+        """Function:  test_newfiles_list
+
+        Description:  Test with new_files list with data.
+
+        Arguments:
+            None
+
+        """
+        
+        self.gitr.new_files = ["File1"]
+
+        mock_log.return_value = True
+        mock_quar.return_value = True
+
+        self.assertFalse(merge_repo.quarantine(self.gitr, self.cfg, mock_log))
+
+    @mock.patch("merge_repo.quarantine_files")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_chgfiles_list(self, mock_log, mock_quar):
+
+        """Function:  test_chgfiles_list
+
+        Description:  Test with chg_files list with data.
+
+        Arguments:
+            None
+
+        """
+        
+        self.gitr.chg_files = ["File1"]
+
+        mock_log.return_value = True
+        mock_quar.return_value = True
+
+        self.assertFalse(merge_repo.quarantine(self.gitr, self.cfg, mock_log))
 
     @mock.patch("merge_repo.quarantine_files")
     @mock.patch("merge_repo.gen_class.Logger")
