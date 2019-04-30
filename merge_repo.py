@@ -417,15 +417,15 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         
         # Need to check this func call, might be cp_file2.
         # Or do I create a repo_name dir and place the item in there?
-        gen_libs.cp_file(os.join.path(gitr.git_dir, item),
-                         os.join.path(cfg.quar_dir, q_file))
+        gen_libs.cp_file(os.path.join(gitr.git_dir, item),
+                         os.path.join(cfg.quar_dir, q_file))
         
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
         
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("File: %s quaratine to %s" % 
-            (item, os.join.path(cfg.quar_dir, q_file)))
+            (item, os.path.join(cfg.quar_dir, q_file)))
         body.append("Reason:  File has been %s" % (status))
         
         body = post_body(gitr, body)
