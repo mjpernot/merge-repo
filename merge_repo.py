@@ -415,10 +415,8 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
         
-        # Need to check this func call, might be cp_file2.
-        # Or do I create a repo_name dir and place the item in there?
-        gen_libs.cp_file(os.path.join(gitr.git_dir, item),
-                         os.path.join(cfg.quar_dir, q_file))
+        gen_libs.cp_file(os.path.join(gitr.git_dir, item), cfg.quar_dir,
+                         q_file)
         
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
         
