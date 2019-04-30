@@ -454,9 +454,11 @@ def quarantine(gitr, cfg, log, **kwargs):
     gitr.get_untracked()
     
     if gitr.chg_files:
+        log.log_info("Quarantine modified files")
         quarantine_files(gitr, cfg, log, status="modified")
     
     if gitr.new_files:
+        log.log_info("Quarantine added files")
         quarantine_files(gitr, cfg, log, status="added")
     
 
