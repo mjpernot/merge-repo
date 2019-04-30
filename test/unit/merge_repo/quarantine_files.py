@@ -49,6 +49,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_modified_no_list -> Test status set to modified with empty list.
         test_added_no_list -> Test with status set to added with empty list.
         test_no_status -> Test with status not set.
         test_modified_status -> Test with status set to modified.
@@ -133,6 +134,24 @@ class UnitTest(unittest.TestCase):
         self.dtg = "2019-04-16 13:51:42"
 
     @mock.patch("merge_repo.gen_class.Logger")
+    def test_modified_no_list(self, mock_log):
+
+        """Function:  test_modified_no_list
+
+        Description:  Test with status set to modified with empty list.
+
+        Arguments:
+            None
+
+        """
+
+        mock_log.return_value = True
+
+        self.assertFalse(merge_repo.quarantine_files(self.gitr, self.cfg,
+                                                     mock_log,
+                                                     status="modified"))
+
+    @mock.patch("merge_repo.gen_class.Logger")
     def test_added_no_list(self, mock_log):
 
         """Function:  test_added_no_list
@@ -145,7 +164,6 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-
 
         self.assertFalse(merge_repo.quarantine_files(self.gitr, self.cfg,
                                                      mock_log, status="added"))
