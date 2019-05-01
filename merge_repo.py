@@ -710,7 +710,7 @@ def main():
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
-    opt_req_list = ["-c", "-d", "-p"]
+    opt_req_list = ["-c", "-d", "-p", "-r"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
