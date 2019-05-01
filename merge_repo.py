@@ -608,10 +608,10 @@ def merge(args_array, cfg, log, **kwargs):
                 quarantine(gitr, cfg, log)
 
                 log.log_info("Processing dirty files")
-                gitr.process_dirty()
+                gitr.process_dirty(option="revert")
 
                 log.log_info("Processing untracked files")
-                gitr.process_untracked()
+                gitr.process_untracked(option="remove")
 
             if not gitr.is_dirty() and not gitr.is_untracked():
 

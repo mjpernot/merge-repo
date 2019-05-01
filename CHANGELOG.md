@@ -23,6 +23,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Changed
 - main:  Set the repo name for -r option if not passed to program using -p option setting.
 - merge:  Added quarantine function call to quarantine new/modified files.
+- merge:  Added arguments to process_dirty and process_untracked method calls.
 - prepare_mail:  Replaced post body mail lines with call to post_body function.
 - post_process:  Added datetime to destination directory for the archiving of the repo.
 - merge:  Added datetime to destination directory for the archiving of the repo.
