@@ -411,16 +411,19 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
 
     for item in file_list:
 
-        log.log_info("quarantine_files:  Quarantined file: %s to %s" % 
-            (item, cfg.quar_dir))
+        log.log_info("quarantine_files:  Quarantined file: %s"
+                     % (cfg.quar_dir))
         log.log_info("quarantine_files:  Reason:  File has been %s" % (status))
 
-        q_file = item + gitr.repo_name \
+        q_file = item + "." + gitr.repo_name + "." \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
 
         gen_libs.cp_file(os.path.join(gitr.git_dir, item), cfg.quar_dir,
                          q_file)
+
+        log.log_info("quarantine_files:  File: %s quarantined to %s"
+                     % (item, os.path.join(cfg.quar_dir, q_file)))
 
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
 
