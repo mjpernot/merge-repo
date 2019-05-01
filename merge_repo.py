@@ -716,24 +716,25 @@ def main():
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
 
-    # Set Repo Name if not passed
-    if "-r" not in args_array.keys():
-        args_array["-r"] = os.path.basename(args_array["-p"])
+    if not gen_libs.help_func(args_array, __version__, help_message):
 
-    if not gen_libs.help_func(args_array, __version__, help_message) \
-       and not arg_parser.arg_require(args_array, opt_req_list) \
-       and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
+        # Set Repo Name if not passed
+        if "-r" not in args_array.keys():
+            args_array["-r"] = os.path.basename(args_array["-p"])
 
-        try:
-            PROG_LOCK = gen_class.ProgramLock(sys.argv,
-                                              args_array.get("-r", ""))
+        if not arg_parser.arg_require(args_array, opt_req_list) \
+           and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
-            run_program(args_array, func_dict)
-            del PROG_LOCK
+            try:
+                PROG_LOCK = gen_class.ProgramLock(sys.argv,
+                                                  args_array.get("-r", ""))
 
-        except gen_class.SingleInstanceException:
-            print("WARNING:  lock in place for merge with id of: %s"
-                  % (args_array.get("-r", "")))
+                run_program(args_array, func_dict)
+                del PROG_LOCK
+
+            except gen_class.SingleInstanceException:
+                print("WARNING:  lock in place for merge with id of: %s"
+                      % (args_array.get("-r", "")))
 
 
 if __name__ == "__main__":
