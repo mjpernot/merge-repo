@@ -401,7 +401,7 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         file_list = list(gitr.new_files)
     
     elif status == "modified":
-        file_list = list(gitr.cchf_files)
+        file_list = list(gitr.chg_files)
     
     else:
         file_list = []
@@ -409,23 +409,21 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
     for item in file_list:
         
         log.log_info("Quarantine %s file: %s to %s" % 
-            (status, item, cfg.quarantine))
+            (status, item, cfg.quar_dir))
         
         q_file = item + gitr.repo_name \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
         
-        # Need to check this func call, might be cp_file2.
-        # Or do I create a repo_name dir and place the item in there?
-        gen_libs.cp_file(os.join.path(gitr.git_dir, item),
-                         os.join.path(cfg.quar_dir, q_file))
+        gen_libs.cp_file(os.path.join(gitr.git_dir, item), cfg.quar_dir,
+                         q_file)
         
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
         
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("File: %s quaratine to %s" % 
-            (item, os.join.path(cfg.quar_dir, q_file)))
+            (item, os.path.join(cfg.quar_dir, q_file)))
         body.append("Reason:  File has been %s" % (status))
         
         body = post_body(gitr, body)
@@ -454,9 +452,11 @@ def quarantine(gitr, cfg, log, **kwargs):
     gitr.get_untracked()
     
     if gitr.chg_files:
+        log.log_info("Quarantine modified files")
         quarantine_files(gitr, cfg, log, status="modified")
     
     if gitr.new_files:
+        log.log_info("Quarantine added files")
         quarantine_files(gitr, cfg, log, status="added")
     
 
@@ -710,11 +710,15 @@ def main():
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
-    opt_req_list = ["-c", "-d", "-p", "-r"]
+    opt_req_list = ["-c", "-d", "-p"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+
+    # Set Repo Name if not passed
+    if "-r" not in args_array.keys():
+        args_array["-r"] = os.path.basename(args_array["-p"])
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \
