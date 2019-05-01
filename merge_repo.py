@@ -352,30 +352,33 @@ def post_check(gitr, cfg, log, **kwargs):
 
     """
 
-    log.log_info("Post checking...")
+    log.log_info("post_check:  Post checking...")
 
     ahead = gitr.is_commits_ahead(gitr.branch)
     behind = gitr.is_commits_behind(gitr.branch)
 
     if ahead or behind:
 
-        log.log_err("Local repo is not in sync with remote repo")
+        log.log_err("post_check:  Local repo is not in sync with remote repo")
 
         if ahead:
 
-            log.log_err("Local repo is %s commits ahead of remote." % (ahead))
+            log.log_err("post_check: Local repo is %s commits ahead of remote."
+                        % (ahead))
             line_list = ["Local repo is %s commits ahead of remote." % (ahead)]
 
         else:
 
-            log.log_err("Local repo is %s commits behind remote." % (behind))
+            log.log_err("post_check:  Local repo is %s commits behind remote."
+                        % (behind))
             line_list = ["Local repo is %s commits behind remote." % (behind)]
 
         post_process(gitr, cfg, False, line_list)
 
     else:
 
-        log.log_info("Processing of: %s completed." % (gitr.git_dir))
+        log.log_info("post_check:  Processing of: %s completed."
+                     % (gitr.git_dir))
         line_list = ["Processing of: %s completed." % (gitr.git_dir)]
 
         post_process(gitr, cfg, True, line_list)
@@ -396,38 +399,39 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
             None
 
     """
-    
+
     if status == "added":
         file_list = list(gitr.new_files)
-    
+
     elif status == "modified":
         file_list = list(gitr.chg_files)
-    
+
     else:
         file_list = []
-    
+
     for item in file_list:
-        
-        log.log_info("Quarantine %s file: %s to %s" % 
-            (status, item, cfg.quar_dir))
-        
+
+        log.log_info("quarantine_files:  Quarantined file: %s to %s" % 
+            (item, cfg.quar_dir))
+        log.log_info("quarantine_files:  Reason:  File has been %s" % (status))
+
         q_file = item + gitr.repo_name \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
-        
+
         gen_libs.cp_file(os.path.join(gitr.git_dir, item), cfg.quar_dir,
                          q_file)
-        
+
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
-        
+
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("File: %s quaratine to %s" % 
             (item, os.path.join(cfg.quar_dir, q_file)))
         body.append("Reason:  File has been %s" % (status))
-        
+
         body = post_body(gitr, body)
-        
+
         send_mail(cfg.to_line, subj, body)
 
 
@@ -445,20 +449,18 @@ def quarantine(gitr, cfg, log, **kwargs):
             None
 
     """
-    
-    log.log_info("Quarantine process running")
-    
+
     gitr.get_dirty()
     gitr.get_untracked()
-    
+
     if gitr.chg_files:
-        log.log_info("Quarantine modified files")
+        log.log_info("quarantine:  Quarantine modified files")
         quarantine_files(gitr, cfg, log, status="modified")
-    
+
     if gitr.new_files:
-        log.log_info("Quarantine added files")
+        log.log_info("quarantine:  Quarantine added files")
         quarantine_files(gitr, cfg, log, status="added")
-    
+
 
 def merge_project(gitr, cfg, log, **kwargs):
 
@@ -475,17 +477,17 @@ def merge_project(gitr, cfg, log, **kwargs):
 
     """
 
-    log.log_info("Fetching and setting up branches.")
+    log.log_info("merge_project:  Fetching and setting up branches.")
     status1, msg1 = gitr.priority_merge()
 
     if status1:
 
-        log.log_info("Pushing changes to remote Git.")
+        log.log_info("merge_project:  Pushing changes to remote Git.")
         status2, msg2 = gitr.git_pu()
 
         if status2:
 
-            log.log_info("Pushing tags to remote Git.")
+            log.log_info("merge_project:  Pushing tags to remote Git.")
             status3, msg3 = gitr.git_pu(tags=True)
 
             if status3:
@@ -493,21 +495,21 @@ def merge_project(gitr, cfg, log, **kwargs):
                 post_check(gitr, cfg, log)
 
             else:
-                log.log_err("Failure to push tags to remote git.")
-                log.log_err("Message: %s" % (msg3))
+                log.log_err("merge_project:  Fail to push tags to remote git.")
+                log.log_err("merge_project:  Message: %s" % (msg3))
                 line_list = ["Failure to push tags to remote git."]
                 post_process(gitr, cfg, status3, line_list, msg3)
 
         else:
-            log.log_err("Failure to push to remote git.")
-            log.log_err("Message: %s" % (msg2))
+            log.log_err("merge_project:  Fail to push to remote git.")
+            log.log_err("merge_project:  Message: %s" % (msg2))
             line_list = ["Failure to push to remote git."]
             post_process(gitr, cfg, status2, line_list, msg2)
 
     else:
-        log.log_err("Failure to merge branch %s into %s." % (gitr.mod_branch,
-                                                             gitr.branch))
-        log.log_err("Message: %s" % (msg1))
+        log.log_err("merge_project:  Failure to merge branch %s into %s."
+                    % (gitr.mod_branch, gitr.branch))
+        log.log_err("merge_project:  Message: %s" % (msg1))
         line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
                                                               gitr.branch)]
         post_process(gitr, cfg, status1, line_list, msg1)
@@ -528,17 +530,19 @@ def process_project(gitr, cfg, log, **kwargs):
 
     """
 
-    log.log_info("Fetching and setting up branches.")
+    log.log_info("process_project:  Fetching and setting up branches.")
     status1, msg1 = gitr.git_fetch()
 
     if status1:
 
-        log.log_info("Renaming branch to: %s." % (gitr.mod_branch))
+        log.log_info("process_project:  Renaming branch to: %s."
+                     % (gitr.mod_branch))
         status2, msg2 = gitr.rename_br()
 
         if status2:
 
-            log.log_info("Checking out branch: %s." % (gitr.branch))
+            log.log_info("process_project:  Checking out branch: %s."
+                         % (gitr.branch))
             status3, msg3 = gitr.git_co()
 
             if status3:
@@ -546,20 +550,22 @@ def process_project(gitr, cfg, log, **kwargs):
                 merge_project(gitr, cfg, log)
 
             else:
-                log.log_err("Failure to checkout branch: %s." % (gitr.branch))
-                log.log_err("Message: %s" % (msg3))
+                log.log_err("process_project:  Fail to checkout branch: %s."
+                            % (gitr.branch))
+                log.log_err("process_project:  Message: %s" % (msg3))
                 line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
                 post_process(gitr, cfg, status3, line_list, msg3)
 
         else:
-            log.log_err("Failure rename branch to: %s." % (gitr.mod_branch))
-            log.log_err("Message: %s" % (msg2))
+            log.log_err("process_project:  Fail rename branch to: %s."
+                        % (gitr.mod_branch))
+            log.log_err("process_project:  Message: %s" % (msg2))
             line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
             post_process(gitr, cfg, status2, line_list, msg2)
 
     else:
-        log.log_err("Failure to fetch from remote Git repo.")
-        log.log_err("Message: %s" % (msg1))
+        log.log_err("process_project:  Fail to fetch from remote Git repo.")
+        log.log_err("process_project:  Message: %s" % (msg1))
         line_list = ["Failure to fetch from remote Git repo."]
         post_process(gitr, cfg, status1, line_list, msg1)
 
@@ -583,7 +589,7 @@ def merge(args_array, cfg, log, **kwargs):
 
     args_array = dict(args_array)
 
-    log.log_info("Starting merge of:  %s" % (args_array["-r"]))
+    log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
 
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
 
@@ -591,7 +597,7 @@ def merge(args_array, cfg, log, **kwargs):
 
     if is_git_repo(git_dir):
 
-        log.log_info("Processing: %s directory" % (git_dir))
+        log.log_info("merge:  Processing: %s directory" % (git_dir))
 
         url = cfg.url + args_array["-r"] + ".git"
 
@@ -604,13 +610,13 @@ def merge(args_array, cfg, log, **kwargs):
 
             if gitr.is_dirty() or gitr.is_untracked():
                 
-                log.log_info("Quarantine process running")
+                log.log_info("merge:  Quarantine process running")
                 quarantine(gitr, cfg, log)
 
-                log.log_info("Processing dirty files")
+                log.log_info("merge:  Processing dirty files")
                 gitr.process_dirty(option="revert")
 
-                log.log_info("Processing untracked files")
+                log.log_info("merge:  Processing untracked files")
                 gitr.process_untracked(option="remove")
 
             if not gitr.is_dirty() and not gitr.is_untracked():
@@ -618,17 +624,18 @@ def merge(args_array, cfg, log, **kwargs):
                 process_project(gitr, cfg, log)
 
             else:
-                log.log_err("There is still dirty entries in local repo.")
+                log.log_err("merge:  Still dirty entries in local repo.")
                 line_list = ["There is still dirty entries in local repo."]
                 post_process(gitr, cfg, False, line_list)
 
         else:
-            log.log_err("%s does not exist at remote repo." % (gitr.url))
+            log.log_err("merge:  %s does not exist at remote repo."
+                        % (gitr.url))
             line_list = ["Remote git repository does not exist"]
             post_process(gitr, cfg, False, line_list)
 
     else:
-        log.log_err("%s is not a local Git repository" % (git_dir))
+        log.log_err("merge:  %s is not a local Git repository" % (git_dir))
 
         subj = "Merge error for: " + git_dir
         body = ["Local directory is not a Git repository.",

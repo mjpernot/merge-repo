@@ -21,6 +21,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - post_check:  Added branch name as arg to is_commits_ahead and is_commits_behind calls.
 
 ### Changed
+- Added function name to log entries.
 - main:  Set the repo name for -r option if not passed to program using -p option setting.
 - merge:  Added quarantine function call to quarantine new/modified files.
 - merge:  Added arguments to process_dirty and process_untracked method calls.
