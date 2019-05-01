@@ -193,7 +193,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_modified_status(self, mock_log, mock_date, mock_cp, mock_body,
-                          mock_mail):
+                             mock_mail):
 
         """Function:  test_modified_status
 

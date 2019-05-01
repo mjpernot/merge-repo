@@ -175,7 +175,7 @@ class UnitTest(unittest.TestCase):
             None
 
         """
-        
+
         self.gitr.new_files = ["File1"]
         self.gitr.chg_files = ["File2"]
         self.gitr.rm_files = ["File3"]
@@ -200,7 +200,7 @@ class UnitTest(unittest.TestCase):
             None
 
         """
-        
+
         self.gitr.rm_files = ["File1"]
 
         mock_log.return_value = True
@@ -221,7 +221,7 @@ class UnitTest(unittest.TestCase):
             None
 
         """
-        
+
         self.gitr.new_files = ["File1"]
         self.gitr.chg_files = ["File2"]
 
@@ -242,7 +242,7 @@ class UnitTest(unittest.TestCase):
             None
 
         """
-        
+
         self.gitr.new_files = ["File1"]
 
         mock_log.return_value = True
@@ -262,7 +262,7 @@ class UnitTest(unittest.TestCase):
             None
 
         """
-        
+
         self.gitr.chg_files = ["File1"]
 
         mock_log.return_value = True

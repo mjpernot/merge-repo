@@ -49,7 +49,7 @@
 
             # Directory where projects will be archived after a merge.
             archive_dir="{PATH_DIRECTORY}/archive_dir"
-            
+
             # Directory where project items will be quarantined.
             quar_dir="/home/mark.j.pernot/merge/quarantine"
 
@@ -224,7 +224,7 @@ def post_body(gitr, body=None, **kwargs):
 
     else:
         body = list(body)
-    
+
     body.append("URL: " + gitr.url)
     body.append("Git Dir: " + gitr.git_dir)
     body.append("Branch: " + gitr.branch)
@@ -428,8 +428,8 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
 
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
-        body.append("File: %s quaratine to %s" % 
-            (item, os.path.join(cfg.quar_dir, q_file)))
+        body.append("File: %s quaratine to %s"
+                    % (item, os.path.join(cfg.quar_dir, q_file)))
         body.append("Reason:  File has been %s" % (status))
 
         body = post_body(gitr, body)
@@ -620,13 +620,14 @@ def merge(args_array, cfg, log, **kwargs):
 
         gitr = git_class.GitMerge(args_array["-r"], git_dir, url, cfg.branch,
                                   cfg.mod_branch)
+
         gitr.create_gitrepo()
         gitr.set_remote()
 
         if gitr.is_remote():
 
             if gitr.is_dirty() or gitr.is_untracked():
-                
+
                 log.log_info("merge:  Quarantine process running")
                 quarantine(gitr, cfg, log)
 
