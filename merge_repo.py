@@ -49,6 +49,9 @@
 
             # Directory where projects will be archived after a merge.
             archive_dir="{PATH_DIRECTORY}/archive_dir"
+            
+            # Directory where project items will be quarantined.
+            quar_dir="/home/mark.j.pernot/merge/quarantine"
 
             # Email addresses for notification.
             to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
@@ -201,6 +204,37 @@ def send_mail(to_line, subj, mail_body, **kwargs):
     email.send_mail()
 
 
+def post_body(gitr, body=None, **kwargs):
+
+    """Function:  post_body
+
+    Description:  Append default post-header to mail body.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) body -> Mail list body.
+        (input) **kwargs:
+            None
+        (output) body -> Body of the email.
+
+    """
+
+    if body is None:
+        body = []
+
+    else:
+        body = list(body)
+    
+    body.append("URL: " + gitr.url)
+    body.append("Git Dir: " + gitr.git_dir)
+    body.append("Branch: " + gitr.branch)
+
+    body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S"))
+
+    return body
+
+
 def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
 
     """Function:  prepare_mail
@@ -245,12 +279,7 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
             for key in msg.keys():
                 body.append("%s: %s" % (key, msg[key]))
 
-        body.append("URL: " + gitr.url)
-        body.append("Git Dir: " + gitr.git_dir)
-        body.append("Branch: " + gitr.branch)
-
-    body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d %H:%M:%S"))
+    body = post_body(gitr, body)
 
     return subj, body
 
@@ -351,6 +380,85 @@ def post_check(gitr, cfg, log, **kwargs):
 
         post_process(gitr, cfg, True, line_list)
 
+
+def quarantine_files(gitr, cfg, log, status=None, **kwargs):
+
+    """Function:  quarantine_files
+
+    Description:  Copy files out of Git repo into a quarantine directory.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) status -> added|modified - Status of the file for quarantine.
+        (input) **kwargs:
+            None
+
+    """
+    
+    if status == "added":
+        file_list = list(gitr.new_files)
+    
+    elif status == "modified":
+        file_list = list(gitr.chg_files)
+    
+    else:
+        file_list = []
+    
+    for item in file_list:
+        
+        log.log_info("Quarantine %s file: %s to %s" % 
+            (status, item, cfg.quar_dir))
+        
+        q_file = item + gitr.repo_name \
+            + datetime.datetime.strftime(datetime.datetime.now(),
+                                         "%Y%m%d_%H%M%S")
+        
+        gen_libs.cp_file(os.path.join(gitr.git_dir, item), cfg.quar_dir,
+                         q_file)
+        
+        subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
+        
+        body = []
+        body.append("Git Repo: %s" % (gitr.repo_name))
+        body.append("File: %s quaratine to %s" % 
+            (item, os.path.join(cfg.quar_dir, q_file)))
+        body.append("Reason:  File has been %s" % (status))
+        
+        body = post_body(gitr, body)
+        
+        send_mail(cfg.to_line, subj, body)
+
+
+def quarantine(gitr, cfg, log, **kwargs):
+
+    """Function:  quarantine_files
+
+    Description:  Get dirty and untracked files and quarantine them.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+    
+    log.log_info("Quarantine process running")
+    
+    gitr.get_dirty()
+    gitr.get_untracked()
+    
+    if gitr.chg_files:
+        log.log_info("Quarantine modified files")
+        quarantine_files(gitr, cfg, log, status="modified")
+    
+    if gitr.new_files:
+        log.log_info("Quarantine added files")
+        quarantine_files(gitr, cfg, log, status="added")
+    
 
 def merge_project(gitr, cfg, log, **kwargs):
 
@@ -495,6 +603,9 @@ def merge(args_array, cfg, log, **kwargs):
         if gitr.is_remote():
 
             if gitr.is_dirty() or gitr.is_untracked():
+                
+                log.log_info("Quarantine process running")
+                quarantine(gitr, cfg, log)
 
                 log.log_info("Processing dirty files")
                 gitr.process_dirty()
@@ -599,11 +710,15 @@ def main():
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
-    opt_req_list = ["-c", "-d", "-p", "-r"]
+    opt_req_list = ["-c", "-d", "-p"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
     args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+
+    # Set Repo Name if not passed
+    if "-r" not in args_array.keys():
+        args_array["-r"] = os.path.basename(args_array["-p"])
 
     if not gen_libs.help_func(args_array, __version__, help_message) \
        and not arg_parser.arg_require(args_array, opt_req_list) \

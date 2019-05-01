@@ -240,6 +240,9 @@ class UnitTest(unittest.TestCase):
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
+        test_body.append("URL: " + self.gitr.url)
+        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status1,
@@ -263,6 +266,9 @@ class UnitTest(unittest.TestCase):
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
+        test_body.append("URL: " + self.gitr.url)
+        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status1)

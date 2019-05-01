@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [0.0.4] - 2019-04-24
+## [0.0.4] - 2019-04-29
+### Added
+- post_body:  Append default post-header to mail body.
+- quarantine_files:  Copy files out of Git repo into a quarantine directory.
+- quarantine:  Get dirty and untracked files and quarantine them.
+
 ### Fixed
 - process_project:  Corrected call to git_fetch method.
 - prepare_mail:  Corrected logic in 'if' statement.
@@ -16,6 +21,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - post_check:  Added branch name as arg to is_commits_ahead and is_commits_behind calls.
 
 ### Changed
+- main:  Set the repo name for -r option if not passed to program using -p option setting.
+- merge:  Added quarantine function call to quarantine new/modified files.
+- prepare_mail:  Replaced post body mail lines with call to post_body function.
 - post_process:  Added datetime to destination directory for the archiving of the repo.
 - merge:  Added datetime to destination directory for the archiving of the repo.
 - merge_project:  Added additional logging error statements.

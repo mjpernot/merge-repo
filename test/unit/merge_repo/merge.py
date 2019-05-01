@@ -142,13 +142,14 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.quarantine")
     @mock.patch("merge_repo.process_project")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_second_check_false(self, mock_log, mock_lib, mock_isgit, mock_git,
-                                mock_proj):
+                                mock_proj, mock_quar):
 
         """Function:  test_second_check_false
 
@@ -171,16 +172,18 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.process_dirty.return_value = True
         mock_git.GitMerge.process_untracked.return_value = True
         mock_proj.return_value = True
+        mock_quar.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.quarantine")
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_second_check_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                               mock_post):
+                               mock_post, mock_quar):
 
         """Function:  test_second_check_true
 
@@ -203,16 +206,18 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.process_dirty.return_value = True
         mock_git.GitMerge.process_untracked.return_value = True
         mock_post.return_value = True
+        mock_quar.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.quarantine")
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_is_untracked_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                               mock_post):
+                               mock_post, mock_quar):
 
         """Function:  test_is_untracked_true
 
@@ -235,16 +240,18 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.process_dirty.return_value = True
         mock_git.GitMerge.process_untracked.return_value = True
         mock_post.return_value = True
+        mock_quar.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.quarantine")
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_is_dirty_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                           mock_post):
+                           mock_post, mock_quar):
 
         """Function:  test_is_dirty_true
 
@@ -267,6 +274,7 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.process_dirty.return_value = True
         mock_git.GitMerge.process_untracked.return_value = True
         mock_post.return_value = True
+        mock_quar.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 

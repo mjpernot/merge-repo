@@ -63,7 +63,7 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
 
 # Program Descriptions:
-### Description: The program is designed to take a local Git repository and merge it into an existing Git repository, but make the local Git repository the priority repository.  This is way of a local repository being modified and those modifications being merged into an existing baseline on the remote Git respository.  The master branch will be the default branch in which the merge will take place in.
+### Description: The program is designed to take a local Git repository and merge it into an existing Git repository, but make the local Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
 
 
 # Program Help Function:
@@ -89,14 +89,11 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
         branches have been merged the updated branch will be pushed back to
         the remote Git repository.
 
-        NOTE 1:  The local Git repo will be marked as the priority, which
-            means the local Git repo will have priority over the changes
-            made to the project.
-        NOTE 2:  The default branch to be merged will be the master branch.
-            This can be changed in the configuration file, but is not
-            recommended.
-        NOTE 3:  The external local Git repository must come in as a detached
-            head repository with no named branches for the merge to take place.
+        NOTE 1:  The external Git repo being imported will have priority during
+            the merge.  This means that the imported Git repo will have
+            precedence over the changes made to the remote Git repo.
+        NOTE 2:  The external local Git repository must come in as a detached
+            head repository and with no named branches in the repository.
 
     Usage:
         merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
@@ -131,6 +128,9 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
             # Directory where projects will be archived after a merge.
             archive_dir="{PATH_DIRECTORY}/archive_dir"
 
+            # Directory where project items will be quarantined.
+            quar_dir="/home/mark.j.pernot/merge/quarantine"
+
             # Email addresses for notification.
             to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
 
@@ -139,7 +139,10 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
             # Do not modify unless you know what you are doing.
             # Branch on which the merge will take place on.
-            branch="master"
+            branch="develop"
+
+            # Name of temporary branch on local git repo.
+            mod_branch="mod_release"
 
     Examples:
         merge_repo.py -c merge -d config -r hp-python-lib
@@ -192,6 +195,9 @@ test/unit/merge_repo/post_process.py
 test/unit/merge_repo/move.py
 test/unit/merge_repo/prepare_mail.py
 test/unit/merge_repo/send_mail.py
+test/unit/merge_repo/quarantine.py
+test/unit/merge_repo/quarantine_files.py
+test/unit/merge_repo/post_body.py
 test/unit/merge_repo/load_cfg.py
 test/unit/merge_repo/merge.py
 test/unit/merge_repo/process_project.py
