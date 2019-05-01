@@ -48,9 +48,9 @@ class UnitTest(unittest.TestCase):
         test_msg_data -> Test with msg with data.
         test_linelist_empty -> Test with line_list with empty list.
         test_linelist_data -> Test with line_list with data.
-        test_status_true -> Test with status set to True.
+        test_status_false -> Test with status set to False.
         test_linelist_none -> Test with line_list set to None.
-        test_help_message -> Test with no arguments.
+        test_status_true -> Test with status set to True.
 
     """
 
@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
-        subj, body = merge_repo.prepare_mail(self.gitr, self.status1,
+        subj, body = merge_repo.prepare_mail(self.gitr, self.status2,
                                              self.line_list2, self.msg)
 
         self.assertEqual((subj, body), (self.subj2, test_body))
@@ -164,7 +164,7 @@ class UnitTest(unittest.TestCase):
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
-        subj, body = merge_repo.prepare_mail(self.gitr, self.status1,
+        subj, body = merge_repo.prepare_mail(self.gitr, self.status2,
                                              self.line_list)
 
         self.assertEqual((subj, body), (self.subj2, test_body))
@@ -194,17 +194,17 @@ class UnitTest(unittest.TestCase):
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
-        subj, body = merge_repo.prepare_mail(self.gitr, self.status1,
+        subj, body = merge_repo.prepare_mail(self.gitr, self.status2,
                                              self.line_list2)
 
         self.assertEqual((subj, body), (self.subj2, test_body))
 
     @mock.patch("merge_repo.datetime.datetime")
-    def test_status_true(self, mock_date):
+    def test_status_false(self, mock_date):
 
-        """Function:  test_status_true
+        """Function:  test_status_false
 
-        Description:  Test with status set to True.
+        Description:  Test with status set to False.
 
         Arguments:
             None
@@ -220,7 +220,7 @@ class UnitTest(unittest.TestCase):
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
-        subj, body = merge_repo.prepare_mail(self.gitr, self.status1)
+        subj, body = merge_repo.prepare_mail(self.gitr, self.status2)
 
         self.assertEqual((subj, body), (self.subj2, test_body))
 
@@ -240,19 +240,22 @@ class UnitTest(unittest.TestCase):
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
+        test_body.append("URL: " + self.gitr.url)
+        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
-        subj, body = merge_repo.prepare_mail(self.gitr, self.status2,
+        subj, body = merge_repo.prepare_mail(self.gitr, self.status1,
                                              line_list=None)
 
         self.assertEqual((subj, body), (self.subj, test_body))
 
     @mock.patch("merge_repo.datetime.datetime")
-    def test_status_false(self, mock_date):
+    def test_status_true(self, mock_date):
 
-        """Function:  test_status_false
+        """Function:  test_status_true
 
-        Description:  Test with status set to False.
+        Description:  Test with status set to True.
 
         Arguments:
             None
@@ -263,9 +266,12 @@ class UnitTest(unittest.TestCase):
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
+        test_body.append("URL: " + self.gitr.url)
+        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
-        subj, body = merge_repo.prepare_mail(self.gitr, self.status2)
+        subj, body = merge_repo.prepare_mail(self.gitr, self.status1)
 
         self.assertEqual((subj, body), (self.subj, test_body))
 

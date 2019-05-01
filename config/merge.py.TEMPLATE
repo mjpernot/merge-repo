@@ -14,6 +14,9 @@ err_dir="/home/mark.j.pernot/merge/error_dir"
 # Directory where projects will be archived after a merge.
 archive_dir="/home/mark.j.pernot/merge/archive_dir"
 
+# Directory where project items will be quarantined.
+quar_dir="/home/mark.j.pernot/merge/quarantine"
+
 # Email addresses for notification.
 to_line="Mark.J.Pernot@coe.ic.gov"
 

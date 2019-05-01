@@ -120,7 +120,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.git_fetch.return_value = (self.status, self.msg)
         mock_git.rename_br.return_value = (self.status, self.msg)
         mock_git.git_co.return_value = (self.status, self.msg)
         mock_merge.return_value = True
@@ -143,7 +143,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.git_fetch.return_value = (self.status, self.msg)
         mock_git.rename_br.return_value = (self.status, self.msg)
         mock_git.git_co.return_value = (self.status2, self.msg2)
         mock_git.mod_branch.return_value = "Mod_Branch"
@@ -168,7 +168,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.git_fetch.return_value = (self.status, self.msg)
         mock_git.rename_br.return_value = (self.status, self.msg)
         mock_git.git_co.return_value = (self.status2, self.msg2)
         mock_git.mod_branch.return_value = "Mod_Branch"
@@ -193,7 +193,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.git_fetch.return_value = (self.status, self.msg)
         mock_git.rename_br.return_value = (self.status2, self.msg2)
         mock_git.mod_branch.return_value = "Mod_Branch"
         mock_git.branch.return_value = "Master"
@@ -217,7 +217,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status, self.msg)
+        mock_git.git_fetch.return_value = (self.status, self.msg)
         mock_git.rename_br.return_value = (self.status2, self.msg2)
         mock_git.mod_branch.return_value = "Mod_Branch"
         mock_git.branch.return_value = "Master"
@@ -241,7 +241,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        mock_git.fetch.return_value = (self.status2, self.msg2)
+        mock_git.git_fetch.return_value = (self.status2, self.msg2)
         mock_post.return_value = True
 
         self.assertFalse(merge_repo.process_project(mock_git, self.cfg,

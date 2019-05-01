@@ -148,6 +148,20 @@ class Diff(Index):
 
         return True
 
+    def checkout(self, chg_files, force):
+
+        """Method:  checkout
+
+        Description:  Method stub holder for git.gitrepo.index.checkout().
+
+        Arguments:
+            chg_files -> Stub holder.
+            force -> Stub holder.
+
+        """
+
+        return True
+
     def commit(self, msg):
 
         """Method:  commit
@@ -174,10 +188,18 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_process_all_false -> Test with all if statements are False.
-        test_process_no_chgfiles -> Test with no chg_files present.
-        test_process_no_rmfiles -> Test with no rm_files present.
+        test_process_all_true_revert -> Test all if statements True w/ revert.
+        test_process_all_true_commit -> Test all if statements True w/ commit.
+        test_process_all_true2 -> Test with all if statements are True.
         test_process_all_true -> Test with all if statements are True.
+        test_chg_files_revert -> Test with chg_files passed with revert option.
+        test_chg_files_commit -> Test with chg_files passed with commit option.
+        test_chg_files_empty2 -> Test with chg_files passed as empty list.
+        test_chg_files_empty -> Test with chg_files passed as empty list.
+        test_rm_files_commit -> Test with rm_files passed with commit option.
+        test_rm_files_revert -> Test with rm_files passed with revert option.
+        test_rm_files_empty2 -> Test with rm_files passed as empty list.
+        test_rm_files_empty -> Test with rm_files passed as empty list.
 
     """
 
@@ -197,15 +219,61 @@ class UnitTest(unittest.TestCase):
         self.url = "URL"
         self.branch = "Remote_branch"
         self.mod_branch = "Mod_branch"
+        self.rm_files = []
+        self.chg_files = []
 
         self.gitr = git_class.GitMerge(self.repo_name, self.git_dir, self.url,
                                        self.branch, self.mod_branch)
 
-    def test_process_all_false(self):
+        self.chk_list1 = []
+        self.chk_list2 = ["file1"]
+        self.chk_list3 = ["file2"]
 
-        """Function:  test_process_all_false
+    def test_process_all_true_revert(self):
 
-        Description:  Test with all if statements are False.
+        """Function:  test_process_all_true_revert
+
+        Description:  Test with all if statements are True with revert.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(1)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty("revert")
+
+        self.assertEqual((self.gitr.rm_files, self.gitr.chg_files),
+                         (self.chk_list2, self.chk_list3))
+
+    def test_process_all_true_commit(self):
+
+        """Function:  test_process_all_true_commit
+
+        Description:  Test with all if statements are True with commit.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(1)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty("commit")
+
+        self.assertEqual((self.gitr.rm_files, self.gitr.chg_files),
+                         (self.chk_list2, self.chk_list3))
+
+    def test_process_all_true2(self):
+
+        """Function:  test_process_all_true
+
+        Description:  Test with all if statements are True.
 
         Arguments:
             None
@@ -216,41 +284,10 @@ class UnitTest(unittest.TestCase):
         DIFF = Diff(4)
         self.gitr.gitrepo = GIT(DIFF)
 
-        self.assertFalse(self.gitr.process_dirty())
+        self.gitr.process_dirty()
 
-    def test_process_no_chgfiles(self):
-
-        """Function:  test_process_no_chgfiles
-
-        Description:  Test with no chg_files present.
-
-        Arguments:
-            None
-
-        """
-
-        GIT = collections.namedtuple('GIT', 'index')
-        DIFF = Diff(3)
-        self.gitr.gitrepo = GIT(DIFF)
-
-        self.assertFalse(self.gitr.process_dirty())
-
-    def test_process_no_rmfiles(self):
-
-        """Function:  test_process_no_rmfiles
-
-        Description:  Test with no rm_files present.
-
-        Arguments:
-            None
-
-        """
-
-        GIT = collections.namedtuple('GIT', 'index')
-        DIFF = Diff(2)
-        self.gitr.gitrepo = GIT(DIFF)
-
-        self.assertFalse(self.gitr.process_dirty())
+        self.assertEqual((self.gitr.rm_files, self.gitr.chg_files),
+                         (self.chk_list1, self.chk_list1))
 
     def test_process_all_true(self):
 
@@ -267,7 +304,162 @@ class UnitTest(unittest.TestCase):
         DIFF = Diff(1)
         self.gitr.gitrepo = GIT(DIFF)
 
-        self.assertFalse(self.gitr.process_dirty())
+        self.gitr.process_dirty()
+
+        self.assertEqual((self.gitr.rm_files, self.gitr.chg_files),
+                         (self.chk_list2, self.chk_list3))
+
+    def test_chg_files_revert(self):
+
+        """Function:  test_chg_files_revert
+
+        Description:  Test with chg_files passed with revert option.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(2)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty("revert")
+
+        self.assertEqual(self.gitr.chg_files, self.chk_list3)
+
+    def test_chg_files_commit(self):
+
+        """Function:  test_chg_files_commit
+
+        Description:  Test with chg_files passed with commit option.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(2)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty("commit")
+
+        self.assertEqual(self.gitr.chg_files, self.chk_list3)
+
+    def test_chg_files_empty2(self):
+
+        """Function:  test_chg_files_empty2
+
+        Description:  Test with chg_files passed as empty list.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(2)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty()
+
+        self.assertEqual(self.gitr.chg_files, self.chk_list3)
+
+    def test_chg_files_empty(self):
+
+        """Function:  test_chg_files_empty
+
+        Description:  Test with chg_files passed as empty list.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(4)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty()
+
+        self.assertEqual(self.gitr.chg_files, self.chk_list1)
+
+    def test_rm_files_commit(self):
+
+        """Function:  test_rm_files_commit
+
+        Description:  Test with rm_files passed with commit option.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(3)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty("commit")
+
+        self.assertEqual(self.gitr.rm_files, self.chk_list2)
+
+    def test_rm_files_revert(self):
+
+        """Function:  test_rm_files_revert
+
+        Description:  Test with rm_files passed with revert option.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(3)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty("revert")
+
+        self.assertEqual(self.gitr.rm_files, self.chk_list2)
+
+    def test_rm_files_empty2(self):
+
+        """Function:  test_rm_files_empty2
+
+        Description:  Test with rm_files passed as empty list.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(3)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty()
+
+        self.assertEqual(self.gitr.rm_files, self.chk_list2)
+
+    def test_rm_files_empty(self):
+
+        """Function:  test_rm_files_empty
+
+        Description:  Test with rm_files passed as empty list.
+
+        Arguments:
+            None
+
+        """
+
+        GIT = collections.namedtuple('GIT', 'index')
+        DIFF = Diff(4)
+        self.gitr.gitrepo = GIT(DIFF)
+
+        self.gitr.process_dirty()
+
+        self.assertEqual(self.gitr.rm_files, self.chk_list1)
 
 
 if __name__ == "__main__":

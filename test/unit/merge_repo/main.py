@@ -90,14 +90,13 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_adding_r_option -> Test adding -r option to args_array.
         test_help_true -> Test with Help_Func returns True.
         test_help_false -> Test with Help_Func returns False.
         test_arg_require_true -> Test with arg_require returns True.
         test_arg_require_false -> Test with arg_require returns False.
-        test_arg_dir_chk_crt_true -> Test main function with arg_dir_chk_crt
-            returns True.
-        test_arg_dir_chk_crt_false -> Test main function with arg_dir_chk_crt
-            returns False.
+        test_arg_dir_chk_crt_true -> Test with arg_dir_chk_crt returns True.
+        test_arg_dir_chk_crt_false -> Test with arg_dir_chk_crt returns False.
 
     """
 
@@ -115,6 +114,28 @@ class UnitTest(unittest.TestCase):
         self.args = {"-c": "config_file", "-d": "config_dir",
                      "-r": "repo-name", "-p": "repo_path", "-M": True}
         self.func_dict = {"-M": merge_repo.merge}
+
+    @mock.patch("merge_repo.gen_libs.help_func")
+    @mock.patch("merge_repo.arg_parser")
+    def test_adding_r_option(self, mock_arg, mock_help):
+
+        """Function:  test_adding_r_option
+
+        Description:  Test adding -r option to args_array.
+
+        Arguments:
+            mock_arg -> Mock Ref:  merge_repo.arg_parser
+            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
+
+        """
+
+        mock_arg.arg_parse2.return_value = self.args
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = True
+
+        self.args.pop("-r")
+
+        self.assertFalse(merge_repo.main())
 
     @mock.patch("merge_repo.gen_libs.help_func")
     @mock.patch("merge_repo.arg_parser.arg_parse2")

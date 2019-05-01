@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  gitmerge_process_untracked.py
+"""Program:  gitmerge_get_untracked.py
 
-    Description:  Unit testing of gitmerge.process_untracked in git_class.py.
+    Description:  Unit testing of gitmerge.get_untracked in git_class.py.
 
     Usage:
-        test/unit/git_class/gitmerge_process_untracked.py
+        test/unit/git_class/gitmerge_get_untracked.py
 
     Arguments:
         None
@@ -127,11 +127,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_process_add_option -> Test with add option passed.
-        test_process_remove_option -> Test with remove option passed.
-        test_process_newfiles_list -> Test with new_files list set.
-        test_process_empty_list2 -> Test with empty list passed.
-        test_process_empty_list -> Test with empty list passed.
+        test_process_data_list -> Test with data in list set.
+        test_process_empty_list -> Test with empty list set.
 
     """
 
@@ -158,94 +155,22 @@ class UnitTest(unittest.TestCase):
         self.new_list1 = []
         self.new_list2 = ["file1"]
 
-    @mock.patch("merge_repo.gen_libs")
-    def test_process_add_option(self, mock_lib):
+    def test_process_data_list(self):
 
-        """Function:  test_process_add_option
+        """Function:  test_process_data_list
 
-        Description:  Test with add option passed.
-
-        Arguments:
-            None
-
-        """
-
-        mock_lib.rm_file.return_value = True
-
-        GIT = collections.namedtuple('GIT', 'index untracked_files')
-        DIFF = Diff()
-        self.gitr.gitrepo = GIT(DIFF, self.new_list1)
-        self.gitr.new_files = self.new_list2
-
-        self.gitr.process_untracked("add")
-
-        self.assertEqual(self.gitr.new_files, self.new_list2)
-
-    @mock.patch("merge_repo.gen_libs")
-    def test_process_remove_option(self, mock_lib):
-
-        """Function:  test_process_remove_option
-
-        Description:  Test with remove option passed.
+        Description:  Test with data in list set.
 
         Arguments:
             None
 
         """
-
-        mock_lib.rm_file.return_value = True
-
-        GIT = collections.namedtuple('GIT', 'index untracked_files')
-        DIFF = Diff()
-        self.gitr.gitrepo = GIT(DIFF, self.new_list1)
-        self.gitr.new_files = self.new_list2
-
-        self.gitr.process_untracked("remove")
-
-        self.assertEqual(self.gitr.new_files, self.new_list2)
-
-    @mock.patch("merge_repo.gen_libs")
-    def test_process_newfiles_list(self, mock_lib):
-
-        """Function:  test_process_newfiles_list
-
-        Description:  Test with new_files list set.
-
-        Arguments:
-            None
-
-        """
-
-        mock_lib.rm_file.return_value = True
-
-        GIT = collections.namedtuple('GIT', 'index untracked_files')
-        DIFF = Diff()
-        self.gitr.gitrepo = GIT(DIFF, self.new_list1)
-        self.gitr.new_files = self.new_list2
-
-        self.gitr.process_untracked()
-
-        self.assertEqual(self.gitr.new_files, self.new_list2)
-
-    @mock.patch("merge_repo.gen_libs")
-    def test_process_empty_list2(self, mock_lib):
-
-        """Function:  test_process_empty_list2
-
-        Description:  Test with empty list passed.
-
-        Arguments:
-            None
-
-        """
-
-        mock_lib.rm_file.return_value = True
 
         GIT = collections.namedtuple('GIT', 'index untracked_files')
         DIFF = Diff()
         self.gitr.gitrepo = GIT(DIFF, self.new_list2)
 
-        self.gitr.process_untracked()
+        self.gitr.get_untracked()
 
         self.assertEqual(self.gitr.new_files, self.new_list2)
 
@@ -253,7 +178,7 @@ class UnitTest(unittest.TestCase):
 
         """Function:  test_process_empty_list
 
-        Description:  Test with empty list passed.
+        Description:  Test with empty list set.
 
         Arguments:
             None
@@ -264,7 +189,7 @@ class UnitTest(unittest.TestCase):
         DIFF = Diff()
         self.gitr.gitrepo = GIT(DIFF, self.new_list1)
 
-        self.gitr.process_untracked()
+        self.gitr.get_untracked()
 
         self.assertEqual(self.gitr.new_files, self.new_list1)
 
