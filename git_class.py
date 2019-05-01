@@ -224,7 +224,6 @@ class GitMerge(GitClass):
                              if item.change_type == "D"]
 
         if self.rm_files:
-
             if option == "revert":
                 self.gitrepo.index.checkout(self.rm_files, force=True)
 
@@ -239,7 +238,6 @@ class GitMerge(GitClass):
                               if item.change_type == "M"]
 
         if self.chg_files:
-
             if option == "revert":
                 self.gitrepo.index.checkout(self.chg_files, force=True)
 
@@ -264,13 +262,11 @@ class GitMerge(GitClass):
             self.new_files = self.gitrepo.untracked_files
 
         if self.new_files:
-
             if option == "add":
                 self.gitrepo.index.add(self.new_files)
                 self.gitrepo.index.commit("Add new files")
 
             elif option == "remove":
-
                 for f_name in self.new_files:
                     gen_libs.rm_file(os.path.join(self.git_dir, f_name))
 
@@ -362,15 +358,12 @@ class GitMerge(GitClass):
             self.gitcmd.fetch()
 
         except git.exc.GitCommandError as (code):
-
             if code.status == 128 and cnt < 5:
-
                 time.sleep(5)
                 cnt += 1
                 status, msg = self.git_fetch(cnt)
 
             else:
-
                 status = False
                 msg["status"] = code.status
                 msg["stderr"] = code.stderr
@@ -403,7 +396,6 @@ class GitMerge(GitClass):
             self.gitcmd.branch(branch)
 
         except git.exc.GitCommandError as (code):
-
             status = False
             msg["status"] = code.status
             msg["stderr"] = code.stderr
@@ -436,7 +428,6 @@ class GitMerge(GitClass):
             self.gitcmd.checkout(branch)
 
         except git.exc.GitCommandError as (code):
-
             status = False
             msg["status"] = code.status
             msg["stderr"] = code.stderr
@@ -472,7 +463,6 @@ class GitMerge(GitClass):
                               branch)
 
         except git.exc.GitCommandError as (code):
-
             status = False
             msg["status"] = code.status
             msg["stdout"] = code.stdout
@@ -507,15 +497,12 @@ class GitMerge(GitClass):
             self.gitcmd.push(option)
 
         except git.exc.GitCommandError as (code):
-
             if code.status == 128 and cnt < 5:
-
                 time.sleep(5)
                 cnt += 1
                 status, msg = self.git_pu(cnt)
 
             else:
-
                 status = False
                 msg["status"] = code.status
                 msg["stderr"] = code.stderr
