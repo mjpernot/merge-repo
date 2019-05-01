@@ -411,9 +411,8 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
 
     for item in file_list:
 
-        log.log_info("quarantine_files:  Quarantined file: %s"
-                     % (cfg.quar_dir))
-        log.log_info("quarantine_files:  Reason:  File has been %s" % (status))
+        log.log_info("quarantine_files:  Quarantined file: %s" % (item))
+        log.log_info("quarantine_files:  Reason: File was '%s'" % (status))
 
         q_file = item + "." + gitr.repo_name + "." \
             + datetime.datetime.strftime(datetime.datetime.now(),
