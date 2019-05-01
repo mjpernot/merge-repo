@@ -31,6 +31,8 @@ pipeline {
                 ./test/unit/git_class/gitmerge_is_commits_ahead.py
                 ./test/unit/git_class/gitmerge_is_commits_behind.py
                 ./test/unit/git_class/gitmerge_is_remote_branch.py
+                ./test/unit/git_class/gitmerge_get_dirty.py
+                ./test/unit/git_class/gitmerge_get_untracked.py
                 ./test/unit/git_class/gitclass_init.py
                 ./test/unit/git_class/gitclass_create_repo.py
                 ./test/unit/git_class/gitclass_create_cmd.py
@@ -45,6 +47,9 @@ pipeline {
                 ./test/unit/merge_repo/post_check.py
                 ./test/unit/merge_repo/merge_project.py
                 ./test/unit/merge_repo/send_mail.py
+                ./test/unit/merge_repo/quarantine.py
+                ./test/unit/merge_repo/quarantine_files.py
+                ./test/unit/merge_repo/post_body.py
                 ./test/unit/merge_repo/process_project.py
                 ./test/unit/merge_repo/merge.py
                 """

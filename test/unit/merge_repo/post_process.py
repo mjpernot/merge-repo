@@ -49,6 +49,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_msg_passed -> Test with msg passed with data.
+        test_linelist_passed -> Test with line_list passed with data.
         test_status_false -> Test with status set to False.
         test_status_true -> Test with status set to True.
 
@@ -129,6 +131,53 @@ class UnitTest(unittest.TestCase):
         self.body = ["Email Body Line 1", "Email Body Line 2"]
         self.status1 = True
         self.status2 = False
+
+    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.prepare_mail")
+    @mock.patch("merge_repo.send_mail")
+    def test_msg_passed(self, mock_mail, mock_prepare, mock_move):
+
+        """Function:  test_msg_passed
+
+        Description:  Test with msg passed with data.
+
+        Arguments:
+            None
+
+        """
+
+        mock_mail.return_value = True
+        mock_prepare.return_value = (self.subj, self.body)
+        mock_move.return_value = True
+
+        msg = {"1": "Line1", "2": "Line2"}
+
+        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg,
+                                                 self.status1, msg=msg))
+
+    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.prepare_mail")
+    @mock.patch("merge_repo.send_mail")
+    def test_linelist_passed(self, mock_mail, mock_prepare, mock_move):
+
+        """Function:  test_linelist_passed
+
+        Description:  Test with line_list passed with data.
+
+        Arguments:
+            None
+
+        """
+
+        mock_mail.return_value = True
+        mock_prepare.return_value = (self.subj, self.body)
+        mock_move.return_value = True
+
+        line_list = ["Line1", "Line2"]
+
+        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg,
+                                                 self.status1,
+                                                 line_list=line_list))
 
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.prepare_mail")
