@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  This program is used to take a local Git repository that has been modified at a different location and merge it into an existing Git repository and make it the priority repository.
+  This program is used to take a local Git repository that has been modified at a different location and merge it into an existing Git repository.
 
 ###  This README file is broken down into the following sections:
   * Features
@@ -18,7 +18,7 @@
 
 
 # Features:
-  * Merge a local repository into an existing remote repository.
+  * Merge a outside local repository into an existing remote repository.
 
 
 # Prerequisites:
@@ -33,6 +33,7 @@
     - lib/gen_class
     - lib/arg_parser
     - lib/gen_libs
+    - git_class
 
 
 # Installation:
@@ -63,7 +64,7 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
 
 
 # Program Descriptions:
-### Description: The program is designed to take a local Git repository and merge it into an existing Git repository, but make the local Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
+### Description: The program is designed to take an outside local Git repository and merge it into an existing remote Git repository, but make the outside Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
 
 
 # Program Help Function:
