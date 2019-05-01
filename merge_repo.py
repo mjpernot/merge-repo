@@ -128,9 +128,7 @@ def load_cfg(cfg_name, cfg_dir, **kwargs):
     """
 
     status_flag = True
-
     cfg = gen_libs.load_module(cfg_name, cfg_dir)
-
     status, err_msg = gen_libs.chk_crt_dir(cfg.work_dir, write=True, read=True)
 
     if not status:
@@ -195,7 +193,6 @@ def send_mail(to_line, subj, mail_body, **kwargs):
 
     body = list(mail_body)
     frm_line = getpass.getuser() + "@" + socket.gethostname()
-
     email = gen_class.Mail(to_line, subj, frm_line)
 
     for line in body:
@@ -228,7 +225,6 @@ def post_body(gitr, body=None, **kwargs):
     body.append("URL: " + gitr.url)
     body.append("Git Dir: " + gitr.git_dir)
     body.append("Branch: " + gitr.branch)
-
     body.append("DTG: " + datetime.datetime.strftime(datetime.datetime.now(),
                                                      "%Y-%m-%d %H:%M:%S"))
 
@@ -275,7 +271,6 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
             body.append(line)
 
         if msg:
-
             for key in msg.keys():
                 body.append("%s: %s" % (key, msg[key]))
 
@@ -326,7 +321,6 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
 
     subj, body = prepare_mail(gitr, status, line_list, msg)
     send_mail(cfg.to_line, subj, body)
-
     dest_dir = os.path.basename(gitr.git_dir) + "." \
         + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
 
@@ -358,17 +352,14 @@ def post_check(gitr, cfg, log, **kwargs):
     behind = gitr.is_commits_behind(gitr.branch)
 
     if ahead or behind:
-
         log.log_err("post_check:  Local repo is not in sync with remote repo")
 
         if ahead:
-
             log.log_err("post_check: Local repo is %s commits ahead of remote."
                         % (ahead))
             line_list = ["Local repo is %s commits ahead of remote." % (ahead)]
 
         else:
-
             log.log_err("post_check:  Local repo is %s commits behind remote."
                         % (behind))
             line_list = ["Local repo is %s commits behind remote." % (behind)]
@@ -376,11 +367,9 @@ def post_check(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, False, line_list)
 
     else:
-
         log.log_info("post_check:  Processing of: %s completed."
                      % (gitr.git_dir))
         line_list = ["Processing of: %s completed." % (gitr.git_dir)]
-
         post_process(gitr, cfg, True, line_list)
 
 
@@ -410,29 +399,21 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         file_list = []
 
     for item in file_list:
-
         log.log_info("quarantine_files:  Quarantined file: %s" % (item))
         log.log_info("quarantine_files:  Reason: File was '%s'" % (status))
-
         q_file = item + "." + gitr.repo_name + "." \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
-
         gen_libs.cp_file(item, gitr.git_dir, cfg.quar_dir, q_file)
-
         log.log_info("quarantine_files:  File: %s moved to %s"
                      % (item, os.path.join(cfg.quar_dir, q_file)))
-
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
-
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("File: %s quaratine to %s"
                     % (item, os.path.join(cfg.quar_dir, q_file)))
         body.append("Reason:  File has been %s" % (status))
-
         body = post_body(gitr, body)
-
         send_mail(cfg.to_line, subj, body)
 
 
@@ -465,16 +446,12 @@ def quarantine(gitr, cfg, log, **kwargs):
     if gitr.rm_files:
         log.log_info("quarantine:  Removed files detected")
         log.log_info("quarantine:  Files detected:  %s" % (gitr.rm_files))
-
         subj = "Removed files detected in Git Repo: %s" % (gitr.repo_name)
-
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("Removed files detected: %s" % (gitr.rm_files))
         body.append("Files will be processed as per the option set.")
-
         body = post_body(gitr, body)
-
         send_mail(cfg.to_line, subj, body)
 
 
@@ -497,17 +474,14 @@ def merge_project(gitr, cfg, log, **kwargs):
     status1, msg1 = gitr.priority_merge()
 
     if status1:
-
         log.log_info("merge_project:  Pushing changes to remote Git.")
         status2, msg2 = gitr.git_pu()
 
         if status2:
-
             log.log_info("merge_project:  Pushing tags to remote Git.")
             status3, msg3 = gitr.git_pu(tags=True)
 
             if status3:
-
                 post_check(gitr, cfg, log)
 
             else:
@@ -550,19 +524,16 @@ def process_project(gitr, cfg, log, **kwargs):
     status1, msg1 = gitr.git_fetch()
 
     if status1:
-
         log.log_info("process_project:  Renaming branch to: %s."
                      % (gitr.mod_branch))
         status2, msg2 = gitr.rename_br()
 
         if status2:
-
             log.log_info("process_project:  Checking out branch: %s."
                          % (gitr.branch))
             status3, msg3 = gitr.git_co()
 
             if status3:
-
                 merge_project(gitr, cfg, log)
 
             else:
@@ -604,40 +575,28 @@ def merge(args_array, cfg, log, **kwargs):
     """
 
     args_array = dict(args_array)
-
     log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
-
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
-
     git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
     if is_git_repo(git_dir):
-
         log.log_info("merge:  Processing: %s directory" % (git_dir))
-
         url = cfg.url + args_array["-r"] + ".git"
-
         gitr = git_class.GitMerge(args_array["-r"], git_dir, url, cfg.branch,
                                   cfg.mod_branch)
-
         gitr.create_gitrepo()
         gitr.set_remote()
 
         if gitr.is_remote():
-
             if gitr.is_dirty() or gitr.is_untracked():
-
                 log.log_info("merge:  Quarantine process running")
                 quarantine(gitr, cfg, log)
-
                 log.log_info("merge:  Processing dirty files")
                 gitr.process_dirty(option="revert")
-
                 log.log_info("merge:  Processing untracked files")
                 gitr.process_untracked(option="remove")
 
             if not gitr.is_dirty() and not gitr.is_untracked():
-
                 process_project(gitr, cfg, log)
 
             else:
@@ -653,20 +612,16 @@ def merge(args_array, cfg, log, **kwargs):
 
     else:
         log.log_err("merge:  %s is not a local Git repository" % (git_dir))
-
         subj = "Merge error for: " + git_dir
         body = ["Local directory is not a Git repository.",
                 "Project Dir: " + git_dir]
         body.append("DTG: "
                     + datetime.datetime.strftime(datetime.datetime.now(),
                                                  "%Y-%m-%d %H:%M:%S"))
-
         send_mail(cfg.to_line, subj, body)
-
         dest_dir = os.path.basename(git_dir) + "." \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
-
         move(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
@@ -687,15 +642,12 @@ def run_program(args_array, func_dict, **kwargs):
 
     args_array = dict(args_array)
     func_dict = dict(func_dict)
-
     cfg, status_flag = load_cfg(args_array["-c"], args_array["-d"])
 
     if status_flag:
-
         log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
                                "%(asctime)s %(levelname)s %(message)s",
                                "%Y-%m-%dT%H:%M:%SZ")
-
         str_val = "=" * 80
         log.log_info("%s Initialized" % (args_array["-r"]))
         log.log_info("%s" % (str_val))
@@ -705,7 +657,6 @@ def run_program(args_array, func_dict, **kwargs):
 
         # Intersect args_array & func_dict to find which functions to call.
         for opt in set(args_array.keys()) & set(func_dict.keys()):
-
             func_dict[opt](args_array, cfg, log, **kwargs)
 
         log.log_close()
@@ -752,7 +703,6 @@ def main():
             try:
                 PROG_LOCK = gen_class.ProgramLock(sys.argv,
                                                   args_array.get("-r", ""))
-
                 run_program(args_array, func_dict)
                 del PROG_LOCK
 
