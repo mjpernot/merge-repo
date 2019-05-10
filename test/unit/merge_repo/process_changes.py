@@ -118,6 +118,8 @@ class UnitTest(unittest.TestCase):
                 is_untracked -> Stub holder for GitMerge.is_untracked method.
                 process_dirty -> Stub holder for GitMerge.process_dirty method.
                 process_untracked -> Stub GitMerge.process_untracked method.
+                get_dirty -> Stub holder for the GitMerge.get_dirty method.
+                get_untracked -> Stub holder for GitMerge.get_untracked method.
 
             """
 
@@ -187,6 +189,32 @@ class UnitTest(unittest.TestCase):
 
                 Arguments:
                     (input) option -> Stub holder for argument.
+
+                """
+
+                return True
+
+            def get_dirty(self):
+
+                """Method:  get_dirty
+
+                Description:  Stub holder for the GitMerge.get_dirty method.
+
+                Arguments:
+                        None
+
+                """
+
+                return True
+
+            def get_untracked(self):
+
+                """Method:  get_untracked
+
+                Description:  Stub holder for GitMerge.get_untracked method.
+
+                Arguments:
+                        None
 
                 """
 
