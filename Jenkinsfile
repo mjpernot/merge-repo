@@ -51,6 +51,7 @@ pipeline {
                 ./test/unit/merge_repo/quarantine_files.py
                 ./test/unit/merge_repo/post_body.py
                 ./test/unit/merge_repo/process_project.py
+                ./test/unit/merge_repo/process_changes.py
                 ./test/unit/merge_repo/merge.py
                 """
             }

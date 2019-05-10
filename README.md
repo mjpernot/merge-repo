@@ -202,6 +202,7 @@ test/unit/merge_repo/post_body.py
 test/unit/merge_repo/load_cfg.py
 test/unit/merge_repo/merge.py
 test/unit/merge_repo/process_project.py
+test/unit/merge_repo/process_changes.py
 test/unit/merge_repo/help_message.py
 test/unit/merge_repo/run_program.py
 test/unit/merge_repo/main.py
