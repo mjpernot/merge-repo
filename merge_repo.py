@@ -557,6 +557,30 @@ def process_project(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, status1, line_list, msg1)
 
 
+def process_changes(gitr, cfg, log, **kwargs):
+
+    """Function:  process_changes
+
+    Description:  Process dirty and untracked files.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) **kwargs:
+            None
+
+    """
+
+    if gitr.is_dirty() or gitr.is_untracked():
+        log.log_info("process_changes:  Quarantine process running")
+        quarantine(gitr, cfg, log)
+        log.log_info("process_changes:  Processing dirty files")
+        gitr.process_dirty(option="revert")
+        log.log_info("process_changes:  Processing untracked files")
+        gitr.process_untracked(option="remove")
+
+
 def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge
