@@ -28,6 +28,7 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
+import lib.gen_libs as gen_libs
 import version
 
 # Version Information
@@ -117,6 +118,29 @@ class UnitTest(unittest.TestCase):
 
     @mock.patch("merge_repo.gen_libs.help_func")
     @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class.ProgramLock")
+    def test_exception_handler(self, mock_lock, mock_arg, mock_help):
+
+        """Function:  test_exception_handler
+
+        Description:  Test with exception handler.
+
+        Arguments:
+            None
+
+        """
+
+        mock_lock.side_effect = merge_repo.gen_class.SingleInstanceException
+        mock_arg.arg_parse2.return_value = self.args
+        mock_help.return_value = False
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = False
+
+        with gen_libs.no_std_out():
+            self.assertFalse(merge_repo.main())
+
+    @mock.patch("merge_repo.gen_libs.help_func")
+    @mock.patch("merge_repo.arg_parser")
     def test_adding_r_option(self, mock_arg, mock_help):
 
         """Function:  test_adding_r_option
@@ -124,8 +148,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test adding -r option to args_array.
 
         Arguments:
-            mock_arg -> Mock Ref:  merge_repo.arg_parser
-            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
+            None
 
         """
 
@@ -146,8 +169,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with Help_Func returns True.
 
         Arguments:
-            mock_arg -> Mock Ref:  merge_repo.arg_parser.arg_parse2
-            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
+            None
 
         """
 
@@ -165,8 +187,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with Help_Func returns False.
 
         Arguments:
-            mock_arg -> Mock Ref:  merge_repo.arg_parser
-            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
+            None
 
         """
 
@@ -185,8 +206,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_require returns True.
 
         Arguments:
-            mock_arg -> Mock Ref:  merge_repo.arg_parser
-            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
+            None
 
         """
 
@@ -205,8 +225,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_require returns False.
 
         Arguments:
-            mock_arg -> Mock Ref:  merge_repo.arg_parser
-            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
+            None
 
         """
 
@@ -226,8 +245,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_dir_chk_crt returns True.
 
         Arguments:
-            mock_arg -> Mock Ref:  merge_repo.arg_parser
-            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
+            None
 
         """
 
@@ -250,10 +268,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_dir_chk_crt returns False.
 
         Arguments:
-            mock_class -> Mock Ref:  merge_repo.gen_class
-            mock_arg -> Mock Ref:  merge_repo.arg_parser
-            mock_help -> Mock Ref:  merge_repo.gen_libs.help_func
-            mock_run -> Mock Ref:  rmq_2_iise.run_program
+            None
 
         """
 
