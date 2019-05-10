@@ -613,13 +613,6 @@ def merge(args_array, cfg, log, **kwargs):
 
         if gitr.is_remote():
             process_changes(gitr, cfg, log)
-            #if gitr.is_dirty() or gitr.is_untracked():
-            #    log.log_info("merge:  Quarantine process running")
-            #    quarantine(gitr, cfg, log)
-            #    log.log_info("merge:  Processing dirty files")
-            #    gitr.process_dirty(option="revert")
-            #    log.log_info("merge:  Processing untracked files")
-            #    gitr.process_untracked(option="remove")
 
             if not gitr.is_dirty() and not gitr.is_untracked():
                 process_project(gitr, cfg, log)
