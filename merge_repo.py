@@ -432,9 +432,6 @@ def quarantine(gitr, cfg, log, **kwargs):
 
     """
 
-    gitr.get_dirty()
-    gitr.get_untracked()
-
     if gitr.chg_files:
         log.log_info("quarantine:  Quarantine modified files")
         quarantine_files(gitr, cfg, log, status="modified")
@@ -561,7 +558,7 @@ def process_changes(gitr, cfg, log, **kwargs):
 
     """Function:  process_changes
 
-    Description:  Process dirty and untracked files.
+    Description:  Locate and process dirty and untracked files.
 
     Arguments:
         (input) gitr -> Git class instance.
@@ -573,6 +570,8 @@ def process_changes(gitr, cfg, log, **kwargs):
     """
 
     if gitr.is_dirty() or gitr.is_untracked():
+        gitr.get_dirty()
+        gitr.get_untracked()
         log.log_info("process_changes:  Quarantine process running")
         quarantine(gitr, cfg, log)
         log.log_info("process_changes:  Processing dirty files")

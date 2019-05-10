@@ -10,6 +10,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - merge:  Replaced dirty and untrack code with call to process_changes function.
+- quarantine:  Moved get_dirty and get_untracked to process_changes function.
+- process_changes:  Added get_dirty and get_untracked from quarantine function.
 
 
 ## [0.0.4] - 2019-04-29
