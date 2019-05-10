@@ -8,6 +8,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Added
 - process_changes:  Process dirty and untracked files.
 
+### Changed
+- merge:  Replaced dirty and untrack code with call to process_changes function.
+
 
 ## [0.0.4] - 2019-04-29
 ### Added
