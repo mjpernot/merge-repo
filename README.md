@@ -152,8 +152,7 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
             untracked="remove"
 
     Examples:
-        merge_repo.py -c merge -d config -r hp-python-lib
-            -p /opt/local/hp-python-lib -M
+        merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
 
 
 # Testing:
