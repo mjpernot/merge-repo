@@ -296,7 +296,7 @@ def move(from_dir, to_dir, **kwargs):
     gen_libs.mv_file2(from_dir, to_dir)
 
 
-def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
+def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
 
     """Function:  post_process
 
@@ -305,6 +305,7 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
     Arguments:
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
         (input) status -> True|False - Status success of command.
         (input) line_list -> List of lines to add to email body.
         (input) msg -> Dictionary of error message from Git command.
@@ -325,9 +326,13 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
         + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
 
     if status:
+        log.log_info("post_process:  Project was moved to: %s."
+                     % (os.path.join(cfg.archive_dir, dest_dir)))
         move(gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
 
     else:
+        log.log_info("post_process:  Project was moved to: %s."
+                     % (os.path.join(cfg.err_dir, dest_dir)))
         move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
@@ -364,13 +369,13 @@ def post_check(gitr, cfg, log, **kwargs):
                         % (behind))
             line_list = ["Local repo is %s commits behind remote." % (behind)]
 
-        post_process(gitr, cfg, False, line_list)
+        post_process(gitr, cfg, log, False, line_list)
 
     else:
         log.log_info("post_check:  Processing of: %s completed."
                      % (gitr.git_dir))
         line_list = ["Processing of: %s completed." % (gitr.git_dir)]
-        post_process(gitr, cfg, True, line_list)
+        post_process(gitr, cfg, log, True, line_list)
 
 
 def quarantine_files(gitr, cfg, log, status=None, **kwargs):
@@ -484,13 +489,13 @@ def merge_project(gitr, cfg, log, **kwargs):
                 log.log_err("merge_project:  Fail to push tags to remote git.")
                 log.log_err("merge_project:  Message: %s" % (msg3))
                 line_list = ["Failure to push tags to remote git."]
-                post_process(gitr, cfg, status3, line_list, msg3)
+                post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("merge_project:  Fail to push to remote git.")
             log.log_err("merge_project:  Message: %s" % (msg2))
             line_list = ["Failure to push to remote git."]
-            post_process(gitr, cfg, status2, line_list, msg2)
+            post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("merge_project:  Failure to merge branch %s into %s."
@@ -498,7 +503,7 @@ def merge_project(gitr, cfg, log, **kwargs):
         log.log_err("merge_project:  Message: %s" % (msg1))
         line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
                                                               gitr.branch)]
-        post_process(gitr, cfg, status1, line_list, msg1)
+        post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
 def process_project(gitr, cfg, log, **kwargs):
@@ -537,20 +542,20 @@ def process_project(gitr, cfg, log, **kwargs):
                             % (gitr.branch))
                 log.log_err("process_project:  Message: %s" % (msg3))
                 line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
-                post_process(gitr, cfg, status3, line_list, msg3)
+                post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("process_project:  Fail rename branch to: %s."
                         % (gitr.mod_branch))
             log.log_err("process_project:  Message: %s" % (msg2))
             line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
-            post_process(gitr, cfg, status2, line_list, msg2)
+            post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("process_project:  Fail to fetch from remote Git repo.")
         log.log_err("process_project:  Message: %s" % (msg1))
         line_list = ["Failure to fetch from remote Git repo."]
-        post_process(gitr, cfg, status1, line_list, msg1)
+        post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
 def process_changes(gitr, cfg, log, **kwargs):
@@ -620,13 +625,13 @@ def merge(args_array, cfg, log, **kwargs):
             else:
                 log.log_err("merge:  Still dirty entries in local repo.")
                 line_list = ["There is still dirty entries in local repo."]
-                post_process(gitr, cfg, False, line_list)
+                post_process(gitr, cfg, log, False, line_list)
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
                         % (gitr.url))
             line_list = ["Remote git repository does not exist"]
-            post_process(gitr, cfg, False, line_list)
+            post_process(gitr, cfg, log, False, line_list)
 
     else:
         log.log_err("merge:  %s is not a local Git repository" % (git_dir))
