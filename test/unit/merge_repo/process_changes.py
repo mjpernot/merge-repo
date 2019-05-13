@@ -101,6 +101,8 @@ class UnitTest(unittest.TestCase):
                 self.to_line = "name@domain"
                 self.branch = "branch_name"
                 self.mod_branch = "mod_branch"
+                self.dirty = "revert"
+                self.untracked = "remove"
 
         class GitMerge(object):
 
