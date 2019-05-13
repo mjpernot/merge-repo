@@ -574,9 +574,11 @@ def process_changes(gitr, cfg, log, **kwargs):
         gitr.get_untracked()
         log.log_info("process_changes:  Quarantine process running")
         quarantine(gitr, cfg, log)
-        log.log_info("process_changes:  Processing dirty files")
+        log.log_info("process_changes:  Processing dirty files option: %s"
+                     % (cfg.dirty))
         gitr.process_dirty(option=cfg.dirty)
-        log.log_info("process_changes:  Processing untracked files")
+        log.log_info("process_changes:  Processing untracked files option: %s"
+                     % (cfg.untracked))
         gitr.process_untracked(option=cfg.untracked)
 
 
