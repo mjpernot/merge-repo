@@ -145,6 +145,12 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
             # Name of temporary branch on local git repo.
             mod_branch="mod_release"
 
+            # Option setting for dirty items:  revert|commit
+            dirty="revert"
+
+            # Option setting for untracked items:  add|remove
+            untracked="remove"
+
     Examples:
         merge_repo.py -c merge -d config -r hp-python-lib
             -p /opt/local/hp-python-lib -M
