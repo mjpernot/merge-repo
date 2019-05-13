@@ -447,7 +447,6 @@ def quarantine(gitr, cfg, log, **kwargs):
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("Removed files detected: %s" % (gitr.rm_files))
-        body.append("Files will be processed as per the option set.")
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 
