@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - process_changes:  Process dirty and untracked files.
 
 ### Changed
+- process_changes:  Replaced options for process_dirty and process_untracked to cfg settings.
 - merge:  Replaced dirty and untrack code with call to process_changes function.
 - quarantine:  Moved get_dirty and get_untracked to process_changes function.
 - process_changes:  Added get_dirty and get_untracked from quarantine function.

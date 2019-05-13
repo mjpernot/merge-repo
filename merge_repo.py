@@ -575,9 +575,9 @@ def process_changes(gitr, cfg, log, **kwargs):
         log.log_info("process_changes:  Quarantine process running")
         quarantine(gitr, cfg, log)
         log.log_info("process_changes:  Processing dirty files")
-        gitr.process_dirty(option="revert")
+        gitr.process_dirty(option=cfg.dirty)
         log.log_info("process_changes:  Processing untracked files")
-        gitr.process_untracked(option="remove")
+        gitr.process_untracked(option=cfg.untracked)
 
 
 def merge(args_array, cfg, log, **kwargs):
