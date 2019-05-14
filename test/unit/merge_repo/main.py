@@ -91,6 +91,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Initialize testing environment.
+        test_exception_handler -> Test with exception handler.
         test_adding_r_option -> Test adding -r option to args_array.
         test_help_true -> Test with Help_Func returns True.
         test_help_false -> Test with Help_Func returns False.
