@@ -29,7 +29,7 @@ setuptools.setup(
     description="Merge two Git repositories.",
     author="Mark Pernot",
     author_email="Mark.J.Pernot@coe.ic.gov",
-    url="https://sc.appdev.proj.coe.ic.gov/JAC-DSXD/check-log",
+    url="https://sc.appdev.proj.coe.ic.gov/JAC-DSXD/merge-repo",
     version=version.__version__,
     platforms=["Linux"],
     long_description=LONG_DESCRIPTION,
