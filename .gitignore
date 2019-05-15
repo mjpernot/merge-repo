@@ -4,3 +4,4 @@
 *.HOLD
 coverage.xml
 lib
+git_lib
