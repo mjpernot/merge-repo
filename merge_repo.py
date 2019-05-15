@@ -95,7 +95,7 @@ import git
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.gen_class as gen_class
-import git_class
+import git_lib.git_class as git_class
 import version
 
 # Version
