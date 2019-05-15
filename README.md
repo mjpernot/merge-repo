@@ -33,7 +33,7 @@
     - lib/gen_class
     - lib/arg_parser
     - lib/gen_libs
-    - git_class
+    - git_lib/git_class
 
 
 # Installation:
@@ -60,6 +60,7 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 
@@ -186,6 +187,7 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 # Unit test runs for merge_repo.py:
@@ -253,6 +255,7 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 # Integration test runs for merge_repo.py:
@@ -315,6 +318,7 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 # Blackbox test run for merge_repo.py:
