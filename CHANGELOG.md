@@ -5,19 +5,18 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.1.0] - 2019-05-10
-- Removed the git_class module from this project and into its own module.
-
 ### Added
 - process_changes:  Process dirty and untracked files.
 
 ### Changed
-- Changed import of git_class to subdirectory of git_lib.
-- post_process:  Added Log class instance to function to record entries to log.
-- Added Log class instance for all post_process calls.
-- process_changes:  Replaced options for process_dirty and process_untracked to cfg settings.
+- merge:  Added Log instance to post_process calls.
 - merge:  Replaced dirty and untrack code with call to process_changes function.
-- quarantine:  Moved get_dirty and get_untracked to process_changes function.
-- process_changes:  Added get_dirty and get_untracked from quarantine function.
+- process_project:  Added Log instance to post_process calls.
+- merge_project:  Added Log instance to post_process calls.
+- quarantine:  Removed get_dirty and get_untracked calls and added Log instance to post_process calls.
+- quarantine_files:  Change file quarantine to directory to quarantine file to show move properly.
+- post_check:  Added Log instance to post_process calls.
+- post_process:  Added Log class instance to function to record entries to log.
 
 
 ## [0.0.4] - 2019-04-29
