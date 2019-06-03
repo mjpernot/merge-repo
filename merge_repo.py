@@ -692,7 +692,7 @@ def run_program(args_array, func_dict, **kwargs):
         print("Error:  Problem in configuration file.")
 
 
-def main():
+def main(**kwargs):
 
     """Function:  main
 
@@ -707,8 +707,12 @@ def main():
 
     Arguments:
         (input) argv -> Arguments from the command line.
+        (input) **kwargs:
+            argv_list -> List of arguments from a wrapper program.
 
     """
+
+    sys.argv = kwargs.get("argv_list", sys.argv)
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
