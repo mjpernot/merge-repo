@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - process_changes:  Process dirty and untracked files.
 
 ### Changed
+- Changed import of git_class to a sub-directory.
 - main:  Added ability to accept keywords arguments into function.  Will allow wrapper program to implment program.
 - merge:  Added Log instance to post_process calls.
 - merge:  Replaced dirty and untrack code with call to process_changes function.
