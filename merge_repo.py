@@ -124,8 +124,6 @@ def load_cfg(cfg_name, cfg_dir, **kwargs):
     Arguments:
         (input) cfg_name -> Configuration file name.
         (input) cfg_dir -> Directory path to the configuration file.
-        (input) **kwargs:
-            None
         (output) cfg -> Configuration module handler.
         (output) status_flag -> True|False - successfully validate config file.
 
@@ -166,8 +164,6 @@ def is_git_repo(path, **kwargs):
 
     Arguments:
         (input) path -> Directory path to git repository.
-        (input) **kwargs:
-            None
         (output)  True|False -> If the directory path is a git repository.
 
     """
@@ -190,8 +186,6 @@ def send_mail(to_line, subj, mail_body, **kwargs):
         (input) to_line -> Email's to line.
         (input) subj -> Email subject line.
         (input) mail_body -> Email body list.
-        (input) **kwargs:
-            None
 
     """
 
@@ -214,8 +208,6 @@ def post_body(gitr, body=None, **kwargs):
     Arguments:
         (input) gitr -> Git class instance.
         (input) body -> Mail list body.
-        (input) **kwargs:
-            None
         (output) body -> Body of the email.
 
     """
@@ -246,8 +238,6 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
         (input) status -> True|False - Status success of Git command.
         (input) line_list -> List of lines to add to email body.
         (input) msg -> Dictionary of error message from Git command.
-        (input) **kwargs:
-            None
         (output) body -> Body of the email.
 
     """
@@ -292,8 +282,6 @@ def move(from_dir, to_dir, **kwargs):
     Arguments:
         (input) from_dir -> Source directory.
         (input) to_dir -> Desitination directory.
-        (input) **kwargs:
-            None
 
     """
 
@@ -313,8 +301,6 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
         (input) status -> True|False - Status success of command.
         (input) line_list -> List of lines to add to email body.
         (input) msg -> Dictionary of error message from Git command.
-        (input) **kwargs:
-            None
 
     """
 
@@ -350,8 +336,6 @@ def post_check(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -393,8 +377,6 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
         (input) status -> added|modified - Status of the file for quarantine.
-        (input) **kwargs:
-            None
 
     """
 
@@ -436,8 +418,6 @@ def quarantine(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -470,8 +450,6 @@ def merge_project(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -520,8 +498,6 @@ def process_project(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -572,8 +548,6 @@ def process_changes(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -602,8 +576,6 @@ def merge(args_array, cfg, log, **kwargs):
         (input) args_array -> Dict of command line options and values.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -662,8 +634,6 @@ def run_program(args_array, func_dict, **kwargs):
     Arguments:
         (input) args_array -> Dict of command line options and values.
         (input) func_dict -> Dict of function calls and associated options.
-        (input) **kwargs:
-            None
 
     """
 
