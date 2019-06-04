@@ -36,11 +36,12 @@ setuptools.setup(
 
     classifiers=[
         # Common Values:
-        #  2 - Pre-Alpha
-        #  3 - Alpha
-        #  4 - Beta
+        #  1 - Pre-Alpha
+        #  2 - Alpha
+        #  3 - Beta
+        #  4 - Field
         #  5 - Production/Stable
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 2 - Alpha",
         "Operating System :: Linux",
         "Operating System :: Linux :: Centos",
         "Git :: Gitlab",
