@@ -29,18 +29,19 @@ setuptools.setup(
     description="Merge two Git repositories.",
     author="Mark Pernot",
     author_email="Mark.J.Pernot@coe.ic.gov",
-    url="https://sc.appdev.proj.coe.ic.gov/JAC-DSXD/check-log",
+    url="https://sc.appdev.proj.coe.ic.gov/JAC-DSXD/merge-repo",
     version=version.__version__,
     platforms=["Linux"],
     long_description=LONG_DESCRIPTION,
 
     classifiers=[
         # Common Values:
-        #  2 - Pre-Alpha
-        #  3 - Alpha
-        #  4 - Beta
+        #  1 - Pre-Alpha
+        #  2 - Alpha
+        #  3 - Beta
+        #  4 - Field
         #  5 - Production/Stable
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 2 - Alpha",
         "Operating System :: Linux",
         "Operating System :: Linux :: Centos",
         "Git :: Gitlab",

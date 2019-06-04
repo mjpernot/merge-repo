@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.1.0] - 2019-06-04
+### Added
+- process_changes:  Process dirty and untracked files.
+
+### Changed
+- Changed import of git_class to a sub-directory.
+- main:  Added ability to accept keywords arguments into function.  Will allow wrapper program to implment program.
+- merge:  Added Log instance to post_process calls.
+- merge:  Replaced dirty and untrack code with call to process_changes function.
+- process_project:  Added Log instance to post_process calls.
+- merge_project:  Added Log instance to post_process calls.
+- quarantine:  Removed get_dirty and get_untracked calls and added Log instance to post_process calls.
+- quarantine_files:  Change file quarantine to directory to quarantine file to show move properly.
+- post_check:  Added Log instance to post_process calls.
+- post_process:  Added Log class instance to function to record entries to log.
+
+
 ## [0.0.4] - 2019-04-29
 ### Added
 - post_body:  Append default post-header to mail body.

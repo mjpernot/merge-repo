@@ -66,9 +66,14 @@
             # Name of temporary branch on local git repo.
             mod_branch="mod_release"
 
+            # Option setting for dirty items:  revert|commit
+            dirty="revert"
+
+            # Option setting for untracked items:  add|remove
+            untracked="remove"
+
     Examples:
-        merge_repo.py -c merge -d config -r hp-python-lib
-            -p /opt/local/hp-python-lib -M
+        merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
 
 """
 
@@ -90,10 +95,9 @@ import git
 import lib.arg_parser as arg_parser
 import lib.gen_libs as gen_libs
 import lib.gen_class as gen_class
-import git_class
+import git_lib.git_class as git_class
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -120,8 +124,6 @@ def load_cfg(cfg_name, cfg_dir, **kwargs):
     Arguments:
         (input) cfg_name -> Configuration file name.
         (input) cfg_dir -> Directory path to the configuration file.
-        (input) **kwargs:
-            None
         (output) cfg -> Configuration module handler.
         (output) status_flag -> True|False - successfully validate config file.
 
@@ -162,8 +164,6 @@ def is_git_repo(path, **kwargs):
 
     Arguments:
         (input) path -> Directory path to git repository.
-        (input) **kwargs:
-            None
         (output)  True|False -> If the directory path is a git repository.
 
     """
@@ -186,8 +186,6 @@ def send_mail(to_line, subj, mail_body, **kwargs):
         (input) to_line -> Email's to line.
         (input) subj -> Email subject line.
         (input) mail_body -> Email body list.
-        (input) **kwargs:
-            None
 
     """
 
@@ -210,8 +208,6 @@ def post_body(gitr, body=None, **kwargs):
     Arguments:
         (input) gitr -> Git class instance.
         (input) body -> Mail list body.
-        (input) **kwargs:
-            None
         (output) body -> Body of the email.
 
     """
@@ -242,8 +238,6 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
         (input) status -> True|False - Status success of Git command.
         (input) line_list -> List of lines to add to email body.
         (input) msg -> Dictionary of error message from Git command.
-        (input) **kwargs:
-            None
         (output) body -> Body of the email.
 
     """
@@ -288,15 +282,13 @@ def move(from_dir, to_dir, **kwargs):
     Arguments:
         (input) from_dir -> Source directory.
         (input) to_dir -> Desitination directory.
-        (input) **kwargs:
-            None
 
     """
 
     gen_libs.mv_file2(from_dir, to_dir)
 
 
-def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
+def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
 
     """Function:  post_process
 
@@ -305,11 +297,10 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
     Arguments:
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
         (input) status -> True|False - Status success of command.
         (input) line_list -> List of lines to add to email body.
         (input) msg -> Dictionary of error message from Git command.
-        (input) **kwargs:
-            None
 
     """
 
@@ -325,9 +316,13 @@ def post_process(gitr, cfg, status, line_list=None, msg=None, **kwargs):
         + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
 
     if status:
+        log.log_info("post_process:  Project was moved to: %s."
+                     % (os.path.join(cfg.archive_dir, dest_dir)))
         move(gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
 
     else:
+        log.log_info("post_process:  Project was moved to: %s."
+                     % (os.path.join(cfg.err_dir, dest_dir)))
         move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
@@ -341,8 +336,6 @@ def post_check(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -364,13 +357,13 @@ def post_check(gitr, cfg, log, **kwargs):
                         % (behind))
             line_list = ["Local repo is %s commits behind remote." % (behind)]
 
-        post_process(gitr, cfg, False, line_list)
+        post_process(gitr, cfg, log, False, line_list)
 
     else:
         log.log_info("post_check:  Processing of: %s completed."
                      % (gitr.git_dir))
         line_list = ["Processing of: %s completed." % (gitr.git_dir)]
-        post_process(gitr, cfg, True, line_list)
+        post_process(gitr, cfg, log, True, line_list)
 
 
 def quarantine_files(gitr, cfg, log, status=None, **kwargs):
@@ -384,8 +377,6 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
         (input) status -> added|modified - Status of the file for quarantine.
-        (input) **kwargs:
-            None
 
     """
 
@@ -399,20 +390,20 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         file_list = []
 
     for item in file_list:
-        log.log_info("quarantine_files:  Quarantined file: %s" % (item))
-        log.log_info("quarantine_files:  Reason: File was '%s'" % (status))
+        log.log_info("quarantine_files:  File '%s' was quarantined." % (item))
+        log.log_info("quarantine_files:  Reason -> File was '%s'" % (status))
         q_file = item + "." + gitr.repo_name + "." \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
         gen_libs.cp_file(item, gitr.git_dir, cfg.quar_dir, q_file)
-        log.log_info("quarantine_files:  File: %s moved to %s"
+        log.log_info("quarantine_files:  File '%s' was moved to: %s"
                      % (item, os.path.join(cfg.quar_dir, q_file)))
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
-        body.append("File: %s quaratine to %s"
+        body.append("File '%s' was moved to: %s"
                     % (item, os.path.join(cfg.quar_dir, q_file)))
-        body.append("Reason:  File has been %s" % (status))
+        body.append("Reason:  File was '%s'" % (status))
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 
@@ -427,13 +418,8 @@ def quarantine(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
-
-    gitr.get_dirty()
-    gitr.get_untracked()
 
     if gitr.chg_files:
         log.log_info("quarantine:  Quarantine modified files")
@@ -450,7 +436,6 @@ def quarantine(gitr, cfg, log, **kwargs):
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("Removed files detected: %s" % (gitr.rm_files))
-        body.append("Files will be processed as per the option set.")
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 
@@ -465,8 +450,6 @@ def merge_project(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -488,13 +471,13 @@ def merge_project(gitr, cfg, log, **kwargs):
                 log.log_err("merge_project:  Fail to push tags to remote git.")
                 log.log_err("merge_project:  Message: %s" % (msg3))
                 line_list = ["Failure to push tags to remote git."]
-                post_process(gitr, cfg, status3, line_list, msg3)
+                post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("merge_project:  Fail to push to remote git.")
             log.log_err("merge_project:  Message: %s" % (msg2))
             line_list = ["Failure to push to remote git."]
-            post_process(gitr, cfg, status2, line_list, msg2)
+            post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("merge_project:  Failure to merge branch %s into %s."
@@ -502,7 +485,7 @@ def merge_project(gitr, cfg, log, **kwargs):
         log.log_err("merge_project:  Message: %s" % (msg1))
         line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
                                                               gitr.branch)]
-        post_process(gitr, cfg, status1, line_list, msg1)
+        post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
 def process_project(gitr, cfg, log, **kwargs):
@@ -515,8 +498,6 @@ def process_project(gitr, cfg, log, **kwargs):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -541,20 +522,46 @@ def process_project(gitr, cfg, log, **kwargs):
                             % (gitr.branch))
                 log.log_err("process_project:  Message: %s" % (msg3))
                 line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
-                post_process(gitr, cfg, status3, line_list, msg3)
+                post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("process_project:  Fail rename branch to: %s."
                         % (gitr.mod_branch))
             log.log_err("process_project:  Message: %s" % (msg2))
             line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
-            post_process(gitr, cfg, status2, line_list, msg2)
+            post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("process_project:  Fail to fetch from remote Git repo.")
         log.log_err("process_project:  Message: %s" % (msg1))
         line_list = ["Failure to fetch from remote Git repo."]
-        post_process(gitr, cfg, status1, line_list, msg1)
+        post_process(gitr, cfg, log, status1, line_list, msg1)
+
+
+def process_changes(gitr, cfg, log, **kwargs):
+
+    """Function:  process_changes
+
+    Description:  Locate and process dirty and untracked files.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+
+    """
+
+    if gitr.is_dirty() or gitr.is_untracked():
+        gitr.get_dirty()
+        gitr.get_untracked()
+        log.log_info("process_changes:  Quarantine process running")
+        quarantine(gitr, cfg, log)
+        log.log_info("process_changes:  Processing dirty files option: %s"
+                     % (cfg.dirty))
+        gitr.process_dirty(option=cfg.dirty)
+        log.log_info("process_changes:  Processing untracked files option: %s"
+                     % (cfg.untracked))
+        gitr.process_untracked(option=cfg.untracked)
 
 
 def merge(args_array, cfg, log, **kwargs):
@@ -569,8 +576,6 @@ def merge(args_array, cfg, log, **kwargs):
         (input) args_array -> Dict of command line options and values.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
-        (input) **kwargs:
-            None
 
     """
 
@@ -588,13 +593,7 @@ def merge(args_array, cfg, log, **kwargs):
         gitr.set_remote()
 
         if gitr.is_remote():
-            if gitr.is_dirty() or gitr.is_untracked():
-                log.log_info("merge:  Quarantine process running")
-                quarantine(gitr, cfg, log)
-                log.log_info("merge:  Processing dirty files")
-                gitr.process_dirty(option="revert")
-                log.log_info("merge:  Processing untracked files")
-                gitr.process_untracked(option="remove")
+            process_changes(gitr, cfg, log)
 
             if not gitr.is_dirty() and not gitr.is_untracked():
                 process_project(gitr, cfg, log)
@@ -602,13 +601,13 @@ def merge(args_array, cfg, log, **kwargs):
             else:
                 log.log_err("merge:  Still dirty entries in local repo.")
                 line_list = ["There is still dirty entries in local repo."]
-                post_process(gitr, cfg, False, line_list)
+                post_process(gitr, cfg, log, False, line_list)
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
                         % (gitr.url))
             line_list = ["Remote git repository does not exist"]
-            post_process(gitr, cfg, False, line_list)
+            post_process(gitr, cfg, log, False, line_list)
 
     else:
         log.log_err("merge:  %s is not a local Git repository" % (git_dir))
@@ -635,8 +634,6 @@ def run_program(args_array, func_dict, **kwargs):
     Arguments:
         (input) args_array -> Dict of command line options and values.
         (input) func_dict -> Dict of function calls and associated options.
-        (input) **kwargs:
-            None
 
     """
 
@@ -665,7 +662,7 @@ def run_program(args_array, func_dict, **kwargs):
         print("Error:  Problem in configuration file.")
 
 
-def main():
+def main(**kwargs):
 
     """Function:  main
 
@@ -680,8 +677,12 @@ def main():
 
     Arguments:
         (input) argv -> Arguments from the command line.
+        (input) **kwargs:
+            argv_list -> List of arguments from a wrapper program.
 
     """
+
+    sys.argv = kwargs.get("argv_list", sys.argv)
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}

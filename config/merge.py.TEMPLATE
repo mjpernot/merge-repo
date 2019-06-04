@@ -23,9 +23,15 @@ to_line="Mark.J.Pernot@coe.ic.gov"
 # Directory where log files will be placed.
 log_file="/home/mark.j.pernot/merge/logs/merge-repo.log"
 
-# Do not modify unless you know what you are doing.
+# Do not modify the settings below unless you know what you are doing.
 # Remote branch on which the merge will take place on.
 branch="develop"
 
 # Name of temporary branch on local git repo.
 mod_branch="mod_release"
+
+# Option setting for dirty items:  revert|commit
+dirty="revert"
+
+# Option setting for untracked items:  add|remove
+untracked="remove"
