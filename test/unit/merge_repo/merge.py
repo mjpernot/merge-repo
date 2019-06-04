@@ -52,8 +52,6 @@ class UnitTest(unittest.TestCase):
         test_not_dirty -> Test with no dirty files found.
         test_second_check_false -> Test with second check set to False.
         test_second_check_true -> Test with second check set to True.
-        test_is_untracked_true -> Test with is_untracked set to True.
-        test_is_dirty_true -> Test with is_dirty set to True.
         test_is_remote_true -> Test with is_remote set to True.
         test_is_remote_false -> Test with is_remote set to False.
         test_is_git_repo_false -> Test with is_git_repo set to False.
@@ -142,14 +140,14 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.quarantine")
+    @mock.patch("merge_repo.process_changes")
     @mock.patch("merge_repo.process_project")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_second_check_false(self, mock_log, mock_lib, mock_isgit, mock_git,
-                                mock_proj, mock_quar):
+                                mock_proj, mock_chg):
 
         """Function:  test_second_check_false
 
@@ -167,23 +165,23 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.create_gitrepo.return_value = True
         mock_git.GitMerge.set_remote.return_value = True
         mock_git.GitMerge.is_remote.return_value = True
-        mock_git.GitMerge.is_dirty.side_effect = [False, False]
-        mock_git.GitMerge.is_untracked.side_effect = [False, False]
+        mock_git.GitMerge.is_dirty.return_value = False
+        mock_git.GitMerge.is_untracked.return_value = False
         mock_git.GitMerge.process_dirty.return_value = True
         mock_git.GitMerge.process_untracked.return_value = True
         mock_proj.return_value = True
-        mock_quar.return_value = True
+        mock_chg.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.quarantine")
+    @mock.patch("merge_repo.process_changes")
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_second_check_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                               mock_post, mock_quar):
+                               mock_post, mock_chg):
 
         """Function:  test_second_check_true
 
@@ -201,90 +199,21 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.create_gitrepo.return_value = True
         mock_git.GitMerge.set_remote.return_value = True
         mock_git.GitMerge.is_remote.return_value = True
-        mock_git.GitMerge.is_dirty.side_effect = [True, True]
-        mock_git.GitMerge.is_untracked.side_effect = [True, True]
-        mock_git.GitMerge.process_dirty.return_value = True
-        mock_git.GitMerge.process_untracked.return_value = True
+        mock_git.GitMerge.is_dirty.return_value = True
+        mock_git.GitMerge.is_untracked.return_value = True
         mock_post.return_value = True
-        mock_quar.return_value = True
+        mock_chg.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.quarantine")
-    @mock.patch("merge_repo.post_process")
-    @mock.patch("merge_repo.git_class")
-    @mock.patch("merge_repo.is_git_repo")
-    @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_untracked_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                               mock_post, mock_quar):
-
-        """Function:  test_is_untracked_true
-
-        Description:  Test with is_untracked set to True.
-
-        Arguments:
-            None
-
-        """
-
-        mock_log.return_value = True
-        mock_lib.mv_file2.return_value = True
-        mock_isgit.return_value = True
-        mock_git.GitMerge.return_value = merge_repo.git_class.GitMerge
-        mock_git.GitMerge.create_gitrepo.return_value = True
-        mock_git.GitMerge.set_remote.return_value = True
-        mock_git.GitMerge.is_remote.return_value = True
-        mock_git.GitMerge.is_dirty.side_effect = [True, True]
-        mock_git.GitMerge.is_untracked.side_effect = [True, True]
-        mock_git.GitMerge.process_dirty.return_value = True
-        mock_git.GitMerge.process_untracked.return_value = True
-        mock_post.return_value = True
-        mock_quar.return_value = True
-
-        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
-
-    @mock.patch("merge_repo.quarantine")
-    @mock.patch("merge_repo.post_process")
-    @mock.patch("merge_repo.git_class")
-    @mock.patch("merge_repo.is_git_repo")
-    @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_dirty_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                           mock_post, mock_quar):
-
-        """Function:  test_is_dirty_true
-
-        Description:  Test with is_dirty set to True.
-
-        Arguments:
-            None
-
-        """
-
-        mock_log.return_value = True
-        mock_lib.mv_file2.return_value = True
-        mock_isgit.return_value = True
-        mock_git.GitMerge.return_value = merge_repo.git_class.GitMerge
-        mock_git.GitMerge.create_gitrepo.return_value = True
-        mock_git.GitMerge.set_remote.return_value = True
-        mock_git.GitMerge.is_remote.return_value = True
-        mock_git.GitMerge.is_dirty.side_effect = [True, True]
-        mock_git.GitMerge.is_untracked.side_effect = [False, True]
-        mock_git.GitMerge.process_dirty.return_value = True
-        mock_git.GitMerge.process_untracked.return_value = True
-        mock_post.return_value = True
-        mock_quar.return_value = True
-
-        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
-
+    @mock.patch("merge_repo.process_changes")
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_is_remote_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                            mock_post):
+                            mock_post, mock_chg):
 
         """Function:  test_is_remote_true
 
@@ -302,9 +231,10 @@ class UnitTest(unittest.TestCase):
         mock_git.create_gitrepo.return_value = True
         mock_git.GitMerge.set_remote.return_value = True
         mock_git.GitMerge.is_remote.return_value = True
-        mock_git.GitMerge.is_dirty.side_effect = [False, True]
-        mock_git.GitMerge.is_untracked.side_effect = [False, True]
+        mock_git.GitMerge.is_dirty.return_value = True
+        mock_git.GitMerge.is_untracked.return_value = True
         mock_post.return_value = True
+        mock_chg.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 

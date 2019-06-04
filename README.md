@@ -8,6 +8,7 @@
   * Features
   * Prerequisites
   * Installation
+  * Configuration
   * Program Description
   * Program Help Function
   * Help Message
@@ -33,7 +34,7 @@
     - lib/gen_class
     - lib/arg_parser
     - lib/gen_libs
-    - git_class
+    - git_lib/git_class
 
 
 # Installation:
@@ -60,8 +61,31 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
+# Configuration:
+
+Setup configuration file.
+```
+cd config
+cp merge.py.TEMPLATE merge.py
+```
+
+Modify configutation file.
+Make the appropriate changes to the Git environment in the merge.py file.
+  * "url" is URL address to the Git repository.  Do not include the project name in the url.
+  * "work_dir" is the directory where the merge will take place.
+  * "err_dir" is the directory where a project will be archive if an error occurs.
+  * "archive_dir" is the directory where the project will be save to after the merge.
+  * "quar_dir" is the directory where items that are not processed will be saved to.
+  * "to_line" is one or more email addresses to receive emails from the program.
+  * "log_file" is the directory path and log file name for the program.
+
+```
+vim merge.py
+```
 
 # Program Descriptions:
 ### Description: The program is designed to take an outside local Git repository and merge it into an existing remote Git repository, but make the outside Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
@@ -145,9 +169,14 @@ pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appd
             # Name of temporary branch on local git repo.
             mod_branch="mod_release"
 
+            # Option setting for dirty items:  revert|commit
+            dirty="revert"
+
+            # Option setting for untracked items:  add|remove
+            untracked="remove"
+
     Examples:
-        merge_repo.py -c merge -d config -r hp-python-lib
-            -p /opt/local/hp-python-lib -M
+        merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
 
 
 # Testing:
@@ -181,6 +210,8 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 # Unit test runs for merge_repo.py:
@@ -202,6 +233,7 @@ test/unit/merge_repo/post_body.py
 test/unit/merge_repo/load_cfg.py
 test/unit/merge_repo/merge.py
 test/unit/merge_repo/process_project.py
+test/unit/merge_repo/process_changes.py
 test/unit/merge_repo/help_message.py
 test/unit/merge_repo/run_program.py
 test/unit/merge_repo/main.py
@@ -247,6 +279,30 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
+```
+
+# Configuration:
+
+Setup configuration file.
+```
+cd config
+cp merge.py.TEMPLATE merge.py
+```
+
+Modify configutation file.
+Make the appropriate changes to the Git environment in the merge.py file.
+  * "url" is URL address to the Git repository.  Do not include the project name in the url.
+  * "work_dir" is the directory where the merge will take place.
+  * "err_dir" is the directory where a project will be archive if an error occurs.
+  * "archive_dir" is the directory where the project will be save to after the merge.
+  * "quar_dir" is the directory where items that are not processed will be saved to.
+  * "to_line" is one or more email addresses to receive emails from the program.
+  * "log_file" is the directory path and log file name for the program.
+
+```
+vim merge.py
 ```
 
 # Integration test runs for merge_repo.py:
@@ -309,6 +365,30 @@ exit
 Install supporting classes and libraries.
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
+pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
+```
+
+# Configuration:
+
+Setup configuration file.
+```
+cd config
+cp merge.py.TEMPLATE merge.py
+```
+
+Modify configutation file.
+Make the appropriate changes to the Git environment in the merge.py file.
+  * "url" is URL address to the Git repository.  Do not include the project name in the url.
+  * "work_dir" is the directory where the merge will take place.
+  * "err_dir" is the directory where a project will be archive if an error occurs.
+  * "archive_dir" is the directory where the project will be save to after the merge.
+  * "quar_dir" is the directory where items that are not processed will be saved to.
+  * "to_line" is one or more email addresses to receive emails from the program.
+  * "log_file" is the directory path and log file name for the program.
+
+```
+vim merge.py
 ```
 
 # Blackbox test run for merge_repo.py:

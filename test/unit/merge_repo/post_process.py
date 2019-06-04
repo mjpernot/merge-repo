@@ -132,10 +132,11 @@ class UnitTest(unittest.TestCase):
         self.status1 = True
         self.status2 = False
 
+    @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
-    def test_msg_passed(self, mock_mail, mock_prepare, mock_move):
+    def test_msg_passed(self, mock_mail, mock_prepare, mock_move, mock_log):
 
         """Function:  test_msg_passed
 
@@ -146,19 +147,22 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_log.return_value = True
         mock_mail.return_value = True
         mock_prepare.return_value = (self.subj, self.body)
         mock_move.return_value = True
 
         msg = {"1": "Line1", "2": "Line2"}
 
-        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg,
+        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg, mock_log,
                                                  self.status1, msg=msg))
 
+    @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
-    def test_linelist_passed(self, mock_mail, mock_prepare, mock_move):
+    def test_linelist_passed(self, mock_mail, mock_prepare, mock_move,
+                             mock_log):
 
         """Function:  test_linelist_passed
 
@@ -169,20 +173,22 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_log.return_value = True
         mock_mail.return_value = True
         mock_prepare.return_value = (self.subj, self.body)
         mock_move.return_value = True
 
         line_list = ["Line1", "Line2"]
 
-        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg,
+        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg, mock_log,
                                                  self.status1,
                                                  line_list=line_list))
 
+    @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
-    def test_status_false(self, mock_mail, mock_prepare, mock_move):
+    def test_status_false(self, mock_mail, mock_prepare, mock_move, mock_log):
 
         """Function:  test_status_false
 
@@ -193,17 +199,19 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_log.return_value = True
         mock_mail.return_value = True
         mock_prepare.return_value = (self.subj, self.body)
         mock_move.return_value = True
 
-        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg,
+        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg, mock_log,
                                                  self.status2))
 
+    @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
-    def test_status_true(self, mock_mail, mock_prepare, mock_move):
+    def test_status_true(self, mock_mail, mock_prepare, mock_move, mock_log):
 
         """Function:  test_status_true
 
@@ -214,11 +222,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_log.return_value = True
         mock_mail.return_value = True
         mock_prepare.return_value = (self.subj, self.body)
         mock_move.return_value = True
 
-        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg,
+        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg, mock_log,
                                                  self.status1))
 
 

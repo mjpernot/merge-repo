@@ -111,8 +111,6 @@ class UnitTest(unittest.TestCase):
 
             Methods:
                 __init__ -> Initialize configuration environment.
-                get_dirty -> Stub holder for the GitMerge.get_dirty method.
-                get_untracked -> Stub holder for GitMerge.get_untracked method.
 
             """
 
@@ -131,32 +129,6 @@ class UnitTest(unittest.TestCase):
                 self.new_files = []
                 self.rm_files = []
                 self.repo_name = "Repo_Name"
-
-            def get_dirty(self):
-
-                """Method:  get_dirty
-
-                Description:  Stub holder for the GitMerge.get_dirty method.
-
-                Arguments:
-                        None
-
-                """
-
-                return True
-
-            def get_untracked(self):
-
-                """Method:  get_untracked
-
-                Description:  Stub holder for GitMerge.get_untracked method.
-
-                Arguments:
-                        None
-
-                """
-
-                return True
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()
