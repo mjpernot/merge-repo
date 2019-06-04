@@ -44,6 +44,7 @@ pipeline {
             steps {
                 sh './test/unit/sonarqube_code_coverage.sh'
                 sh 'rm -rf lib'
+                sh 'rm -rf git_lib'
                 script {
                     scannerHome = tool 'sonar-scanner';
                 }
