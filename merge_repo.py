@@ -59,6 +59,12 @@
             # Directory where log files will be placed.
             log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
 
+            # Local Git Repository user name.
+            name="gituser"
+
+            # Local Git Repository user email address.
+            email="gituser@domain.mail"
+
             # Do not modify unless you know what you are doing.
             # Branch on which the merge will take place on.
             branch="develop"
