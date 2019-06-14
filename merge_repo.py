@@ -591,6 +591,11 @@ def merge(args_array, cfg, log, **kwargs):
     git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
     if is_git_repo(git_dir):
+        log.log_info("merge:  Updating Git config file")
+        giti = git_class.GitConfig(git_dir)
+        giti.set_user(cfg.name)
+        giti.set_email(cfg.email)
+
         log.log_info("merge:  Processing: %s directory" % (git_dir))
         url = cfg.url + args_array["-r"] + ".git"
         gitr = git_class.GitMerge(args_array["-r"], git_dir, url, cfg.branch,
