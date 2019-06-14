@@ -23,6 +23,12 @@ to_line="Mark.J.Pernot@coe.ic.gov"
 # Directory where log files will be placed.
 log_file="/home/mark.j.pernot/merge/logs/merge-repo.log"
 
+# Local Git Repository user name.
+name="gituser"
+
+# Local Git Repository user email address.
+email="gituser@domain.mail"
+
 # Do not modify the settings below unless you know what you are doing.
 # Remote branch on which the merge will take place on.
 branch="develop"
