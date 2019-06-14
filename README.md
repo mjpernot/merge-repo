@@ -2,16 +2,14 @@
 # Classification (U)
 
 # Description:
-  This program is used to take a local Git repository that has been modified at a different location and merge it into an existing Git repository.
+  The program is designed to take an outside local Git repository and merge it into an existing remote Git repository.  It will, however, make the local Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
 
 ###  This README file is broken down into the following sections:
   * Features
   * Prerequisites
   * Installation
   * Configuration
-  * Program Description
   * Program Help Function
-  * Help Message
   * Testing
     - Unit
     - Integration (Not yet implemented)
@@ -82,13 +80,12 @@ Make the appropriate changes to the Git environment in the merge.py file.
   * "quar_dir" is the directory where items that are not processed will be saved to.
   * "to_line" is one or more email addresses to receive emails from the program.
   * "log_file" is the directory path and log file name for the program.
+  * "name" is the name of the Git user for the local repository.
+  * "email" is the email address of the Git user for the local repository.
 
 ```
 vim merge.py
 ```
-
-# Program Descriptions:
-### Description: The program is designed to take an outside local Git repository and merge it into an existing remote Git repository, but make the outside Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
 
 
 # Program Help Function:
@@ -99,84 +96,6 @@ vim merge.py
 ```
 {Python_Project}/merge-repo/merge_repo.py -h
 ```
-
-
-# Help Message:
-  Below is the help message for each of the programs along with the current version for the program.  Recommend running the -h option on the command line to ensure you have the latest help message for the program.
-
-    Program:  merge_repo.py
-
-    Description:  Merge an external local Git repository into an existing
-        remote Git repository.  The merge process will clean up the new
-        project using Git of dirty and untracked files and it will then pull
-        the existing remote Git branch to the local Git repository before
-        merging the local Git repo with the existing Git repo.  Once the
-        branches have been merged the updated branch will be pushed back to
-        the remote Git repository.
-
-        NOTE 1:  The external Git repo being imported will have priority during
-            the merge.  This means that the imported Git repo will have
-            precedence over the changes made to the remote Git repo.
-        NOTE 2:  The external local Git repository must come in as a detached
-            head repository and with no named branches in the repository.
-
-    Usage:
-        merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
-            [-M] {-v | -h}
-
-    Arguments:
-        -c file_name => Name of merge_repo configuration file.
-        -d directory_path => Directory path to the configuration file.
-        -M => Run the merge function.
-        -r repo_name => Repository name being merged (e.g. "hp-python-lib").
-        -p directory_path => Project directory which is the full absolute path.
-        -v => Display version of this program.
-        -h => Help and usage message.
-
-        NOTE 1:  -v or -h overrides the other options.
-        NOTE 2:  If -r is not passed, will use the basename from the -p option
-            directory path to populate the -r option.
-
-    Notes:
-        Config file:
-            # Base URL address to remote Git repository.  Not to include
-            #   repository name.  This will be supplied by command line
-            #   arguments.
-            url="git@gitlab.code.dicelab.net:JAC-IDM/"
-
-            # Directory of where the merge will take place.
-            work_dir="{PATH_DIRECTORY}/work_dir"
-
-            # Directory where projects will be archived if encounter errors.
-            err_dir="{PATH_DIRECTORY}/error_dir"
-
-            # Directory where projects will be archived after a merge.
-            archive_dir="{PATH_DIRECTORY}/archive_dir"
-
-            # Directory where project items will be quarantined.
-            quar_dir="/home/mark.j.pernot/merge/quarantine"
-
-            # Email addresses for notification.
-            to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
-
-            # Directory where log files will be placed.
-            log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
-
-            # Do not modify unless you know what you are doing.
-            # Branch on which the merge will take place on.
-            branch="develop"
-
-            # Name of temporary branch on local git repo.
-            mod_branch="mod_release"
-
-            # Option setting for dirty items:  revert|commit
-            dirty="revert"
-
-            # Option setting for untracked items:  add|remove
-            untracked="remove"
-
-    Examples:
-        merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
 
 
 # Testing:
@@ -300,6 +219,8 @@ Make the appropriate changes to the Git environment in the merge.py file.
   * "quar_dir" is the directory where items that are not processed will be saved to.
   * "to_line" is one or more email addresses to receive emails from the program.
   * "log_file" is the directory path and log file name for the program.
+  * "name" is the name of the Git user for the local repository.
+  * "email" is the email address of the Git user for the local repository.
 
 ```
 vim merge.py
@@ -386,6 +307,8 @@ Make the appropriate changes to the Git environment in the merge.py file.
   * "quar_dir" is the directory where items that are not processed will be saved to.
   * "to_line" is one or more email addresses to receive emails from the program.
   * "log_file" is the directory path and log file name for the program.
+  * "name" is the name of the Git user for the local repository.
+  * "email" is the email address of the Git user for the local repository.
 
 ```
 vim merge.py
