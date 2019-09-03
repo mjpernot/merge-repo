@@ -16,15 +16,21 @@
             precedence over the changes made to the remote Git repo.
         NOTE 2:  The external local Git repository must come in as a detached
             head repository and with no named branches in the repository.
+        NOTE 3:  The -a option allows for using multiple deploy keys for a
+            single user account into Git (e.g. required for Github).  There
+            must be an entry in the account's ~/.ssh/config file with an alias
+            name that matches the respository name being processed.  See Notes
+            section on format of entry in ~/.ssh/config file.
 
     Usage:
         merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
-            [-M] {-v | -h}
+            [-M] {-a} {-v | -h}
 
     Arguments:
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
         -M => Run the merge function.
+        -a => Use the repository name as an alias in the Git url.
         -r repo_name => Repository name being merged (e.g. "hp-python-lib").
         -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
@@ -33,6 +39,8 @@
         NOTE 1:  -v or -h overrides the other options.
         NOTE 2:  If -r is not passed, will use the basename from the -p option
             directory path to populate the -r option.
+        NOTE 3:  If -a is used, this assumes there is an alias name in the
+            account's ~/.ssh/config that matches the repository name.
 
     Notes:
         Config file:
@@ -40,43 +48,40 @@
             #   repository name.  This will be supplied by command line
             #   arguments.
             url="git@gitlab.code.dicelab.net:JAC-IDM/"
-
             # Directory of where the merge will take place.
             work_dir="{PATH_DIRECTORY}/work_dir"
-
             # Directory where projects will be archived if encounter errors.
             err_dir="{PATH_DIRECTORY}/error_dir"
-
             # Directory where projects will be archived after a merge.
             archive_dir="{PATH_DIRECTORY}/archive_dir"
-
             # Directory where project items will be quarantined.
             quar_dir="/home/mark.j.pernot/merge/quarantine"
-
             # Email addresses for notification.
             to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
-
             # Directory where log files will be placed.
             log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
-
             # Local Git Repository user name.
             name="gituser"
-
             # Local Git Repository user email address.
             email="gituser@domain.mail"
-
             # Do not modify unless you know what you are doing.
             # Branch on which the merge will take place on.
             branch="develop"
-
             # Name of temporary branch on local git repo.
             mod_branch="mod_release"
-
             # Option setting for dirty items:  revert|commit
             dirty="revert"
-
             # Option setting for untracked items:  add|remove
             untracked="remove"
+
+        ~/.ssh/config file (only required for -a option):
+            # RepoName is the Git repository name.
+            # ServerNameFQDN is the Git server's fully qualified domain name.
+            # UserName is the account name connecting to Git.
+            Host {RepoName} {ServerNameFQDN}
+             Hostname {ServerNameFQDN}
+             User {UserName}
+             IdentityFile {Path}/id_dsa.{RepoName}
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
