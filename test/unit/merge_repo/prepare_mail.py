@@ -9,7 +9,6 @@
         test/unit/merge_repo/prepare_mail.py
 
     Arguments:
-        None
 
 """
 
@@ -29,7 +28,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -38,10 +36,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -61,7 +55,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -70,10 +63,6 @@ class UnitTest(unittest.TestCase):
             """Class:  GitMerge
 
             Description:  Class which is a representation of GitMerge module.
-
-            Super-Class:  object
-
-            Sub-Classes:  None
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -87,7 +76,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the GitMerge class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -117,7 +105,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with msg with data.
 
         Arguments:
-            None
 
         """
 
@@ -150,7 +137,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with line_list with empty list.
 
         Arguments:
-            None
 
         """
 
@@ -177,7 +163,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with line_list with data.
 
         Arguments:
-            None
 
         """
 
@@ -207,7 +192,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with status set to False.
 
         Arguments:
-            None
 
         """
 
@@ -232,7 +216,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with line_list set to None.
 
         Arguments:
-            None
 
         """
 
@@ -258,7 +241,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with status set to True.
 
         Arguments:
-            None
 
         """
 
