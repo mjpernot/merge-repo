@@ -6,9 +6,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.0] - 2019-09-03
 ### Changed
+- merge:  Set the "url" depending on "-a" option setting.  To allow multiple deploy keys in a Github repository.
+- main:  Changed variable name to standard naming convention.
 - config/merge.py.TEMPLATE:  Removed "url" entry.  No longer required.
 - config/merge.py.TEMPLATE:  Added "git_project", "git_server", and "prefix" entries.
-- main:  Changed variable name to standard naming convention.
 
 
 ## [0.1.1] - 2019-06-14

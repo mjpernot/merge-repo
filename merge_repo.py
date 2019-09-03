@@ -607,9 +607,16 @@ def merge(args_array, cfg, log, **kwargs):
         giti = git_class.GitConfig(git_dir)
         giti.set_user(cfg.name)
         giti.set_email(cfg.email)
-
         log.log_info("merge:  Processing: %s directory" % (git_dir))
-        url = cfg.url + args_array["-r"] + ".git"
+
+        # Use alias for servername
+        if "-a" in args_array:
+            url = cfg.prefix + args_array["-r"] 
+
+        else:
+            url = cfg.prefix + cfg.git_server
+
+        url = url + ":" + cfg.git_project + "/" + args_array["-r"] + ".git"
         gitr = git_class.GitMerge(args_array["-r"], git_dir, url, cfg.branch,
                                   cfg.mod_branch)
         gitr.create_gitrepo()
