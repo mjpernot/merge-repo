@@ -7,7 +7,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [0.2.0] - 2019-09-03
 ### Changed
 - config/merge.py.TEMPLATE:  Removed "url" entry.  No longer required.
-- config/merge.py.TEMPLATE:  Added "git_project", "git_servername", and "prefix" entries.
+- config/merge.py.TEMPLATE:  Added "git_project", "git_server", and "prefix" entries.
 - main:  Changed variable name to standard naming convention.
 
 
