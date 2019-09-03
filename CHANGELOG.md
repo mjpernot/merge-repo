@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.0] - 2019-09-03
+### Changed
+- main:  Changed variable name to standard naming convention.
+
+
 ## [0.1.1] - 2019-06-14
 ### Changed
 - merge:  Update the local Git config file with a local user name and email address.

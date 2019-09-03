@@ -725,10 +725,10 @@ def main(**kwargs):
            and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
             try:
-                PROG_LOCK = gen_class.ProgramLock(sys.argv,
+                prog_lock = gen_class.ProgramLock(sys.argv,
                                                   args_array.get("-r", ""))
                 run_program(args_array, func_dict)
-                del PROG_LOCK
+                del prog_lock
 
             except gen_class.SingleInstanceException:
                 print("WARNING:  lock in place for merge with id of: %s"
