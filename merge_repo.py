@@ -44,10 +44,15 @@
 
     Notes:
         Config file:
-            # Base URL address to remote Git repository.  Not to include
-            #   repository name.  This will be supplied by command line
-            #   arguments.
-            url="git@gitlab.code.dicelab.net:JAC-IDM/"
+            ## Base URL address to remote Git repository.  Not to include
+            ##   repository name.  This will be supplied by command line
+            ##   arguments.
+            ##url="git@gitlab.code.dicelab.net:JAC-IDM/"
+            # Git Project name.
+            url_project="{ProjectName}"
+            # Git Server Fully Qualified Domain Name.
+            #  Not required for -a option.
+            url_servername="{GitServerFQDN}"
             # Directory of where the merge will take place.
             work_dir="{PATH_DIRECTORY}/work_dir"
             # Directory where projects will be archived if encounter errors.
@@ -73,6 +78,8 @@
             dirty="revert"
             # Option setting for untracked items:  add|remove
             untracked="remove"
+            # Git Url Prefix
+            url_prefix="git@"
 
         ~/.ssh/config file (only required for -a option):
             # RepoName is the Git repository name.
