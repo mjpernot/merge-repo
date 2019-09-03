@@ -9,7 +9,6 @@
         test/unit/merge_repo/is_remote_branch.py
 
     Arguments:
-        None
 
 """
 
@@ -34,7 +33,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -43,10 +41,6 @@ class GitCmd2(object):
     """Class:  GitCmd2
 
     Description:  Class stub holder for GitCmd class.
-
-    Super-Class:  None
-
-    Sub-Classes:  None
 
     Methods:
         rev_parse -> Stub holder for rev_parse method.
@@ -75,10 +69,6 @@ class GitCmd(object):
 
     Description:  Class stub holder for GitCmd class.
 
-    Super-Class:  None
-
-    Sub-Classes:  None
-
     Methods:
         rev_parse -> Stub holder for rev_parse method.
 
@@ -106,10 +96,6 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
         test_is_remote_branch_fail -> Test function raising error.
@@ -124,7 +110,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -138,7 +123,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test is_remote_branch function raising error.
 
         Arguments:
-            None
 
         """
 
@@ -151,7 +135,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test is_remote_branch function.
 
         Arguments:
-            None
 
         """
 

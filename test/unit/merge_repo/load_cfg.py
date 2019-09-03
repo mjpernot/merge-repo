@@ -9,7 +9,6 @@
         test/unit/merge_repo/load_cfg.py
 
     Arguments:
-        None
 
 """
 
@@ -33,7 +32,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -42,10 +40,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -67,7 +61,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -76,10 +69,6 @@ class UnitTest(unittest.TestCase):
             """Class:  CfgTest
 
             Description:  Class which is a representation of a cfg module.
-
-            Super-Class:  object
-
-            Sub-Classes:  None
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -93,7 +82,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the CfgTest class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -119,7 +107,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test log_file check returns False.
 
         Arguments:
-            None
 
         """
 
@@ -138,7 +125,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test log_file check returns True.
 
         Arguments:
-            None
 
         """
 
@@ -157,7 +143,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test archive_dir check returns False.
 
         Arguments:
-            None
 
         """
 
@@ -177,7 +162,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test archive_dir check returns True.
 
         Arguments:
-            None
 
         """
 
@@ -196,7 +180,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test err_dir check returns False.
 
         Arguments:
-            None
 
         """
 
@@ -216,7 +199,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test err_dir check returns True.
 
         Arguments:
-            None
 
         """
 
@@ -235,7 +217,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test work_dir check returns False.
 
         Arguments:
-            None
 
         """
 
@@ -255,7 +236,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test work_dir check returns True.
 
         Arguments:
-            None
 
         """
 

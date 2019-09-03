@@ -2,8 +2,12 @@
 # Classification (U)
 # Unclassified until filled.
 
-# Base URL address to remote Git repository.
-url="git@gitlab.code.dicelab.net:JAC-IDM/"
+# Git Project name.
+git_project="JAC-IDM"
+
+# Git Server Fully Qualified Domain Name.
+#   Not required for -a option.
+git_server="gitlab.code.dicelab.net"
 
 # Directory of where the merge will take place.
 work_dir="/home/mark.j.pernot/merge/work_dir"
@@ -41,3 +45,6 @@ dirty="revert"
 
 # Option setting for untracked items:  add|remove
 untracked="remove"
+
+# Git Url Prefix
+prefix="git@"

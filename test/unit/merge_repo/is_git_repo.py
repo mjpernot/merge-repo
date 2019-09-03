@@ -9,7 +9,6 @@
         test/unit/merge_repo/is_git_repo.py
 
     Arguments:
-        None
 
 """
 
@@ -33,7 +32,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -42,10 +40,6 @@ class Repo(object):
     """Class:  Repo
 
     Description:  Class stub holder for repo class.
-
-    Super-Class:  None
-
-    Sub-Classes:  None
 
     Methods:
         __init__ -> Class initilization.
@@ -72,10 +66,6 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
         test_is_git_repo -> Test is_git_repo function.
@@ -89,7 +79,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -103,7 +92,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test is_git_repo function.
 
         Arguments:
-            None
 
         """
 

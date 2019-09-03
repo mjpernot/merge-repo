@@ -9,7 +9,6 @@
         test/unit/merge_repo/is_commits_ahead.py
 
     Arguments:
-        None
 
 """
 
@@ -33,7 +32,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -42,10 +40,6 @@ class GitRepo(object):
     """Class:  GitRepo
 
     Description:  Class stub holder for GitRepo class.
-
-    Super-Class:  None
-
-    Sub-Classes:  None
 
     Methods:
         __init__ -> Class initialization.
@@ -60,7 +54,6 @@ class GitRepo(object):
         Description:  Class initialization.
 
         Arguments:
-            None
 
         """
 
@@ -86,10 +79,6 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
         test_is_two_ahead -> Test with two commits ahead of remote repo.
@@ -105,7 +94,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -120,7 +108,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with two commits ahead of remote repo.
 
         Arguments:
-            mock_diff -> Mock Ref:  merge_repo.commits_diff
 
         """
 
@@ -137,7 +124,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with one commit ahead of remote repo.
 
         Arguments:
-            mock_diff -> Mock Ref:  merge_repo.commits_diff
 
         """
 
@@ -154,7 +140,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with zero commits ahead of remote repo.
 
         Arguments:
-            mock_diff -> Mock Ref:  merge_repo.commits_diff
 
         """
 
