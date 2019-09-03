@@ -9,7 +9,6 @@
         test/unit/merge_repo/main.py
 
     Arguments:
-        None
 
 """
 
@@ -31,7 +30,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version Information
 __version__ = version.__version__
 
 
@@ -40,10 +38,6 @@ class ProgramLock(object):
     """Class:  ProgramLock
 
     Description:  Mock of the gen_class.ProgramLock class.
-
-    Super-Class:  object
-
-    Sub-Classes:
 
     Methods:
         __init__ -> Class instance initilization.
@@ -72,7 +66,6 @@ class ProgramLock(object):
         Description:  Deletion of the ProgramLock instance.
 
         Arguments:
-            None
 
         """
 
@@ -84,10 +77,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Initialize testing environment.
@@ -109,7 +98,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -127,7 +115,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with exception handler.
 
         Arguments:
-            None
 
         """
 
@@ -149,7 +136,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test adding -r option to args_array.
 
         Arguments:
-            None
 
         """
 
@@ -170,7 +156,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with Help_Func returns True.
 
         Arguments:
-            None
 
         """
 
@@ -188,7 +173,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with Help_Func returns False.
 
         Arguments:
-            None
 
         """
 
@@ -207,7 +191,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_require returns True.
 
         Arguments:
-            None
 
         """
 
@@ -226,7 +209,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_require returns False.
 
         Arguments:
-            None
 
         """
 
@@ -246,7 +228,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_dir_chk_crt returns True.
 
         Arguments:
-            None
 
         """
 
@@ -269,7 +250,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test main function with arg_dir_chk_crt returns False.
 
         Arguments:
-            None
 
         """
 

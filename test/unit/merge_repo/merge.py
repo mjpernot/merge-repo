@@ -41,12 +41,9 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:
-
     Methods:
         setUp -> Unit testing initilization.
+        test_git_alias_option -> 
         test_not_dirty -> Test with no dirty files found.
         test_second_check_false -> Test with second check set to False.
         test_second_check_true -> Test with second check set to True.
@@ -73,10 +70,6 @@ class UnitTest(unittest.TestCase):
 
             Description:  Class which is a representation of a cfg module.
 
-            Super-Class:  object
-
-            Sub-Classes:
-
             Methods:
                 __init__ -> Initialize configuration environment.
 
@@ -92,7 +85,9 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.url = "git@domain:project/"
+                self.prefix = "git@"
+                self.git_server="domain"
+                self.git_project="project"
                 self.work_dir = "/directory/work_dir"
                 self.err_dir = "/directory/error_dir"
                 self.archive_dir = "/directory/archive_dir"
@@ -107,6 +102,37 @@ class UnitTest(unittest.TestCase):
         self.args = {"-c": "config_file", "-d": "/directory/merge_repo/config",
                      "-r": "repo-name", "-p": "/directory/repo-name",
                      "-M": True}
+
+    @mock.patch("merge_repo.post_process")
+    @mock.patch("merge_repo.git_class")
+    @mock.patch("merge_repo.is_git_repo")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_git_alias_option(self, mock_log, mock_lib, mock_isgit, mock_git,
+                              mock_post):
+
+        """Function:  test_git_alias_option
+
+        Description:  Test with the git alias option set to True.
+
+        Arguments:
+
+        """
+
+        mock_log.return_value = True
+        mock_lib.mv_file2.return_value = True
+        mock_isgit.return_value = True
+        mock_git.GitConfig.return_value = merge_repo.git_class.GitConfig
+        mock_git.GitConfig.set_user.return_value = True
+        mock_git.GitConfig.set_email.return_value = True
+        mock_git.GitMerge.return_value = merge_repo.git_class.GitMerge
+        mock_git.GitMerge.create_gitrepo.return_value = False
+        mock_git.GitMerge.set_remote.return_value = True
+        mock_git.GitMerge.is_remote.return_value = False
+        mock_post.return_value = True
+        self.args["-a"] = True
+
+        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
     @mock.patch("merge_repo.process_project")
     @mock.patch("merge_repo.git_class")
