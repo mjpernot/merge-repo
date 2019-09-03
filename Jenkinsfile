@@ -18,7 +18,7 @@ pipeline {
                     git branch: "master", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.dicelab.net/JAC-IDM/python-lib.git"
                 }
                 sh """
-                pip2 install mock --user
+                pip2 install mock==2.0.0 --user
                 pip2 install gitpython==2.1.8 --user
                 ./test/unit/merge_repo/main.py
                 ./test/unit/merge_repo/run_program.py
