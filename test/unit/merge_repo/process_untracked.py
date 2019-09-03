@@ -9,7 +9,6 @@
         test/unit/merge_repo/process_untracked.py
 
     Arguments:
-        None
 
 """
 
@@ -33,7 +32,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -42,10 +40,6 @@ class Index(object):
     """Class:  Index
 
     Description:  Class stub holder for Index.
-
-    Super-Class:  None
-
-    Sub-Classes:  None
 
     Methods:
         commit -> Stub holder for commit method.
@@ -72,10 +66,6 @@ class GitCmd(object):
 
     Description:  Class stub holder for GitCmd class.
 
-    Super-Class:  None
-
-    Sub-Classes:  None
-
     Methods:
         add -> Stub holder for add method.
 
@@ -101,10 +91,6 @@ class GitRepo(object):
 
     Description:  Class stub holder for GitRepo class.
 
-    Super-Class:  None
-
-    Sub-Classes:  None
-
     Methods:
         __init__ -> Class initialization.
         is_dirty -> Stub holder for is_dirty method.
@@ -118,7 +104,6 @@ class GitRepo(object):
         Description:  Class initialization.
 
         Arguments:
-            None
 
         """
 
@@ -146,10 +131,6 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
         test_untracked_files -> Test with untracked_files filled.
@@ -165,7 +146,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -179,7 +159,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with untracked_files filled.
 
         Arguments:
-            None
 
         """
 
@@ -195,7 +174,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with untracked_files empty.
 
         Arguments:
-            None
 
         """
 
@@ -209,7 +187,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with is_dirty set to True.
 
         Arguments:
-            None
 
         """
 
@@ -223,7 +200,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with is_dirty set to False.
 
         Arguments:
-            None
 
         """
 
