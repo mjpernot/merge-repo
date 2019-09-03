@@ -3,11 +3,11 @@
 # Unclassified until filled.
 
 # Git Project name.
-url_project="JAC-IDM"
+git_project="JAC-IDM"
 
 # Git Server Fully Qualified Domain Name.
 #   Not required for -a option.
-url_servername="gitlab.code.dicelab.net"
+git_servername="gitlab.code.dicelab.net"
 
 # Directory of where the merge will take place.
 work_dir="/home/mark.j.pernot/merge/work_dir"
@@ -47,4 +47,4 @@ dirty="revert"
 untracked="remove"
 
 # Git Url Prefix
-url_prefix="git@"
+prefix="git@"
