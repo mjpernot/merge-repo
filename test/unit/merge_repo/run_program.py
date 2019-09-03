@@ -9,7 +9,6 @@
         test/unit/merge_repo/run_program.py
 
     Arguments:
-        None
 
 """
 
@@ -33,7 +32,6 @@ import merge_repo
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -59,10 +57,6 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
         test_status_flag_true -> Test with status flag set to True.
@@ -77,7 +71,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -86,10 +79,6 @@ class UnitTest(unittest.TestCase):
             """Class:  CfgTest
 
             Description:  Class which is a representation of a cfg module.
-
-            Super-Class:  object
-
-            Sub-Classes:  None
 
             Methods:
                 __init__ -> Initialize configuration environment.
@@ -103,7 +92,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Initialization instance of the CfgTest class.
 
                 Arguments:
-                        None
 
                 """
 
@@ -131,8 +119,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with status flag set to True.
 
         Arguments:
-            mock_cfg -> Mock Ref:  merge_repo.load_cfg
-            mock_log -> Mock Ref:  merge_repo.gen_class.Logger
 
         """
 
@@ -151,7 +137,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with status flag set to False.
 
         Arguments:
-            mock_cfg -> Mock Ref:  merge_repo.load_cfg
 
         """
 
