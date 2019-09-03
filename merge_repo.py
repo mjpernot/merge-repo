@@ -416,7 +416,7 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
 
 def quarantine(gitr, cfg, log, **kwargs):
 
-    """Function:  quarantine_files
+    """Function:  quarantine
 
     Description:  Get dirty and untracked files and quarantine them.
 
