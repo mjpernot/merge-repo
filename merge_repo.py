@@ -607,7 +607,7 @@ def merge(args_array, cfg, log, **kwargs):
 
         # Use alias for servername
         if "-a" in args_array:
-            url = cfg.prefix + args_array["-r"] 
+            url = cfg.prefix + args_array["-r"]
 
         else:
             url = cfg.prefix + cfg.git_server
