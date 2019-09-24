@@ -406,18 +406,30 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
     for item in file_list:
         log.log_info("quarantine_files:  File '%s' was quarantined." % (item))
         log.log_info("quarantine_files:  Reason -> File was '%s'" % (status))
-        q_file = item + "." + gitr.repo_name + "." \
-            + datetime.datetime.strftime(datetime.datetime.now(),
-                                         "%Y%m%d_%H%M%S")
-        gen_libs.cp_file(item, gitr.git_dir, cfg.quar_dir, q_file)
-        log.log_info("quarantine_files:  File '%s' was moved to: %s"
-                     % (item, os.path.join(cfg.quar_dir, q_file)))
+
+        if os.path.isdir(os.path.join(self.git_dir, item)):
+            q_file = item + "-" + gitr.repo_name + "-" \
+                + datetime.datetime.strftime(datetime.datetime.now(),
+                                             "%Y%m%d_%H%M%S")
+            distutils.dir_util.copy_tree(os.path.join(self.git_dir, item),
+                                         os.path.join(cfg.quar_dir, q_file))
+            f_type = "Directory"
+
+        else:
+            q_file = item + "." + gitr.repo_name + "." \
+                + datetime.datetime.strftime(datetime.datetime.now(),
+                                             "%Y%m%d_%H%M%S")
+            gen_libs.cp_file(item, gitr.git_dir, cfg.quar_dir, q_file)
+            f_type = "File"
+
+        log.log_info("quarantine_files:  %s '%s' was moved to: %s"
+                     % (f_type, item, os.path.join(cfg.quar_dir, q_file)))
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
-        body.append("File '%s' was moved to: %s"
-                    % (item, os.path.join(cfg.quar_dir, q_file)))
-        body.append("Reason:  File was '%s'" % (status))
+        body.append("%s '%s' was moved to: %s"
+                    % (f_type, item, os.path.join(cfg.quar_dir, q_file)))
+        body.append("Reason:  %s was '%s'" % (f_type, status))
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 

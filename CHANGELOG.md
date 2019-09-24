@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.1] - 2019-09-24
+### Fixed
+quarantine_files:  Allow directories to be quarantined.
+
+
 ## [0.2.0] - 2019-09-03
 ### Changed
 - merge:  Set the "url" depending on "-a" option setting.  To allow multiple deploy keys in a Github repository.
