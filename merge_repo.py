@@ -44,10 +44,6 @@
 
     Notes:
         Config file:
-            ## Base URL address to remote Git repository.  Not to include
-            ##   repository name.  This will be supplied by command line
-            ##   arguments.
-            ##url="git@gitlab.code.dicelab.net:JAC-IDM/"
             # Git Project name.
             url_project="{ProjectName}"
             # Git Server Fully Qualified Domain Name.
