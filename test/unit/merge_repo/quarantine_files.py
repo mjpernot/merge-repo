@@ -43,6 +43,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_copy_directory -> Test with directory being quarantined.
         test_modified_no_list -> Test status set to modified with empty list.
         test_added_no_list -> Test with status set to added with empty list.
         test_no_status -> Test with status not set.
@@ -115,6 +116,37 @@ class UnitTest(unittest.TestCase):
         self.cfg = CfgTest()
 
         self.dtg = "2019-04-16 13:51:42"
+
+    @mock.patch("merge_repo.os.path")
+    @mock.patch("merge_repo.send_mail")
+    @mock.patch("merge_repo.post_body")
+    @mock.patch("merge_repo.distutils.dir_util")
+    @mock.patch("merge_repo.datetime.datetime")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_copy_directory(self, mock_log, mock_date, mock_cp, mock_body,
+                             mock_mail, mock_path):
+
+        """Function:  test_copy_directory
+
+        Description:  Test with directory being quarantined.
+
+        Arguments:
+
+        """
+
+        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.strftime.return_value = self.dtg
+        mock_log.return_value = True
+        mock_cp.copy_tree.return_value = True
+        mock_body.return_value = True
+        mock_mail.return_value = True
+        mock_path.isdir.return_value = True
+
+        self.gitr.chg_files = ["File1"]
+
+        self.assertFalse(merge_repo.quarantine_files(self.gitr, self.cfg,
+                                                     mock_log,
+                                                     status="modified"))
 
     @mock.patch("merge_repo.gen_class.Logger")
     def test_modified_no_list(self, mock_log):
