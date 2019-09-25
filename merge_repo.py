@@ -79,7 +79,7 @@
 
         This is only if the -a option is used against a Github repository.
         If merging into a Github repository then each project will require its
-            own unique deployment key.  Running the following procedures to 
+            own unique deployment key.  Running the following procedures to
             create and setup deployment key for a project.
                 GitProjectName is the Git repository name.
                 ServerNameFQDN is the Git server's fully qualified domain name.
