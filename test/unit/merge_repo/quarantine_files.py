@@ -124,7 +124,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_copy_directory(self, mock_log, mock_date, mock_cp, mock_body,
-                             mock_mail, mock_path):
+                            mock_mail, mock_path):
 
         """Function:  test_copy_directory
 
