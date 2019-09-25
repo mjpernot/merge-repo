@@ -120,6 +120,7 @@ import os
 import datetime
 import socket
 import getpass
+import distutils.dir_util
 
 # Third-party
 import git
@@ -426,11 +427,11 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         log.log_info("quarantine_files:  File '%s' was quarantined." % (item))
         log.log_info("quarantine_files:  Reason -> File was '%s'" % (status))
 
-        if os.path.isdir(os.path.join(self.git_dir, item)):
+        if os.path.isdir(os.path.join(gitr.git_dir, item)):
             q_file = item + "-" + gitr.repo_name + "-" \
                 + datetime.datetime.strftime(datetime.datetime.now(),
                                              "%Y%m%d_%H%M%S")
-            distutils.dir_util.copy_tree(os.path.join(self.git_dir, item),
+            distutils.dir_util.copy_tree(os.path.join(gitr.git_dir, item),
                                          os.path.join(cfg.quar_dir, q_file))
             f_type = "Directory"
 

@@ -6,7 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.2.1] - 2019-09-24
 ### Fixed
-- quarantine_files:  Allow directories to be quarantined.
+- quarantine_files:  Allow directories to be quarantined in addition to files.
 
 ### Changed
 - Documentation update.
