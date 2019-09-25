@@ -167,13 +167,14 @@ class UnitTest(unittest.TestCase):
         self.assertFalse(merge_repo.quarantine_files(self.gitr, self.cfg,
                                                      mock_log))
 
+    @mock.patch("merge_repo.os.path")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.post_body")
     @mock.patch("merge_repo.gen_libs.cp_file")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_modified_status(self, mock_log, mock_date, mock_cp, mock_body,
-                             mock_mail):
+                             mock_mail, mock_path):
 
         """Function:  test_modified_status
 
@@ -189,6 +190,7 @@ class UnitTest(unittest.TestCase):
         mock_cp.return_value = True
         mock_body.return_value = True
         mock_mail.return_value = True
+        mock_path.isdir.return_value = False
 
         self.gitr.chg_files = ["File1"]
 
@@ -196,13 +198,14 @@ class UnitTest(unittest.TestCase):
                                                      mock_log,
                                                      status="modified"))
 
+    @mock.patch("merge_repo.os.path")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.post_body")
     @mock.patch("merge_repo.gen_libs.cp_file")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_added_status(self, mock_log, mock_date, mock_cp, mock_body,
-                          mock_mail):
+                          mock_mail, mock_path):
 
         """Function:  test_added_status
 
@@ -218,6 +221,7 @@ class UnitTest(unittest.TestCase):
         mock_cp.return_value = True
         mock_body.return_value = True
         mock_mail.return_value = True
+        mock_path.isdir.return_value = False
 
         self.gitr.new_files = ["File1"]
 
