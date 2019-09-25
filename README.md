@@ -71,7 +71,8 @@ cp merge.py.TEMPLATE merge.py
 
 Modify configutation file.
 Make the appropriate changes to the Git environment in the merge.py file.
-  * "url" is URL address to the Git repository.  Do not include the project name in the url.
+  * "git_project" is the Git Project name.
+  * "git_server" is the Git Server Fully Qualified Domain Name.
   * "work_dir" is the directory where the merge will take place.
   * "err_dir" is the directory where a project will be archive if an error occurs.
   * "archive_dir" is the directory where the project will be save to after the merge.
