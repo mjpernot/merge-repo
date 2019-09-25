@@ -45,10 +45,10 @@
     Notes:
         Config file:
             # Git Project name.
-            url_project="{ProjectName}"
+            git_project="{ProjectName}"
             # Git Server Fully Qualified Domain Name.
             #  Not required for -a option.
-            url_servername="{GitServerFQDN}"
+            git_server="{GitServerFQDN}"
             # Directory of where the merge will take place.
             work_dir="{PATH_DIRECTORY}/work_dir"
             # Directory where projects will be archived if encounter errors.
@@ -75,16 +75,35 @@
             # Option setting for untracked items:  add|remove
             untracked="remove"
             # Git Url Prefix
-            url_prefix="git@"
+            prefix="git@"
 
-        ~/.ssh/config file (only required for -a option):
-            # RepoName is the Git repository name.
-            # ServerNameFQDN is the Git server's fully qualified domain name.
-            # UserName is the account name connecting to Git.
-            Host {RepoName} {ServerNameFQDN}
-             Hostname {ServerNameFQDN}
-             User {UserName}
-             IdentityFile {Path}/id_dsa.{RepoName}
+        This is only if the -a option is used against a Github repository.
+        If merging into a Github repository then each project will require its
+            own unique deployment key.  Running the following procedures to 
+            create and setup deployment key for a project.
+                GitProjectName is the Git repository name.
+                ServerNameFQDN is the Git server's fully qualified domain name.
+                UserName is the account name connecting to Git.
+
+            1.  Create deployment key.
+                > ssh-keygen -t dsa
+                    Name:  id_dsa.{GitProjectName}
+                    Passphrase:  Null
+            2.  Add project entry to ssh config file.
+                > vim ~/.ssh/config file
+                    Host {GitProjectName} {ServerNameFQDN}
+                    Hostname {ServerNameFQDN}
+                    User {UserName}
+                    IdentityFile {Path}/id_dsa.{GitProjectName}
+            3.  In Guthub setup a deploy key in the repository being merged.
+                a.  Go to project in GitHub.
+                b.  Click "Settings" -> "Deploy Keys" -> "Add Deploy Key"
+                        Title:  Nifi
+                        Key:  (Paste public key here)
+                c.  Click Button:  "Allow Write Access"
+                d.  Clock "Add Key"
+            4.  To use the deploy key too clone a git repository:
+                > git clone git@{GitProjectName}:JACDEV/{GitProjectName}.git
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
