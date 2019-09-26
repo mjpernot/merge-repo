@@ -44,15 +44,11 @@
 
     Notes:
         Config file:
-            ## Base URL address to remote Git repository.  Not to include
-            ##   repository name.  This will be supplied by command line
-            ##   arguments.
-            ##url="git@gitlab.code.dicelab.net:JAC-IDM/"
             # Git Project name.
-            url_project="{ProjectName}"
+            git_project="{ProjectName}"
             # Git Server Fully Qualified Domain Name.
             #  Not required for -a option.
-            url_servername="{GitServerFQDN}"
+            git_server="{GitServerFQDN}"
             # Directory of where the merge will take place.
             work_dir="{PATH_DIRECTORY}/work_dir"
             # Directory where projects will be archived if encounter errors.
@@ -79,16 +75,35 @@
             # Option setting for untracked items:  add|remove
             untracked="remove"
             # Git Url Prefix
-            url_prefix="git@"
+            prefix="git@"
 
-        ~/.ssh/config file (only required for -a option):
-            # RepoName is the Git repository name.
-            # ServerNameFQDN is the Git server's fully qualified domain name.
-            # UserName is the account name connecting to Git.
-            Host {RepoName} {ServerNameFQDN}
-             Hostname {ServerNameFQDN}
-             User {UserName}
-             IdentityFile {Path}/id_dsa.{RepoName}
+        This is only if the -a option is used against a Github repository.
+        If merging into a Github repository then each project will require its
+            own unique deployment key.  Running the following procedures to
+            create and setup deployment key for a project.
+                GitProjectName is the Git repository name.
+                ServerNameFQDN is the Git server's fully qualified domain name.
+                UserName is the account name connecting to Git.
+
+            1.  Create deployment key.
+                > ssh-keygen -t dsa
+                    Name:  id_dsa.{GitProjectName}
+                    Passphrase:  Null
+            2.  Add project entry to ssh config file.
+                > vim ~/.ssh/config file
+                    Host {GitProjectName} {ServerNameFQDN}
+                    Hostname {ServerNameFQDN}
+                    User {UserName}
+                    IdentityFile {Path}/id_dsa.{GitProjectName}
+            3.  In Guthub setup a deploy key in the repository being merged.
+                a.  Go to project in GitHub.
+                b.  Click "Settings" -> "Deploy Keys" -> "Add Deploy Key"
+                        Title:  Nifi
+                        Key:  (Paste public key here)
+                c.  Click Button:  "Allow Write Access"
+                d.  Clock "Add Key"
+            4.  To use the deploy key too clone a git repository:
+                > git clone git@{GitProjectName}:JACDEV/{GitProjectName}.git
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
@@ -105,6 +120,7 @@ import os
 import datetime
 import socket
 import getpass
+import distutils.dir_util
 
 # Third-party
 import git
@@ -410,18 +426,30 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
     for item in file_list:
         log.log_info("quarantine_files:  File '%s' was quarantined." % (item))
         log.log_info("quarantine_files:  Reason -> File was '%s'" % (status))
-        q_file = item + "." + gitr.repo_name + "." \
-            + datetime.datetime.strftime(datetime.datetime.now(),
-                                         "%Y%m%d_%H%M%S")
-        gen_libs.cp_file(item, gitr.git_dir, cfg.quar_dir, q_file)
-        log.log_info("quarantine_files:  File '%s' was moved to: %s"
-                     % (item, os.path.join(cfg.quar_dir, q_file)))
+
+        if os.path.isdir(os.path.join(gitr.git_dir, item)):
+            q_file = item + "-" + gitr.repo_name + "-" \
+                + datetime.datetime.strftime(datetime.datetime.now(),
+                                             "%Y%m%d_%H%M%S")
+            distutils.dir_util.copy_tree(os.path.join(gitr.git_dir, item),
+                                         os.path.join(cfg.quar_dir, q_file))
+            f_type = "Directory"
+
+        else:
+            q_file = item + "." + gitr.repo_name + "." \
+                + datetime.datetime.strftime(datetime.datetime.now(),
+                                             "%Y%m%d_%H%M%S")
+            gen_libs.cp_file(item, gitr.git_dir, cfg.quar_dir, q_file)
+            f_type = "File"
+
+        log.log_info("quarantine_files:  %s '%s' was moved to: %s"
+                     % (f_type, item, os.path.join(cfg.quar_dir, q_file)))
         subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
         body = []
         body.append("Git Repo: %s" % (gitr.repo_name))
-        body.append("File '%s' was moved to: %s"
-                    % (item, os.path.join(cfg.quar_dir, q_file)))
-        body.append("Reason:  File was '%s'" % (status))
+        body.append("%s '%s' was moved to: %s"
+                    % (f_type, item, os.path.join(cfg.quar_dir, q_file)))
+        body.append("Reason:  %s was '%s'" % (f_type, status))
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 
@@ -611,7 +639,7 @@ def merge(args_array, cfg, log, **kwargs):
 
         # Use alias for servername
         if "-a" in args_array:
-            url = cfg.prefix + args_array["-r"] 
+            url = cfg.prefix + args_array["-r"]
 
         else:
             url = cfg.prefix + cfg.git_server
@@ -725,7 +753,7 @@ def main(**kwargs):
     if not gen_libs.help_func(args_array, __version__, help_message):
 
         # Set Repo Name if not passed
-        if "-r" not in args_array.keys():
+        if "-r" not in args_array.keys() and "-p" in args_array.keys():
             args_array["-r"] = os.path.basename(args_array["-p"])
 
         if not arg_parser.arg_require(args_array, opt_req_list) \
