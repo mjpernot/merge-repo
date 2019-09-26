@@ -753,7 +753,7 @@ def main(**kwargs):
     if not gen_libs.help_func(args_array, __version__, help_message):
 
         # Set Repo Name if not passed
-        if "-r" not in args_array.keys():
+        if "-r" not in args_array.keys() and "-p" in args_array.keys():
             args_array["-r"] = os.path.basename(args_array["-p"])
 
         if not arg_parser.arg_require(args_array, opt_req_list) \
