@@ -43,7 +43,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
-        test_git_alias_option -> 
+        test_git_alias_option -> Test with the git alias option set to True.
         test_not_dirty -> Test with no dirty files found.
         test_second_check_false -> Test with second check set to False.
         test_second_check_true -> Test with second check set to True.
@@ -86,8 +86,8 @@ class UnitTest(unittest.TestCase):
                 """
 
                 self.prefix = "git@"
-                self.git_server="domain"
-                self.git_project="project"
+                self.git_server = "domain"
+                self.git_project = "project"
                 self.work_dir = "/directory/work_dir"
                 self.err_dir = "/directory/error_dir"
                 self.archive_dir = "/directory/archive_dir"
