@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.2.2] - 2019-10-04
+### Fixed
+- quarantine_files:  Copy the directory and items under the directory to the quarantine directory.
+
+### Changed
+- quarantine_files:  Quarantined items will be moved to under a repo project directory instead of individual items.
+
+
 ## [0.2.1] - 2019-09-26
 ### Fixed
 - main:  Added check to see if "-p" option is present when setting "-r" option.
