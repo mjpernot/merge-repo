@@ -436,7 +436,7 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
             distutils.dir_util.copy_tree(os.path.join(gitr.git_dir,
                                                       os.path.dirname(item)),
                                          os.path.join(cfg.quar_dir, q_dir,
-                                                      item))
+                                                      os.path.dirname(item)))
             f_type = "Directory"
 
         else:
