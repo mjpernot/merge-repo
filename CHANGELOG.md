@@ -10,6 +10,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Fixed
 - quarantine_files: Fixed error in which each item was written to a seperate sub-directory.
 
+### Changed
+- quarantine_files:  Send only one email for all quarantined items identified.
+- quarantine_files:  Refactored the function to be more streamline and reduce complexity of the code.
+
 
 ## [0.2.2] - 2019-10-04
 ### Fixed

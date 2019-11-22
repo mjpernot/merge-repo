@@ -416,6 +416,7 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
 
     dtg = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
     q_dir = gitr.repo_name + "-" + dtg
+    file_list = []
 
     if status == "added":
         file_list = list(gitr.new_files)
@@ -423,37 +424,32 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
     elif status == "modified":
         file_list = list(gitr.chg_files)
 
-    else:
-        file_list = []
+    if file_list:
+        gen_libs.chk_crt_dir(os.path.join(cfg.quar_dir, q_dir), create=True)
+        subj = "File quaratine in Git Repo: %s" % (gitr.repo_name)
+        body = []
+        body.append("Git Repo: %s" % (gitr.repo_name))
 
     for item in file_list:
         log.log_info("quarantine_files:  File '%s' was quarantined." % (item))
         log.log_info("quarantine_files:  Reason -> File was '%s'" % (status))
+        dir_path = os.path.dirname(item)
 
-        if os.path.dirname(item) \
-           and os.path.isdir(os.path.join(gitr.git_dir,
-                                          os.path.dirname(item))):
-            distutils.dir_util.copy_tree(os.path.join(gitr.git_dir,
-                                                      os.path.dirname(item)),
-                                         os.path.join(cfg.quar_dir, q_dir,
-                                                      os.path.dirname(item)))
-            f_type = "Directory"
+        if dir_path and not os.path.exists(os.path.join(cfg.quar_dir, q_dir,
+                                                        dir_path)):
+            os.makedirs(os.path.join(cfg.quar_dir, q_dir, dir_path))
 
-        else:
-            gen_libs.chk_crt_dir(os.path.join(gitr.git_dir, q_dir),
-                                 create=True)
-            gen_libs.cp_file(item, gitr.git_dir, os.path.join(cfg.quar_dir,
-                                                              q_dir), item)
-            f_type = "File"
+        gen_libs.cp_file(item, gitr.git_dir, os.path.join(cfg.quar_dir, q_dir,
+                                                          dir_path))
+        f_type = "File"
 
         log.log_info("quarantine_files:  %s '%s' was moved to: %s"
                      % (f_type, item, os.path.join(cfg.quar_dir, q_dir)))
-        subj = "File quaratine: %s in Git Repo: %s" % (item, gitr.repo_name)
-        body = []
-        body.append("Git Repo: %s" % (gitr.repo_name))
         body.append("%s '%s' was moved to: %s"
                     % (f_type, item, os.path.join(cfg.quar_dir, q_dir)))
-        body.append("Reason:  %s was '%s'" % (f_type, status))
+        body.append("\tReason:  %s was '%s'" % (f_type, status))
+
+    if file_list:
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 
