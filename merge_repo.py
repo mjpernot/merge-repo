@@ -610,6 +610,36 @@ def process_changes(gitr, cfg, log, **kwargs):
         gitr.process_untracked(option=cfg.untracked)
 
 
+def detach_head(gitr, log, **kwargs):
+
+    status = True
+    err_msg = None
+
+    if len(gitr.branches) == 0:
+        log.log_info("detach_head:  Head already detached")
+
+    else if len(gitr.branches) == 1:
+        log.log_info("detach_head:  Detaching head...")
+        current_br = gitr.get_br_name()
+        status = gitr.detach_head()
+
+        if status is None:
+            log.log_info("detach_head:  Removing branch")
+            gitr.remove_branch(current_br)
+
+        # What should I be checking for here?
+        else:
+            log.log_info("detach_head:  Possible problem detected")
+            # status = False
+            # err_msg = "WARN: Message detected: %s" % (status)
+
+    else:
+        log.log_warn("detach_head:  Multiple branches detected: %s"
+                     % (gitr.branches))
+        status = False
+        err_msg = "WARN:  Multiple branches detected: %s" % (gitr.branches)
+
+
 def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge

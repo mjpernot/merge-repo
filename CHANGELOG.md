@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.3.1] - 2020-02-26
+### Added
+- detach_head:  Detach the head from a project and remove the existing branch.
+
+
 ## [0.3.0] - 2019-11-21
 - Field release
 
