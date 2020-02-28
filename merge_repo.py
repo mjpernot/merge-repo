@@ -637,7 +637,7 @@ def detach_head(gitr, log, **kwargs):
         status = gitr.detach_head()
 
         if status is None:
-            log.log_info("detach_head:  Removing branch")
+            log.log_info("detach_head:  Removing branch: %s" % (current_br))
             gitr.remove_branch(current_br)
 
         else:
