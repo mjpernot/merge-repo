@@ -6,6 +6,7 @@
 
 echo ""
 echo "Unit testing merge_repo.py"
+test/unit/merge_repo/detach_head.py
 test/unit/merge_repo/load_cfg.py
 test/unit/merge_repo/is_git_repo.py
 test/unit/merge_repo/prepare_mail.py
