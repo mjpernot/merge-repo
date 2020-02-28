@@ -43,6 +43,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_one_branch -> Test with one branch found.
+        test_multiple_branches -> Test with multiple branches found.
         test_zero_branches -> Test with zero branches found.
 
     """
@@ -82,7 +84,7 @@ class UnitTest(unittest.TestCase):
                 """
 
                 self.branch_name = "branch_name"
-                self.status = True
+                self.status = []
                 self.branches = []
 
             def get_br_name(self):
@@ -123,6 +125,44 @@ class UnitTest(unittest.TestCase):
                 return True
 
         self.gitr = GitMerge()
+        self.branch1 = ["Branch1"]
+        self.branch2 = ["Branch1", "Branch2"]
+        self.err_msg1 = \
+            "WARN:  Multiple branches detected: %s" % (self.branch2)
+
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_one_branch(self, mock_log):
+
+        """Function:  test_one_branch
+
+        Description:  Test with one branch found.
+
+        Arguments:
+
+        """
+
+        mock_log.return_value = True
+        self.gitr.branches = list(self.branch1)
+
+        self.assertEqual(merge_repo.detach_head(self.gitr, mock_log),
+                         (True, None))
+
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_multiple_branches(self, mock_log):
+
+        """Function:  test_multiple_branches
+
+        Description:  Test with multiple branches found.
+
+        Arguments:
+
+        """
+
+        mock_log.return_value = True
+        self.gitr.branches = list(self.branch2)
+
+        self.assertEqual(merge_repo.detach_head(self.gitr, mock_log),
+                         (False, self.err_msg1))
 
     @mock.patch("merge_repo.gen_class.Logger")
     def test_zero_branches(self, mock_log):
