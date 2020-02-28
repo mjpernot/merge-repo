@@ -631,7 +631,7 @@ def detach_head(gitr, log, **kwargs):
     if len(gitr.branches) == 0:
         log.log_info("detach_head:  Head already detached")
 
-    else if len(gitr.branches) == 1:
+    elif len(gitr.branches) == 1:
         log.log_info("detach_head:  Detaching head...")
         current_br = gitr.get_br_name()
         status = gitr.detach_head()
