@@ -612,6 +612,19 @@ def process_changes(gitr, cfg, log, **kwargs):
 
 def detach_head(gitr, log, **kwargs):
 
+    """Function:  detach_head
+
+    Description:  Detach the head from a git project, move the head to the
+        latest commit id and remove the existing branch.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) log -> Log class instance.
+        (output) status -> True|False - Status of detaching head in project.
+        (output) err_msg -> Error messages detected, if any.
+
+    """
+
     status = True
     err_msg = None
 
@@ -627,17 +640,18 @@ def detach_head(gitr, log, **kwargs):
             log.log_info("detach_head:  Removing branch")
             gitr.remove_branch(current_br)
 
-        # What should I be checking for here?
         else:
             log.log_info("detach_head:  Possible problem detected")
-            # status = False
-            # err_msg = "WARN: Message detected: %s" % (status)
+            status = False
+            err_msg = "WARN: Message detected: %s" % (status)
 
     else:
         log.log_warn("detach_head:  Multiple branches detected: %s"
                      % (gitr.branches))
         status = False
         err_msg = "WARN:  Multiple branches detected: %s" % (gitr.branches)
+
+    return status, err_msg
 
 
 def merge(args_array, cfg, log, **kwargs):
