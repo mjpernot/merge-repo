@@ -38,6 +38,7 @@ pipeline {
                 ./test/unit/merge_repo/process_project.py
                 ./test/unit/merge_repo/process_changes.py
                 ./test/unit/merge_repo/merge.py
+                ./test/unit/merge_repo/detach_head.py
                 """
             }
         }
