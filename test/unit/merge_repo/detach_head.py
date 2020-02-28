@@ -43,6 +43,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_detach_failure -> Test with detaching head failing.
         test_one_branch -> Test with one branch found.
         test_multiple_branches -> Test with multiple branches found.
         test_zero_branches -> Test with zero branches found.
@@ -127,8 +128,28 @@ class UnitTest(unittest.TestCase):
         self.gitr = GitMerge()
         self.branch1 = ["Branch1"]
         self.branch2 = ["Branch1", "Branch2"]
+        self.head_status = ["Detach head failure"]
         self.err_msg1 = \
             "WARN:  Multiple branches detected: %s" % (self.branch2)
+        self.err_msg2 = "WARN: Message detected: %s" % (self.head_status)
+
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_detach_failure(self, mock_log):
+
+        """Function:  test_detach_failure
+
+        Description:  Test with detaching head failing.
+
+        Arguments:
+
+        """
+
+        mock_log.return_value = True
+        self.gitr.status = list(self.head_status)
+        self.gitr.branches = list(self.branch1)
+
+        self.assertEqual(merge_repo.detach_head(self.gitr, mock_log),
+                         (False, self.err_msg2))
 
     @mock.patch("merge_repo.gen_class.Logger")
     def test_one_branch(self, mock_log):
