@@ -138,6 +138,7 @@ pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host p
 ### Unit tests
 ```
 cd {Python_Project}/merge-repo
+test/unit/merge_repo/detach_head.py
 test/unit/merge_repo/merge_project.py
 test/unit/merge_repo/is_git_repo.py
 test/unit/merge_repo/post_check.py
