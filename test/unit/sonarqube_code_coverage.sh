@@ -8,7 +8,9 @@ coverage erase
 
 echo ""
 echo "Running unit test modules in conjunction with coverage"
+coverage run -a --source=merge_repo test/unit/merge_repo/detach_head.py
 coverage run -a --source=merge_repo test/unit/merge_repo/merge.py
+coverage run -a --source=merge_repo test/unit/merge_repo/_process_changes.py
 coverage run -a --source=merge_repo test/unit/merge_repo/process_project.py
 coverage run -a --source=merge_repo test/unit/merge_repo/process_changes.py
 coverage run -a --source=merge_repo test/unit/merge_repo/send_mail.py

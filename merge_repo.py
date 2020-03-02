@@ -610,6 +610,50 @@ def process_changes(gitr, cfg, log, **kwargs):
         gitr.process_untracked(option=cfg.untracked)
 
 
+def detach_head(gitr, log, **kwargs):
+
+    """Function:  detach_head
+
+    Description:  Detach the head from a git project, move the head to the
+        latest commit id and remove the existing branch.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) log -> Log class instance.
+        (output) status -> True|False - Status of detaching head in project.
+        (output) err_msg -> Error messages detected, if any.
+
+    """
+
+    status = True
+    err_msg = None
+
+    if len(gitr.branches) == 0:
+        log.log_info("detach_head:  Head already detached")
+
+    elif len(gitr.branches) == 1:
+        log.log_info("detach_head:  Detaching head...")
+        current_br = gitr.get_br_name()
+        head_status = gitr.detach_head()
+
+        if head_status:
+            log.log_info("detach_head:  Possible problem detected")
+            status = False
+            err_msg = "WARN: Message detected: %s" % (head_status)
+
+        else:
+            log.log_info("detach_head:  Removing branch: %s" % (current_br))
+            gitr.remove_branch(current_br)
+
+    else:
+        log.log_warn("detach_head:  Multiple branches detected: %s"
+                     % (gitr.branches))
+        status = False
+        err_msg = "WARN:  Multiple branches detected: %s" % (gitr.branches)
+
+    return status, err_msg
+
+
 def merge(args_array, cfg, log, **kwargs):
 
     """Function:  merge
@@ -651,15 +695,7 @@ def merge(args_array, cfg, log, **kwargs):
         gitr.set_remote()
 
         if gitr.is_remote():
-            process_changes(gitr, cfg, log)
-
-            if not gitr.is_dirty() and not gitr.is_untracked():
-                process_project(gitr, cfg, log)
-
-            else:
-                log.log_err("merge:  Still dirty entries in local repo.")
-                line_list = ["There is still dirty entries in local repo."]
-                post_process(gitr, cfg, log, False, line_list)
+            _process_changes(gitr, cfg, log)
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
@@ -680,6 +716,42 @@ def merge(args_array, cfg, log, **kwargs):
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
         move(git_dir, os.path.join(cfg.err_dir, dest_dir))
+
+
+def _process_changes(gitr, cfg, log, **kwargs):
+
+    """Function:  _process_changes
+
+    Description:  Private function for merge function.  Checks to ensure head
+        is detached and there are not dirty or untracked changes before merging
+        repository.
+
+    Arguments:
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+
+    """
+
+    process_changes(gitr, cfg, log)
+
+    if not gitr.is_dirty() and not gitr.is_untracked():
+        status, err_msg = detach_head(gitr, log)
+
+        if status:
+            log.log_info("merge:  Processing project...")
+            process_project(gitr, cfg, log)
+
+        else:
+            log.log_err("merge:  Problem detected in detaching head.")
+            log.log_err("merge: Message: %s" % (err_msg))
+            line_list = [err_msg]
+            post_process(gitr, cfg, log, False, line_list)
+
+    else:
+        log.log_err("merge:  Still dirty entries in local repo.")
+        line_list = ["There is still dirty entries in local repo."]
+        post_process(gitr, cfg, log, False, line_list)
 
 
 def run_program(args_array, func_dict, **kwargs):
