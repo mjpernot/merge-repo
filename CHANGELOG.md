@@ -5,6 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.3.1] - 2020-02-26
+### Changed
+- merge:  Added call to detach_head and check on the status of detach head.
+
 ### Added
 - detach_head:  Detach the head from a project and remove the existing branch.
 
