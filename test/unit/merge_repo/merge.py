@@ -45,6 +45,8 @@ class UnitTest(unittest.TestCase):
         setUp -> Unit testing initilization.
         test_git_alias_option -> Test with the git alias option set to True.
         test_not_dirty -> Test with no dirty files found.
+        test_detach_head_false -> Test with detaching head returns False.
+        test_detach_head_true -> Test with detaching head returns True.
         test_second_check_false -> Test with second check set to False.
         test_second_check_true -> Test with second check set to True.
         test_is_remote_true -> Test with is_remote set to True.
@@ -134,13 +136,13 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.process_project")
+    @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.detach_head")
     @mock.patch("merge_repo.git_class")
-    @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_not_dirty(self, mock_log, mock_lib, mock_isgit, mock_git,
-                       mock_proj):
+    def test_not_dirty(self, mock_log, mock_lib, mock_git, mock_head):
 
         """Function:  test_not_dirty
 
@@ -150,9 +152,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        mock_head.return_value = (True, None)
         mock_log.return_value = True
         mock_lib.mv_file2.return_value = True
-        mock_isgit.return_value = True
         mock_git.GitConfig.return_value = merge_repo.git_class.GitConfig
         mock_git.GitConfig.set_user.return_value = True
         mock_git.GitConfig.set_email.return_value = True
@@ -162,30 +164,30 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.is_remote.return_value = True
         mock_git.GitMerge.is_dirty.side_effect = [False, False]
         mock_git.GitMerge.is_untracked.side_effect = [False, False]
-        mock_proj.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.process_changes")
-    @mock.patch("merge_repo.process_project")
-    @mock.patch("merge_repo.git_class")
-    @mock.patch("merge_repo.is_git_repo")
-    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.post_process", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.process_changes", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.detach_head")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_second_check_false(self, mock_log, mock_lib, mock_isgit, mock_git,
-                                mock_proj, mock_chg):
+    @mock.patch("merge_repo.git_class")
+    @mock.patch("merge_repo.gen_libs")
+    def test_detach_head_false(self, mock_lib, mock_git, mock_log, mock_head):
 
-        """Function:  test_second_check_false
+        """Function:  test_detach_head_false
 
-        Description:  Test with second check set to False.
+        Description:  Test with detaching head returns False.
 
         Arguments:
 
         """
 
+        mock_head.return_value = (False, "Error Message")
         mock_log.return_value = True
         mock_lib.mv_file2.return_value = True
-        mock_isgit.return_value = True
         mock_git.GitConfig.return_value = merge_repo.git_class.GitConfig
         mock_git.GitConfig.set_user.return_value = True
         mock_git.GitConfig.set_email.return_value = True
@@ -197,8 +199,74 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.is_untracked.return_value = False
         mock_git.GitMerge.process_dirty.return_value = True
         mock_git.GitMerge.process_untracked.return_value = True
-        mock_proj.return_value = True
-        mock_chg.return_value = True
+
+        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
+
+    @mock.patch("merge_repo.process_changes", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.detach_head")
+    @mock.patch("merge_repo.gen_class.Logger")
+    @mock.patch("merge_repo.git_class")
+    @mock.patch("merge_repo.gen_libs")
+    def test_detach_head_true(self, mock_lib, mock_git, mock_log, mock_head):
+
+        """Function:  test_detach_head_true
+
+        Description:  Test with detaching head returns True.
+
+        Arguments:
+
+        """
+
+        mock_head.return_value = (True, None)
+        mock_log.return_value = True
+        mock_lib.mv_file2.return_value = True
+        mock_git.GitConfig.return_value = merge_repo.git_class.GitConfig
+        mock_git.GitConfig.set_user.return_value = True
+        mock_git.GitConfig.set_email.return_value = True
+        mock_git.GitMerge.return_value = merge_repo.git_class.GitMerge
+        mock_git.GitMerge.create_gitrepo.return_value = True
+        mock_git.GitMerge.set_remote.return_value = True
+        mock_git.GitMerge.is_remote.return_value = True
+        mock_git.GitMerge.is_dirty.return_value = False
+        mock_git.GitMerge.is_untracked.return_value = False
+        mock_git.GitMerge.process_dirty.return_value = True
+        mock_git.GitMerge.process_untracked.return_value = True
+
+        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
+
+    @mock.patch("merge_repo.process_changes", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.detach_head")
+    @mock.patch("merge_repo.gen_class.Logger")
+    @mock.patch("merge_repo.git_class")
+    @mock.patch("merge_repo.gen_libs")
+    def test_second_check_false(self, mock_lib, mock_git, mock_log, mock_head):
+
+        """Function:  test_second_check_false
+
+        Description:  Test with second check set to False.
+
+        Arguments:
+
+        """
+
+        mock_head.return_value = (True, None)
+        mock_log.return_value = True
+        mock_lib.mv_file2.return_value = True
+        mock_git.GitConfig.return_value = merge_repo.git_class.GitConfig
+        mock_git.GitConfig.set_user.return_value = True
+        mock_git.GitConfig.set_email.return_value = True
+        mock_git.GitMerge.return_value = merge_repo.git_class.GitMerge
+        mock_git.GitMerge.create_gitrepo.return_value = True
+        mock_git.GitMerge.set_remote.return_value = True
+        mock_git.GitMerge.is_remote.return_value = True
+        mock_git.GitMerge.is_dirty.return_value = False
+        mock_git.GitMerge.is_untracked.return_value = False
+        mock_git.GitMerge.process_dirty.return_value = True
+        mock_git.GitMerge.process_untracked.return_value = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
