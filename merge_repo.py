@@ -696,25 +696,6 @@ def merge(args_array, cfg, log, **kwargs):
 
         if gitr.is_remote():
             _process_changes(gitr, cfg, log)
-#            process_changes(gitr, cfg, log)
-
-#            if not gitr.is_dirty() and not gitr.is_untracked():
-#                status, err_msg = detach_head(gitr, log)
-
-#                if status:
-#                    log.log_info("merge:  Processing project...")
-#                    process_project(gitr, cfg, log)
-
-#                else:
-#                    log.log_err("merge:  Problem detected in detaching head.")
-#                    log.log_err("merge: Message: %s" % (err_msg))
-#                    line_list = [err_msg]
-#                    post_process(gitr, cfg, log, False, line_list)
-
-#            else:
-#                log.log_err("merge:  Still dirty entries in local repo.")
-#                line_list = ["There is still dirty entries in local repo."]
-#                post_process(gitr, cfg, log, False, line_list)
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
