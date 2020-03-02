@@ -129,7 +129,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_file_dir(self, mock_log, mock_date, mock_lib, mock_body,
-                            mock_mail):
+                      mock_mail):
 
         """Function:  test_file_dir
 
@@ -189,7 +189,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_copy_directory2(self, mock_log, mock_date, mock_lib, mock_body,
-                            mock_mail):
+                             mock_mail):
 
         """Function:  test_copy_directory2
 
