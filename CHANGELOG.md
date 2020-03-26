@@ -5,6 +5,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.3.2] - 2020-03-26
+### Fixed
+- detach_head:  Fixed incorrect referencing of branches attribute in Gitmerge class.
 
 
 ## [0.3.1] - 2020-02-26
