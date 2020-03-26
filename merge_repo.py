@@ -628,10 +628,10 @@ def detach_head(gitr, log, **kwargs):
     status = True
     err_msg = None
 
-    if len(gitr.branches) == 0:
+    if len(gitr.gitrepo.branches) == 0:
         log.log_info("detach_head:  Head already detached")
 
-    elif len(gitr.branches) == 1:
+    elif len(gitr.gitrepo.branches) == 1:
         log.log_info("detach_head:  Detaching head...")
         current_br = gitr.get_br_name()
         head_status = gitr.detach_head()
@@ -647,9 +647,10 @@ def detach_head(gitr, log, **kwargs):
 
     else:
         log.log_warn("detach_head:  Multiple branches detected: %s"
-                     % (gitr.branches))
+                     % (gitr.gitrepo.branches))
         status = False
-        err_msg = "WARN:  Multiple branches detected: %s" % (gitr.branches)
+        err_msg = "WARN:  Multiple branches detected: %s" \
+                  % (gitr.gitrepo.branches)
 
     return status, err_msg
 
