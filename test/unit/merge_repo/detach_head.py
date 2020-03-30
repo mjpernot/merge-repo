@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
 
                 return self.status
 
-            def remove_branch(self, branch):
+            def remove_branch(self, branch, no_chk=False):
 
                 """Method:  process_dirty
 
@@ -145,10 +145,11 @@ class UnitTest(unittest.TestCase):
 
                 Arguments:
                     (input) branch -> Branch name.
+                    (input) no_chk -> True|False - skip checking on branch.
 
                 """
 
-                return True
+                return (True, None)
 
         self.gitr = GitMerge()
         self.branch1 = ["Branch1"]
@@ -188,7 +189,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        self.gitr.branches = list(self.branch1)
+        self.gitr.gitrepo.branches = list(self.branch1)
 
         self.assertEqual(merge_repo.detach_head(self.gitr, mock_log),
                          (True, None))
