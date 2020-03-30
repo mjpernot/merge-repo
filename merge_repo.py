@@ -643,7 +643,7 @@ def detach_head(gitr, log, **kwargs):
 
         else:
             log.log_info("detach_head:  Removing branch: %s" % (current_br))
-            gitr.remove_branch(current_br)
+            status, err_msg = gitr.remove_branch(current_br, no_chk=True)
 
     else:
         log.log_warn("detach_head:  Multiple branches detected: %s"
