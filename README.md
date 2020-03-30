@@ -79,8 +79,6 @@ Make the appropriate changes to the Git environment in the merge.py file.
   * "quar_dir" is the directory where items that are not processed will be saved to.
   * "to_line" is one or more email addresses to receive emails from the program.
   * "log_file" is the directory path and log file name for the program.
-  * "name" is the name of the Git user for the local repository.
-  * "email" is the email address of the Git user for the local repository.
 
 ```
 vim merge.py
