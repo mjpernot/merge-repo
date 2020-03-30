@@ -45,27 +45,27 @@
     Notes:
         Config file:
             # Git Project name.
-            git_project="{ProjectName}"
+            git_project="ProjectName"
             # Git Server Fully Qualified Domain Name.
             #  Not required for -a option.
-            git_server="{GitServerFQDN}"
+            git_server="GitServerFQDN"
             # Directory of where the merge will take place.
-            work_dir="{PATH_DIRECTORY}/work_dir"
+            work_dir="/PATH_DIRECTORY/work_dir"
             # Directory where projects will be archived if encounter errors.
-            err_dir="{PATH_DIRECTORY}/error_dir"
+            err_dir="/PATH_DIRECTORY/error_dir"
             # Directory where projects will be archived after a merge.
-            archive_dir="{PATH_DIRECTORY}/archive_dir"
+            archive_dir="/PATH_DIRECTORY/archive_dir"
             # Directory where project items will be quarantined.
-            quar_dir="/home/mark.j.pernot/merge/quarantine"
+            quar_dir="/PATH_DIRECTORY/quarantine"
             # Email addresses for notification.
-            to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
+            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
             # Directory where log files will be placed.
-            log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
+            log_file="/PATH_DIRECTORY/logs/merge-repo.log"
+            # Do not modify unless you know what you are doing.
             # Local Git Repository user name.
             name="gituser"
             # Local Git Repository user email address.
             email="gituser@domain.mail"
-            # Do not modify unless you know what you are doing.
             # Branch on which the merge will take place on.
             branch="develop"
             # Name of temporary branch on local git repo.
@@ -81,20 +81,26 @@
         If merging into a Github repository then each project will require its
             own unique deployment key.  Running the following procedures to
             create and setup deployment key for a project.
-                GitProjectName is the Git repository name.
-                ServerNameFQDN is the Git server's fully qualified domain name.
-                UserName is the account name connecting to Git.
+            Change the repsective variables below to the names required:
+                GitRepoName:  The Git repository name.
+                ServerNameFQDN:  The Git server's fully qualified domain name.
+                    Should be the same as the git_server variable in the config
+                    file above.
+                UserName:  The account name connecting to Git.
+                Path:  The directory path to id_dsa.GitRepoName file.
+                GitProject:  The name of overall Git Project.  Should be the
+                    same as the git_project variable in the config file above.
 
             1.  Create deployment key.
                 > ssh-keygen -t dsa
-                    Name:  id_dsa.{GitProjectName}
+                    Name:  id_dsa.GitRepoName
                     Passphrase:  Null
             2.  Add project entry to ssh config file.
                 > vim ~/.ssh/config file
-                    Host {GitProjectName} {ServerNameFQDN}
-                    Hostname {ServerNameFQDN}
-                    User {UserName}
-                    IdentityFile {Path}/id_dsa.{GitProjectName}
+                    Host GitRepoName ServerNameFQDN
+                    Hostname ServerNameFQDN
+                    User UserName
+                    IdentityFile Path/id_dsa.GitRepoName
             3.  In Guthub setup a deploy key in the repository being merged.
                 a.  Go to project in GitHub.
                 b.  Click "Settings" -> "Deploy Keys" -> "Add Deploy Key"
@@ -103,7 +109,7 @@
                 c.  Click Button:  "Allow Write Access"
                 d.  Clock "Add Key"
             4.  To use the deploy key too clone a git repository:
-                > git clone git@{GitProjectName}:JACDEV/{GitProjectName}.git
+                > git clone git@GitRepoName:GitProject/GitRepoName.git
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
