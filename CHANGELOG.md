@@ -8,6 +8,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Fixed
 - detach_head:  Fixed incorrect referencing of branches attribute in Gitmerge class.
 
+### Changed
+- detach_head:  Added no_chk to remove_branch call and captured returning status codes.
+
 
 ## [0.3.1] - 2020-02-26
 ### Changed
