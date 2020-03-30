@@ -60,6 +60,30 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        class GitRepo(object):
+
+            """Class:  GitRepo
+
+            Description:  Class which is a representation of GitRepo module.
+
+            Methods:
+                __init__ -> Initialize configuration environment.
+
+            """
+
+            def __init__(self):
+
+                """Method:  __init__
+
+                Description:  Initialization instance of the GitMerge class.
+
+                Arguments:
+
+                """
+
+                self.branches = []
+
+
         class GitMerge(object):
 
             """Class:  GitMerge
@@ -84,6 +108,7 @@ class UnitTest(unittest.TestCase):
 
                 """
 
+                self.gitrepo = GitRepo()
                 self.branch_name = "branch_name"
                 self.status = []
                 self.branches = []
@@ -146,7 +171,7 @@ class UnitTest(unittest.TestCase):
 
         mock_log.return_value = True
         self.gitr.status = list(self.head_status)
-        self.gitr.branches = list(self.branch1)
+        self.gitr.gitrepo.branches = list(self.branch1)
 
         self.assertEqual(merge_repo.detach_head(self.gitr, mock_log),
                          (False, self.err_msg2))
@@ -180,7 +205,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_log.return_value = True
-        self.gitr.branches = list(self.branch2)
+        self.gitr.gitrepo.branches = list(self.branch2)
 
         self.assertEqual(merge_repo.detach_head(self.gitr, mock_log),
                          (False, self.err_msg1))
