@@ -135,37 +135,15 @@ pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host p
 # Unit test runs for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-### Unit tests
+### Unit testing:
 ```
 cd {Python_Project}/merge-repo
-test/unit/merge_repo/detach_head.py
-test/unit/merge_repo/merge_project.py
-test/unit/merge_repo/is_git_repo.py
-test/unit/merge_repo/post_check.py
-test/unit/merge_repo/post_process.py
-test/unit/merge_repo/move.py
-test/unit/merge_repo/prepare_mail.py
-test/unit/merge_repo/send_mail.py
-test/unit/merge_repo/quarantine.py
-test/unit/merge_repo/quarantine_files.py
-test/unit/merge_repo/post_body.py
-test/unit/merge_repo/load_cfg.py
-test/unit/merge_repo/merge.py
-test/unit/merge_repo/\_process_changes.py
-test/unit/merge_repo/process_project.py
-test/unit/merge_repo/process_changes.py
-test/unit/merge_repo/help_message.py
-test/unit/merge_repo/run_program.py
-test/unit/merge_repo/main.py
-```
-
-### All unit testing
-```
 test/unit/merge_repo/unit_test_run.sh
 ```
 
-### Code coverage program
+### Code coverage unit testing:
 ```
+cd {Python_Project}/merge-repo
 test/unit/merge_repo/code_coverage.sh
 ```
 
