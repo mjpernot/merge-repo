@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - get_cmdline:  Returns the command line arguments.
 
 ### Fixed
+- main:  Fixed handling command line arguments from SonarQube scan finding.
 - process_project:  Fixed duplicate literal SonarQube scan finding.
 - merge_project:  Fixed duplicate literal SonarQube scan finding.
 - detach_head:  Fixed incorrect referencing of branches attribute in Gitmerge class.
