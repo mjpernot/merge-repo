@@ -5,6 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [0.3.2] - 2020-03-26
+### Added
+- get_cmdline:  Returns the command line arguments.
+
 ### Fixed
 - process_project:  Fixed duplicate literal SonarQube scan finding.
 - merge_project:  Fixed duplicate literal SonarQube scan finding.
