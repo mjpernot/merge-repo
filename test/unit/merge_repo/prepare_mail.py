@@ -97,6 +97,7 @@ class UnitTest(unittest.TestCase):
         self.body = ["Merge of project has been completed."]
         self.body2 = ["Merge of project has failed."]
         self.dtg = "2019-04-16 13:51:42"
+        self.keystr = "Git Dir: "
 
     @mock.patch("merge_repo.datetime.datetime")
     def test_msg_data(self, mock_date):
@@ -121,7 +122,7 @@ class UnitTest(unittest.TestCase):
             test_body.append("%s: %s" % (key, self.msg[key]))
 
         test_body.append("URL: " + self.gitr.url)
-        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
@@ -147,7 +148,7 @@ class UnitTest(unittest.TestCase):
         test_body = list(self.body2)
 
         test_body.append("URL: " + self.gitr.url)
-        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
@@ -176,7 +177,7 @@ class UnitTest(unittest.TestCase):
             test_body.append(line)
 
         test_body.append("URL: " + self.gitr.url)
-        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
@@ -201,7 +202,7 @@ class UnitTest(unittest.TestCase):
 
         test_body = list(self.body2)
         test_body.append("URL: " + self.gitr.url)
-        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
@@ -225,7 +226,7 @@ class UnitTest(unittest.TestCase):
 
         test_body = list(self.body)
         test_body.append("URL: " + self.gitr.url)
-        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
@@ -250,7 +251,7 @@ class UnitTest(unittest.TestCase):
 
         test_body = list(self.body)
         test_body.append("URL: " + self.gitr.url)
-        test_body.append("Git Dir: " + self.gitr.git_dir)
+        test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append("Branch: " + self.gitr.branch)
         test_body.append("DTG: " + self.dtg)
 
