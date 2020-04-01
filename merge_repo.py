@@ -761,6 +761,21 @@ def _process_changes(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, False, line_list)
 
 
+def get_cmdline(cmd, **kwargs):
+
+    """Function:  get_cmdline
+
+    Description:  Returns the command line arguments.
+
+    Arguments:
+        (input) cmd -> Command module.
+        (output) -> Return command line arguments.
+
+    """
+
+    return cmd.argv
+
+
 def run_program(args_array, func_dict, **kwargs):
 
     """Function:  run_program
@@ -819,7 +834,8 @@ def main(**kwargs):
 
     """
 
-    sys.argv = kwargs.get("argv_list", sys.argv)
+    # sys.argv = kwargs.get("argv_list", sys.argv)
+    cmdline = kwargs.get("argv_list", get_cmdline(sys))
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
@@ -827,7 +843,8 @@ def main(**kwargs):
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    # args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args_array = arg_parser.arg_parse2(cmdline, opt_val_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message):
 
@@ -839,8 +856,10 @@ def main(**kwargs):
            and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
             try:
-                prog_lock = gen_class.ProgramLock(sys.argv,
+                prog_lock = gen_class.ProgramLock(cmdline,
                                                   args_array.get("-r", ""))
+                # prog_lock = gen_class.ProgramLock(sys.argv,
+                #                                   args_array.get("-r", ""))
                 run_program(args_array, func_dict)
                 del prog_lock
 
