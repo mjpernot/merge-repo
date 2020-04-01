@@ -572,20 +572,20 @@ def process_project(gitr, cfg, log, **kwargs):
             else:
                 log.log_err("process_project:  Fail to checkout branch: %s."
                             % (gitr.branch))
-                log.log_err("process_project:  Message: %s" % (msg3))
+                log.log_err("process_project:  Status 3 Message: %s" % (msg3))
                 line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
                 post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("process_project:  Fail rename branch to: %s."
                         % (gitr.mod_branch))
-            log.log_err("process_project:  Message: %s" % (msg2))
+            log.log_err("process_project:  Status 2 Message: %s" % (msg2))
             line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
             post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("process_project:  Fail to fetch from remote Git repo.")
-        log.log_err("process_project:  Message: %s" % (msg1))
+        log.log_err("process_project:  Status 1 Message: %s" % (msg1))
         line_list = ["Failure to fetch from remote Git repo."]
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
