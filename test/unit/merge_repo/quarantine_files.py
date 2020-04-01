@@ -120,6 +120,7 @@ class UnitTest(unittest.TestCase):
         self.cfg = CfgTest()
 
         self.dtg = "2019-04-16 13:51:42"
+        self.datetime = "(2019, 4, 16, 13, 51, 42, 852147)"
 
     @mock.patch("merge_repo.os.path.exists", mock.Mock(return_value=False))
     @mock.patch("merge_repo.os.makedirs", mock.Mock(return_value=True))
@@ -139,7 +140,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
         mock_log.return_value = True
         mock_lib.cp_file.return_value = True
@@ -168,7 +169,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
         mock_log.return_value = True
         mock_lib.cp_file.return_value = True
@@ -199,7 +200,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
         mock_log.return_value = True
         mock_lib.cp_file.return_value = True
@@ -229,7 +230,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
         mock_log.return_value = True
         mock_lib.cp_file.return_value = True
@@ -258,7 +259,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
         mock_log.return_value = True
         mock_lib.cp_file.return_value = True
@@ -336,7 +337,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
         mock_log.return_value = True
         mock_lib.cp_file.return_value = True
@@ -365,7 +366,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
         mock_log.return_value = True
         mock_lib.cp_file.return_value = True
