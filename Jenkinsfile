@@ -21,6 +21,7 @@ pipeline {
                 pip2 install mock==2.0.0 --user
                 pip2 install gitpython==2.1.8 --user
                 pip2 install gitdb2==2.0.4 --user
+                ./test/unit/merge_repo/get_cmdline.py
                 ./test/unit/merge_repo/main.py
                 ./test/unit/merge_repo/run_program.py
                 ./test/unit/merge_repo/help_message.py
