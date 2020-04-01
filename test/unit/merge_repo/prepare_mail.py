@@ -90,6 +90,7 @@ class UnitTest(unittest.TestCase):
         self.line_list = []
         self.line_list2 = ["Test of line list"]
         self.msg = {"Key": "Value"}
+        self.datetime = "(2019, 4, 16, 13, 51, 42, 852147)"
 
         self.subj = "Merge completed for: " + self.gitr.repo_name
         self.subj2 = "Merge error for: " + self.gitr.repo_name
@@ -108,7 +109,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body2)
@@ -140,7 +141,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body2)
@@ -166,7 +167,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body2)
@@ -195,7 +196,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body2)
@@ -219,7 +220,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
@@ -244,7 +245,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_date.now.return_value = "(2019, 4, 16, 13, 51, 42, 852147)"
+        mock_date.now.return_value = self.datetime
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
