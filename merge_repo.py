@@ -521,20 +521,20 @@ def merge_project(gitr, cfg, log, **kwargs):
 
             else:
                 log.log_err("merge_project:  Fail to push tags to remote git.")
-                log.log_err("merge_project:  Message: %s" % (msg3))
+                log.log_err("merge_project:  Status 3 Message: %s" % (msg3))
                 line_list = ["Failure to push tags to remote git."]
                 post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("merge_project:  Fail to push to remote git.")
-            log.log_err("merge_project:  Message: %s" % (msg2))
+            log.log_err("merge_project:  Status 2 Message: %s" % (msg2))
             line_list = ["Failure to push to remote git."]
             post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("merge_project:  Failure to merge branch %s into %s."
                     % (gitr.mod_branch, gitr.branch))
-        log.log_err("merge_project:  Message: %s" % (msg1))
+        log.log_err("merge_project:  Status 1 Message: %s" % (msg1))
         line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
                                                               gitr.branch)]
         post_process(gitr, cfg, log, status1, line_list, msg1)
