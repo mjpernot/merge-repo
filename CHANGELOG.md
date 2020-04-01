@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [0.3.2] - 2020-03-26
 ### Fixed
+- merge_project:  Fixed duplicate literal SonarQube scan finding.
 - detach_head:  Fixed incorrect referencing of branches attribute in Gitmerge class.
 
 ### Changed
