@@ -87,14 +87,14 @@ vim merge.py
 
 # Advance Configuration:
 
-These are additional entries in the configuration file that should not be modified unless necessary.  These entries are below: "Do not modify the settings below unless you know what you are doing." line in the configuration file.
+These additional entries in the configuration file should not be modified unless necessary.  These configuration entries are below: "Do not modify the settings below unless you know what you are doing." line in the configuration file.
   * name="gituser":  Is the Local Git Repository user name during the merge process.  Do not modify.
   * email="gituser@domain.mail":  Is the Local Git Repository user email address during the merge process.  Do not modify.
-  * branch="develop":  Is the branch name to which the project will be merged in the remote repository.  Can be set to another branch, but do not recommend setting it to the "master" branch.
-  * mod_branch="mod_release":  Is the temporary name of the branch which the project will be assigned.  Only modify if the branch that is being merged to in the remote repository is called "mod_release"
-  * dirty="revert":  There are two options available for this setting:  revert and commit.  Revert (default) will reverse any dirty changes back to the original value.  Commit will take the dirty changes and commit them to the project.  Not recommended to be changed from the default setting as unsolicited changes during the transfer process could be introduced into the project.
-  * untracked="remove":  There are two options available for this setting:  add and remove.  Remove (default) will not commit any untracked files to the project that were introduced during the transfer process.  Add on the other hand will commit any untracked files to the project.  Not recommended to be changed from the default setting as untracked files that were added during the transfer process could cause problems with the current project.
-  * prefix="git@":  Is the prefix to the Git URL setting.  This would only need to be changed if the Git remote repositiory is using a something other than git at the repository to reference the projects.
+  * branch="develop":  Is the branch name to which the project will be merged in the remote repository.  It can be set to another branch, but it is not recommend setting the entry to the "master" branch.
+  * mod_branch="mod_release":  Is the temporary name of the branch which the project will be assigned during the merge process.  Only modify mod_branch if the branch that is being merged to in the remote repository is also called "mod_release"
+  * dirty="revert":  There are two options available for this setting:  **revert** and **commit**.  **Revert** (defaula setting) will reverse any dirty changes back to the original value in the file.  **Commit** will take the dirty changes and commit them to the project before the merge.  It is not recommended to change from the default setting as unsolicited changes during the transfer process could be introduced into the project.
+  * untracked="remove":  There are two options available for this setting:  **add** and **remove**.  **Remove** (default setting) will not commit any untracked files in the repository to the project that were introduced during the transfer process.  **Add** will commit all untracked files to the project before the merge takes place.  Again not recommended to be changed from the default setting as untracked files that were added during the transfer process could cause problems.
+  * prefix="git@":  Is the prefix to the Git URL setting.  This would only need to be changed if the Git remote repositiory is using a something other than git at the repository to reference the projects.  This can be confirmed by checking on the remote Git repository under Cloning with SSH.
 
 # Program Help Function:
 
