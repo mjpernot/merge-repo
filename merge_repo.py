@@ -834,7 +834,8 @@ def main(**kwargs):
 
     """
 
-    cmdline = kwargs.get("argv_list", get_cmdline(sys))
+    cmdline = gen_libs.get_inst(sys)
+    cmdline.argv = kwargs.get("argv_list", cmdline.argv)
 
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
@@ -842,7 +843,7 @@ def main(**kwargs):
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(cmdline, opt_val_list)
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message):
 
@@ -854,7 +855,7 @@ def main(**kwargs):
            and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
             try:
-                prog_lock = gen_class.ProgramLock(cmdline,
+                prog_lock = gen_class.ProgramLock(cmdline.argv,
                                                   args_array.get("-r", ""))
                 run_program(args_array, func_dict)
                 del prog_lock
