@@ -101,7 +101,7 @@
                     Hostname ServerNameFQDN
                     User UserName
                     IdentityFile Path/id_dsa.GitRepoName
-            3.  In Guthub setup a deploy key in the repository being merged.
+            3.  In Github setup a deploy key in the repository being merged.
                 a.  Go to project in GitHub.
                 b.  Click "Settings" -> "Deploy Keys" -> "Add Deploy Key"
                         Title:  Nifi
