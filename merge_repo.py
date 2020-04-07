@@ -761,21 +761,6 @@ def _process_changes(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, False, line_list)
 
 
-def get_cmdline(cmd, **kwargs):
-
-    """Function:  get_cmdline
-
-    Description:  Returns the command line arguments.
-
-    Arguments:
-        (input) cmd -> Command module.
-        (output) -> Return command line arguments.
-
-    """
-
-    return cmd.argv
-
-
 def run_program(args_array, func_dict, **kwargs):
 
     """Function:  run_program
