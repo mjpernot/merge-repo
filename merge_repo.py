@@ -3,19 +3,22 @@
 
 """Program:  merge_repo.py
 
-    Description:  Merge an external local Git repository into an existing
-        remote Git repository.  The merge process will clean up the new
-        project using Git of dirty and untracked files and it will then pull
-        the existing remote Git branch to the local Git repository before
-        merging the local Git repo with the existing Git repo.  Once the
-        branches have been merged the updated branch will be pushed back to
-        the remote Git repository.
+    Description:  Merge an updated external local Git repository into an
+        existing remote Git repository.  The merge process will clean up the
+        external project of dirty and untracked files and it will then pull
+        the existing remote Git branch to the local Git repository.  The
+        program will then merge the external local Git repo with the existing
+        Git repo.  Once the branches have been merged the updated branch will
+        be pushed back to the remote Git repository on the same branch that was
+        pulled.
 
         NOTE 1:  The external Git repo being imported will have priority during
             the merge.  This means that the imported Git repo will have
             precedence over the changes made to the remote Git repo.
-        NOTE 2:  The external local Git repository must come in as a detached
-            head repository and with no named branches in the repository.
+        NOTE 2:  The external local Git repository can come in as a detached
+            HEAD repository and with no named branches in the repository or
+            come in with a single branch in which case the program will detach
+            the HEAD to the latest commit ID and remove the branch.
         NOTE 3:  The -a option allows for using multiple deploy keys for a
             single user account into Git (e.g. required for Github).  There
             must be an entry in the account's ~/.ssh/config file with an alias
@@ -30,7 +33,8 @@
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
         -M => Run the merge function.
-        -a => Use the repository name as an alias in the Git url.
+        -a => Use the repository name as an alias in the Git url.  Used in a
+            Github repository setting.
         -r repo_name => Repository name being merged (e.g. "hp-python-lib").
         -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
@@ -61,7 +65,8 @@
             to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
             # Directory where log files will be placed.
             log_file="/PATH_DIRECTORY/logs/merge-repo.log"
-            # Do not modify unless you know what you are doing.
+            # Do not modify the settings below unless you know what you are
+            #   doing.
             # Local Git Repository user name.
             name="gituser"
             # Local Git Repository user email address.
@@ -77,12 +82,13 @@
             # Git Url Prefix
             prefix="git@"
 
-        This is only if the -a option is used against a Github repository.
-        If merging into a Github repository then each project will require its
-            own unique deployment key.  Running the following procedures to
-            create and setup deployment key for a project.
+        SSH Deployment Keys:
+            This is only if the -a option is used against a Github repository.
+            If merging into a Github repository then each project will require
+                its own unique deployment key.  Running the following
+                procedures to create and setup deployment key for a project.
             Change the repsective variables below to the names required:
-                GitRepoName:  The Git repository name.
+                GitRepoName:  The Git repository  project name.
                 ServerNameFQDN:  The Git server's fully qualified domain name.
                     Should be the same as the git_server variable in the config
                     file above.
@@ -730,8 +736,8 @@ def _process_changes(gitr, cfg, log, **kwargs):
     """Function:  _process_changes
 
     Description:  Private function for merge function.  Checks to ensure head
-        is detached and there are not dirty or untracked changes before merging
-        repository.
+        is detached and there are not any dirty or untracked changes before
+        merging repository.
 
     Arguments:
         (input) gitr -> Git class instance.
@@ -821,7 +827,6 @@ def main(**kwargs):
 
     cmdline = gen_libs.get_inst(sys)
     cmdline.argv = kwargs.get("argv_list", cmdline.argv)
-
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
     opt_req_list = ["-c", "-d", "-p", "-r"]
