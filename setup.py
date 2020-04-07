@@ -44,6 +44,7 @@ setuptools.setup(
         "Development Status :: 4 - Field",
         "Operating System :: Linux",
         "Operating System :: Linux :: Centos",
+        "Operating System :: Linux :: Ubunto",
         "Git :: Gitlab",
         "Git :: Github",
         "Programming Language :: Python",
