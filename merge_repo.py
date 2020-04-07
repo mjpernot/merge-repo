@@ -3,19 +3,22 @@
 
 """Program:  merge_repo.py
 
-    Description:  Merge an external local Git repository into an existing
-        remote Git repository.  The merge process will clean up the new
-        project using Git of dirty and untracked files and it will then pull
-        the existing remote Git branch to the local Git repository before
-        merging the local Git repo with the existing Git repo.  Once the
-        branches have been merged the updated branch will be pushed back to
-        the remote Git repository.
+    Description:  Merge an updated external local Git repository into an
+        existing remote Git repository.  The merge process will clean up the
+        external project of dirty and untracked files and it will then pull
+        the existing remote Git branch to the local Git repository.  The
+        program will then merge the external local Git repo with the existing
+        Git repo.  Once the branches have been merged the updated branch will
+        be pushed back to the remote Git repository on the same branch that was
+        pulled.
 
         NOTE 1:  The external Git repo being imported will have priority during
             the merge.  This means that the imported Git repo will have
             precedence over the changes made to the remote Git repo.
-        NOTE 2:  The external local Git repository must come in as a detached
-            head repository and with no named branches in the repository.
+        NOTE 2:  The external local Git repository can come in as a detached
+            HEAD repository and with no named branches in the repository or
+            come in with a single branch in which case the program will detach
+            the HEAD to the latest commit ID and remove the branch.
         NOTE 3:  The -a option allows for using multiple deploy keys for a
             single user account into Git (e.g. required for Github).  There
             must be an entry in the account's ~/.ssh/config file with an alias
@@ -30,7 +33,8 @@
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
         -M => Run the merge function.
-        -a => Use the repository name as an alias in the Git url.
+        -a => Use the repository name as an alias in the Git url.  Used in a
+            Github repository setting.
         -r repo_name => Repository name being merged (e.g. "hp-python-lib").
         -p directory_path => Project directory which is the full absolute path.
         -v => Display version of this program.
@@ -45,27 +49,28 @@
     Notes:
         Config file:
             # Git Project name.
-            git_project="{ProjectName}"
+            git_project="ProjectName"
             # Git Server Fully Qualified Domain Name.
             #  Not required for -a option.
-            git_server="{GitServerFQDN}"
+            git_server="GitServerFQDN"
             # Directory of where the merge will take place.
-            work_dir="{PATH_DIRECTORY}/work_dir"
+            work_dir="/PATH_DIRECTORY/work_dir"
             # Directory where projects will be archived if encounter errors.
-            err_dir="{PATH_DIRECTORY}/error_dir"
+            err_dir="/PATH_DIRECTORY/error_dir"
             # Directory where projects will be archived after a merge.
-            archive_dir="{PATH_DIRECTORY}/archive_dir"
+            archive_dir="/PATH_DIRECTORY/archive_dir"
             # Directory where project items will be quarantined.
-            quar_dir="/home/mark.j.pernot/merge/quarantine"
+            quar_dir="/PATH_DIRECTORY/quarantine"
             # Email addresses for notification.
-            to_line="{EMAIL_ADDRESS}@{EMAIL_DOMAIN}"
+            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
             # Directory where log files will be placed.
-            log_file="{PATH_DIRECTORY}/logs/merge-repo.log"
+            log_file="/PATH_DIRECTORY/logs/merge-repo.log"
+            # Do not modify the settings below unless you know what you are
+            #   doing.
             # Local Git Repository user name.
             name="gituser"
             # Local Git Repository user email address.
             email="gituser@domain.mail"
-            # Do not modify unless you know what you are doing.
             # Branch on which the merge will take place on.
             branch="develop"
             # Name of temporary branch on local git repo.
@@ -77,25 +82,32 @@
             # Git Url Prefix
             prefix="git@"
 
-        This is only if the -a option is used against a Github repository.
-        If merging into a Github repository then each project will require its
-            own unique deployment key.  Running the following procedures to
-            create and setup deployment key for a project.
-                GitProjectName is the Git repository name.
-                ServerNameFQDN is the Git server's fully qualified domain name.
-                UserName is the account name connecting to Git.
+        SSH Deployment Keys:
+            This is only if the -a option is used against a Github repository.
+            If merging into a Github repository then each project will require
+                its own unique deployment key.  Running the following
+                procedures to create and setup deployment key for a project.
+            Change the repsective variables below to the names required:
+                GitRepoName:  The Git repository  project name.
+                ServerNameFQDN:  The Git server's fully qualified domain name.
+                    Should be the same as the git_server variable in the config
+                    file above.
+                UserName:  The account name connecting to Git.
+                Path:  The directory path to id_dsa.GitRepoName file.
+                GitProject:  The name of overall Git Project.  Should be the
+                    same as the git_project variable in the config file above.
 
             1.  Create deployment key.
                 > ssh-keygen -t dsa
-                    Name:  id_dsa.{GitProjectName}
+                    Name:  id_dsa.GitRepoName
                     Passphrase:  Null
             2.  Add project entry to ssh config file.
                 > vim ~/.ssh/config file
-                    Host {GitProjectName} {ServerNameFQDN}
-                    Hostname {ServerNameFQDN}
-                    User {UserName}
-                    IdentityFile {Path}/id_dsa.{GitProjectName}
-            3.  In Guthub setup a deploy key in the repository being merged.
+                    Host GitRepoName ServerNameFQDN
+                    Hostname ServerNameFQDN
+                    User UserName
+                    IdentityFile Path/id_dsa.GitRepoName
+            3.  In Github setup a deploy key in the repository being merged.
                 a.  Go to project in GitHub.
                 b.  Click "Settings" -> "Deploy Keys" -> "Add Deploy Key"
                         Title:  Nifi
@@ -103,7 +115,7 @@
                 c.  Click Button:  "Allow Write Access"
                 d.  Clock "Add Key"
             4.  To use the deploy key too clone a git repository:
-                > git clone git@{GitProjectName}:JACDEV/{GitProjectName}.git
+                > git clone git@GitRepoName:GitProject/GitRepoName.git
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
@@ -515,20 +527,20 @@ def merge_project(gitr, cfg, log, **kwargs):
 
             else:
                 log.log_err("merge_project:  Fail to push tags to remote git.")
-                log.log_err("merge_project:  Message: %s" % (msg3))
+                log.log_err("merge_project:  Status 3 Message: %s" % (msg3))
                 line_list = ["Failure to push tags to remote git."]
                 post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("merge_project:  Fail to push to remote git.")
-            log.log_err("merge_project:  Message: %s" % (msg2))
+            log.log_err("merge_project:  Status 2 Message: %s" % (msg2))
             line_list = ["Failure to push to remote git."]
             post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("merge_project:  Failure to merge branch %s into %s."
                     % (gitr.mod_branch, gitr.branch))
-        log.log_err("merge_project:  Message: %s" % (msg1))
+        log.log_err("merge_project:  Status 1 Message: %s" % (msg1))
         line_list = ["Failure to merge branch %s into %s." % (gitr.mod_branch,
                                                               gitr.branch)]
         post_process(gitr, cfg, log, status1, line_list, msg1)
@@ -566,20 +578,20 @@ def process_project(gitr, cfg, log, **kwargs):
             else:
                 log.log_err("process_project:  Fail to checkout branch: %s."
                             % (gitr.branch))
-                log.log_err("process_project:  Message: %s" % (msg3))
+                log.log_err("process_project:  Status 3 Message: %s" % (msg3))
                 line_list = ["Failure to checkout branch: %s." % (gitr.branch)]
                 post_process(gitr, cfg, log, status3, line_list, msg3)
 
         else:
             log.log_err("process_project:  Fail rename branch to: %s."
                         % (gitr.mod_branch))
-            log.log_err("process_project:  Message: %s" % (msg2))
+            log.log_err("process_project:  Status 2 Message: %s" % (msg2))
             line_list = ["Failure rename branch to: %s." % (gitr.mod_branch)]
             post_process(gitr, cfg, log, status2, line_list, msg2)
 
     else:
         log.log_err("process_project:  Fail to fetch from remote Git repo.")
-        log.log_err("process_project:  Message: %s" % (msg1))
+        log.log_err("process_project:  Status 1 Message: %s" % (msg1))
         line_list = ["Failure to fetch from remote Git repo."]
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
@@ -628,10 +640,10 @@ def detach_head(gitr, log, **kwargs):
     status = True
     err_msg = None
 
-    if len(gitr.branches) == 0:
+    if len(gitr.gitrepo.branches) == 0:
         log.log_info("detach_head:  Head already detached")
 
-    elif len(gitr.branches) == 1:
+    elif len(gitr.gitrepo.branches) == 1:
         log.log_info("detach_head:  Detaching head...")
         current_br = gitr.get_br_name()
         head_status = gitr.detach_head()
@@ -643,13 +655,14 @@ def detach_head(gitr, log, **kwargs):
 
         else:
             log.log_info("detach_head:  Removing branch: %s" % (current_br))
-            gitr.remove_branch(current_br)
+            status, err_msg = gitr.remove_branch(current_br, no_chk=True)
 
     else:
         log.log_warn("detach_head:  Multiple branches detected: %s"
-                     % (gitr.branches))
+                     % (gitr.gitrepo.branches))
         status = False
-        err_msg = "WARN:  Multiple branches detected: %s" % (gitr.branches)
+        err_msg = "WARN:  Multiple branches detected: %s" \
+                  % (gitr.gitrepo.branches)
 
     return status, err_msg
 
@@ -723,8 +736,8 @@ def _process_changes(gitr, cfg, log, **kwargs):
     """Function:  _process_changes
 
     Description:  Private function for merge function.  Checks to ensure head
-        is detached and there are not dirty or untracked changes before merging
-        repository.
+        is detached and there are not any dirty or untracked changes before
+        merging repository.
 
     Arguments:
         (input) gitr -> Git class instance.
@@ -812,15 +825,15 @@ def main(**kwargs):
 
     """
 
-    sys.argv = kwargs.get("argv_list", sys.argv)
-
+    cmdline = gen_libs.get_inst(sys)
+    cmdline.argv = kwargs.get("argv_list", cmdline.argv)
     dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
     opt_req_list = ["-c", "-d", "-p", "-r"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message):
 
@@ -832,7 +845,7 @@ def main(**kwargs):
            and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
             try:
-                prog_lock = gen_class.ProgramLock(sys.argv,
+                prog_lock = gen_class.ProgramLock(cmdline.argv,
                                                   args_array.get("-r", ""))
                 run_program(args_array, func_dict)
                 del prog_lock

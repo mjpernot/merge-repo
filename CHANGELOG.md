@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [0.3.2] - 2020-03-26
+### Fixed
+- main:  Fixed handling command line arguments from SonarQube scan finding.
+- process_project:  Fixed duplicate literal SonarQube scan finding.
+- merge_project:  Fixed duplicate literal SonarQube scan finding.
+- detach_head:  Fixed incorrect referencing of branches attribute in Gitmerge class.
+
+### Changed
+- detach_head:  Added no_chk to remove_branch call and captured returning status codes.
+- Documentation update.
+
+
 ## [0.3.1] - 2020-02-26
 ### Changed
 - merge:  Added calls to \_process_changes and detach_head and check on the status of detach head.

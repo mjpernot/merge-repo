@@ -86,6 +86,7 @@ class UnitTest(unittest.TestCase):
                 self.to_line = "to@domain"
 
         self.cfg = CfgTest()
+        self.git_results = "/Git/Directory"
 
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class.GitMerge")
@@ -103,7 +104,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_git.is_commits_ahead.return_value = 0
         mock_git.is_commits_behind.return_value = 1
-        mock_git.git_dir.return_value = "/Git/Directory"
+        mock_git.git_dir.return_value = self.git_results
         mock_post.return_value = True
 
         self.assertFalse(merge_repo.post_check(mock_git, self.cfg, mock_log))
@@ -124,7 +125,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_git.is_commits_ahead.return_value = 0
         mock_git.is_commits_behind.return_value = 0
-        mock_git.git_dir.return_value = "/Git/Directory"
+        mock_git.git_dir.return_value = self.git_results
         mock_post.return_value = True
 
         self.assertFalse(merge_repo.post_check(mock_git, self.cfg, mock_log))
@@ -145,7 +146,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_git.is_commits_ahead.return_value = 1
         mock_git.is_commits_behind.return_value = 0
-        mock_git.git_dir.return_value = "/Git/Directory"
+        mock_git.git_dir.return_value = self.git_results
         mock_post.return_value = True
 
         self.assertFalse(merge_repo.post_check(mock_git, self.cfg, mock_log))
@@ -166,7 +167,7 @@ class UnitTest(unittest.TestCase):
         mock_log.return_value = True
         mock_git.is_commits_ahead.return_value = 0
         mock_git.is_commits_behind.return_value = 0
-        mock_git.git_dir.return_value = "/Git/Directory"
+        mock_git.git_dir.return_value = self.git_results
         mock_post.return_value = True
 
         self.assertFalse(merge_repo.post_check(mock_git, self.cfg, mock_log))

@@ -143,7 +143,7 @@ class UnitTest(unittest.TestCase):
         mock_cfg.return_value = (self.cfg, False)
 
         with gen_libs.no_std_out():
-            merge_repo.run_program(self.args, self.func_dict)
+            self.assertFalse(merge_repo.run_program(self.args, self.func_dict))
 
 
 if __name__ == "__main__":
