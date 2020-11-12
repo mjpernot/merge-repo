@@ -18,6 +18,8 @@ pipeline {
                     git branch: "master", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
                 }
                 sh """
+                virtualenv test_env
+                source test_env/bin/activate
                 pip2 install mock==2.0.0 --user
                 pip2 install gitpython==2.1.8 --user
                 pip2 install gitdb2==2.0.4 --user
@@ -40,6 +42,8 @@ pipeline {
                 ./test/unit/merge_repo/merge.py
                 ./test/unit/merge_repo/_process_changes.py
                 ./test/unit/merge_repo/detach_head.py
+                deactivate
+                rm -rf test_env
                 """
             }
         }
@@ -61,32 +65,32 @@ pipeline {
             steps {
                 script {
                     server = Artifactory.server('Artifactory')
-                    server.credentialsId = 'svc-highpoint-artifactory'
+                    server.credentialsId = 'art-svc-highpoint-dev'
                     uploadSpec = """{
                         "files": [
                             {
                                 "pattern": "./*.py",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/merge-repo/"
+                                "target": "pypi-proj-local/highpoint/merge-repo/"
                             },
                             {
                                 "pattern": "./*.txt",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/merge-repo/"
+                                "target": "pypi-proj-local/highpoint/merge-repo/"
                             },
                             {
                                 "pattern": "./*.md",
                                 "recursive": false,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/merge-repo/"
+                                "target": "pypi-proj-local/highpoint/merge-repo/"
                             },
                             {
                                 "pattern": "*.TEMPLATE",
                                 "recursive": true,
                                 "excludePatterns": [],
-                                "target": "generic-local/highpoint/merge-repo/config/"
+                                "target": "pypi-proj-local/highpoint/merge-repo/config/"
                             }
                         ]
                     }"""
