@@ -103,6 +103,9 @@ class UnitTest(unittest.TestCase):
         test_arg_require_false -> Test with arg_require returns False.
         test_arg_dir_chk_crt_true -> Test with arg_dir_chk_crt returns True.
         test_arg_dir_chk_crt_false -> Test with arg_dir_chk_crt returns False.
+        test_run_program -> Test with run_program.
+        test_programlock_true -> Test with ProgramLock returns True.
+        test_programlock_false -> Test with ProgramLock returns False.
 
     """
 
@@ -119,6 +122,7 @@ class UnitTest(unittest.TestCase):
         self.args = {"-c": "config_file", "-d": "config_dir",
                      "-r": "repo-name", "-p": "repo_path", "-M": True}
         self.func_dict = {"-M": merge_repo.merge}
+        self.proglock = ProgramLock(["cmdline"], self.args["-r"])
 
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.arg_parser")
@@ -275,7 +279,105 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.ProgramLock.return_value = ProgramLock([], self.args["-r"])
+        mock_class.ProgramLock.return_value = self.proglock
+        mock_arg.arg_parse2.return_value = self.args
+        mock_lib.help_func.return_value = False
+        mock_lib.get_inst.return_value = get_inst(sys)
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+
+        self.assertFalse(merge_repo.main())
+
+    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class")
+    def test_run_program(self, mock_class, mock_arg, mock_lib, mock_run):
+
+        """Function:  test_run_program
+
+        Description:  Test with run_program.
+
+        Arguments:
+
+        """
+
+        mock_class.ProgramLock.return_value = self.proglock
+        mock_arg.arg_parse2.return_value = self.args
+        mock_lib.help_func.return_value = False
+        mock_lib.get_inst.return_value = get_inst(sys)
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+
+        self.assertFalse(merge_repo.main())
+
+    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class")
+    def test_programlock_true(self, mock_class, mock_arg, mock_lib, mock_run):
+
+        """Function:  test_programlock_true
+
+        Description:  Test with ProgramLock returns True.
+
+        Arguments:
+
+        """
+
+        mock_class.ProgramLock.return_value = self.proglock
+        mock_arg.arg_parse2.return_value = self.args
+        mock_lib.help_func.return_value = False
+        mock_lib.get_inst.return_value = get_inst(sys)
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+
+        self.assertFalse(merge_repo.main())
+
+    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class.ProgramLock")
+    def test_programlock_false(self, mock_lock, mock_arg, mock_lib, mock_run):
+
+        """Function:  test_programlock_false
+
+        Description:  Test with ProgramLock returns False.
+
+        Arguments:
+
+        """
+
+        mock_lock.side_effect = \
+            merge_repo.gen_class.SingleInstanceException
+        mock_arg.arg_parse2.return_value = self.args
+        mock_lib.help_func.return_value = False
+        mock_lib.get_inst.return_value = get_inst(sys)
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+
+        with gen_libs.no_std_out():
+            self.assertFalse(merge_repo.main())
+
+    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class")
+    def test_programlock_id(self, mock_class, mock_arg, mock_lib, mock_run):
+
+        """Function:  test_programlock_id
+
+        Description:  Test with ProgramLock with flavor id.
+
+        Arguments:
+
+        """
+
+        mock_class.ProgramLock.return_value = self.proglock
         mock_arg.arg_parse2.return_value = self.args
         mock_lib.help_func.return_value = False
         mock_lib.get_inst.return_value = get_inst(sys)
