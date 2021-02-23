@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - config/merge.py.TEMPLATE:  Set "merge-repo" as the base directory structure.
+- Documentation updates.
 
 
 ## [0.3.2] - 2020-03-26

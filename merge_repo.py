@@ -3,40 +3,46 @@
 
 """Program:  merge_repo.py
 
-    Description:  Merge an updated external local Git repository into an
-        existing remote Git repository.  The merge process will clean up the
-        external project of dirty and untracked files and it will then pull
-        the existing remote Git branch to the local Git repository.  The
-        program will then merge the external local Git repo with the existing
-        Git repo.  Once the branches have been merged the updated branch will
-        be pushed back to the remote Git repository on the same branch that was
-        pulled.
+    Description:  Merge a non-local Git repository into an existing local and
+        remote Git repository.  The merge process will clean up the non-local
+        Git repository of dirty and untracked files by either reverting or
+        commiting them.  Then the program will pull the existing remote Git
+        branch into the non-local Git repository.  This will then alow the
+        program to merge the non-local Git repository with the existing
+        Git repository.  Once the branches have been merged the updated branch
+        will be pushed back to the remote Git repository in the same branch
+        that was pulled.
 
-        NOTE 1:  The external Git repo being imported will have priority during
-            the merge.  This means that the imported Git repo will have
-            precedence over the changes made to the remote Git repo.
-        NOTE 2:  The external local Git repository can come in as a detached
+        NOTE 1:  The non-local Git repository being merged will have priority
+            during the merge.  This means that the non-local Git repository
+            will have precedence over the changes made to the remote Git
+            repository.
+        NOTE 2:  The non-local Git repository can come in as a detached
             HEAD repository and with no named branches in the repository or
-            come in with a single branch in which case the program will detach
-            the HEAD to the latest commit ID and remove the branch.
+            come the non-local Git repository can come in with a single branch
+            in which case the program will detach the HEAD to the latest commit
+            ID and remove the existing branch.
         NOTE 3:  The -a option allows for using multiple deploy keys for a
-            single user account into Git (e.g. required for Github).  There
-            must be an entry in the account's ~/.ssh/config file with an alias
-            name that matches the respository name being processed.  See Notes
-            section on format of entry in ~/.ssh/config file.
+            single user account into Git (e.g. sometimes required for Github).
+            There must be an entry in the account's ~/.ssh/config file with an
+            alias name that matches the respository name being processed.  See
+            the Notes section on format of entry in ~/.ssh/config file.
 
     Usage:
-        merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
-            [-M] {-a} {-v | -h}
+        merge_repo.py -c config -d config_dir -p repo_directory [-r repo_name]
+            {-M [-a]}
+            {-v | -h}
 
     Arguments:
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
+        -p directory_path => Absolute path name to Project directory.
+        -r repo_name => Repository name being merged (e.g. "python-lib").
+
         -M => Run the merge function.
-        -a => Use the repository name as an alias in the Git url.  Used in a
-            Github repository setting.
-        -r repo_name => Repository name being merged (e.g. "hp-python-lib").
-        -p directory_path => Project directory which is the full absolute path.
+            -a => Use the repository name as an alias in the Git url.  Used in
+                a Github repository setting.
+
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -51,20 +57,20 @@
             # Git Project name.
             git_project="ProjectName"
             # Git Server Fully Qualified Domain Name.
-            #  Not required for -a option.
+            #  Not required if using the -a option.
             git_server="GitServerFQDN"
             # Directory of where the merge will take place.
-            work_dir="/PATH_DIRECTORY/work_dir"
-            # Directory where projects will be archived if encounter errors.
-            err_dir="/PATH_DIRECTORY/error_dir"
+            work_dir="/PATH_DIRECTORY/merge-repo/work_dir"
+            # Directory where projects will be archived if errors encountered.
+            err_dir="/PATH_DIRECTORY/merge-repo/error_dir"
             # Directory where projects will be archived after a merge.
-            archive_dir="/PATH_DIRECTORY/archive_dir"
-            # Directory where project items will be quarantined.
-            quar_dir="/PATH_DIRECTORY/quarantine"
+            archive_dir="/PATH_DIRECTORY/merge-repo/archive_dir"
+            # Directory where repository items will be quarantined.
+            quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
             # Email addresses for notification.
             to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
             # Directory where log files will be placed.
-            log_file="/PATH_DIRECTORY/logs/merge-repo.log"
+            log_file="/PATH_DIRECTORY/merge-repo/logs/merge-repo.log"
             # Do not modify the settings below unless you know what you are
             #   doing.
             # Local Git Repository user name.
@@ -84,7 +90,7 @@
 
         SSH Deployment Keys:
             This is only if the -a option is used against a Github repository.
-            If merging into a Github repository then each project will require
+            If merging into a Github repository then each project may require
                 its own unique deployment key.  Running the following
                 procedures to create and setup deployment key for a project.
             Change the repsective variables below to the names required:
@@ -110,11 +116,11 @@
             3.  In Github setup a deploy key in the repository being merged.
                 a.  Go to project in GitHub.
                 b.  Click "Settings" -> "Deploy Keys" -> "Add Deploy Key"
-                        Title:  Nifi
+                        Title:  SomeNameHere
                         Key:  (Paste public key here)
                 c.  Click Button:  "Allow Write Access"
                 d.  Clock "Add Key"
-            4.  To use the deploy key too clone a git repository:
+            4.  To use the deploy key to clone a git repository:
                 > git clone git@GitRepoName:GitProject/GitRepoName.git
 
     Examples:
