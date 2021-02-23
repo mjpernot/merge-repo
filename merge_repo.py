@@ -167,7 +167,7 @@ def help_message():
     print(__doc__)
 
 
-def load_cfg(cfg_name, cfg_dir, **kwargs):
+def load_cfg(cfg_name, cfg_dir):
 
     """Function:  load_cfg
 
@@ -208,7 +208,7 @@ def load_cfg(cfg_name, cfg_dir, **kwargs):
     return cfg, status_flag
 
 
-def is_git_repo(path, **kwargs):
+def is_git_repo(path):
 
     """Function:  is_git_repo
 
@@ -228,7 +228,7 @@ def is_git_repo(path, **kwargs):
         return False
 
 
-def send_mail(to_line, subj, mail_body, **kwargs):
+def send_mail(to_line, subj, mail_body):
 
     """Function:  send_mail
 
@@ -251,7 +251,7 @@ def send_mail(to_line, subj, mail_body, **kwargs):
     email.send_mail()
 
 
-def post_body(gitr, body=None, **kwargs):
+def post_body(gitr, body=None):
 
     """Function:  post_body
 
@@ -279,7 +279,7 @@ def post_body(gitr, body=None, **kwargs):
     return body
 
 
-def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
+def prepare_mail(gitr, status, line_list=None, msg=None):
 
     """Function:  prepare_mail
 
@@ -325,7 +325,7 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
     return subj, body
 
 
-def move(from_dir, to_dir, **kwargs):
+def move(from_dir, to_dir):
 
     """Function:  move
 
@@ -340,7 +340,7 @@ def move(from_dir, to_dir, **kwargs):
     gen_libs.mv_file2(from_dir, to_dir)
 
 
-def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
+def post_process(gitr, cfg, log, status, line_list=None, msg=None):
 
     """Function:  post_process
 
@@ -378,7 +378,7 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
         move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def post_check(gitr, cfg, log, **kwargs):
+def post_check(gitr, cfg, log):
 
     """Function:  post_check
 
@@ -418,7 +418,7 @@ def post_check(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, True, line_list)
 
 
-def quarantine_files(gitr, cfg, log, status=None, **kwargs):
+def quarantine_files(gitr, cfg, log, status=None):
 
     """Function:  quarantine_files
 
@@ -472,7 +472,7 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
         send_mail(cfg.to_line, subj, body)
 
 
-def quarantine(gitr, cfg, log, **kwargs):
+def quarantine(gitr, cfg, log):
 
     """Function:  quarantine
 
@@ -504,7 +504,7 @@ def quarantine(gitr, cfg, log, **kwargs):
         send_mail(cfg.to_line, subj, body)
 
 
-def merge_project(gitr, cfg, log, **kwargs):
+def merge_project(gitr, cfg, log):
 
     """Function:  merge_project
 
@@ -552,7 +552,7 @@ def merge_project(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
-def process_project(gitr, cfg, log, **kwargs):
+def process_project(gitr, cfg, log):
 
     """Function:  process_project
 
@@ -602,7 +602,7 @@ def process_project(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
-def process_changes(gitr, cfg, log, **kwargs):
+def process_changes(gitr, cfg, log):
 
     """Function:  process_changes
 
@@ -628,7 +628,7 @@ def process_changes(gitr, cfg, log, **kwargs):
         gitr.process_untracked(option=cfg.untracked)
 
 
-def detach_head(gitr, log, **kwargs):
+def detach_head(gitr, log):
 
     """Function:  detach_head
 
@@ -673,7 +673,7 @@ def detach_head(gitr, log, **kwargs):
     return status, err_msg
 
 
-def merge(args_array, cfg, log, **kwargs):
+def merge(args_array, cfg, log):
 
     """Function:  merge
 
@@ -737,7 +737,7 @@ def merge(args_array, cfg, log, **kwargs):
         move(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def _process_changes(gitr, cfg, log, **kwargs):
+def _process_changes(gitr, cfg, log):
 
     """Function:  _process_changes
 
