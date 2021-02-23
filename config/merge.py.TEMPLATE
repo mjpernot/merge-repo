@@ -8,32 +8,31 @@ git_project="ProjectName"
 
 # Git Server Fully Qualified Domain Name.
 #   Not required for -a option.
-# Example:  git_server="gitlab.code.dicelab.net"
+# Example:  git_server="github.com"
 git_server="GitServerFQDN"
 
 # Directory of where the merge will take place.
-# Example:  work_dir="/home/mark.j.pernot/merge/work_dir"
-work_dir="/PATH_DIRECTORY/work_dir"
+# Example:  work_dir="/data/merge-repo/merge/work_dir"
+work_dir="/PATH_DIRECTORY/merge-repo/work_dir"
 
 # Directory where projects will be archived if encounter errors.
-# Example:  err_dir="/home/mark.j.pernot/merge/error_dir"
-err_dir="/PATH_DIRECTORY/error_dir"
+# Example:  err_dir="/data/merge-repo/merge/error_dir"
+err_dir="/PATH_DIRECTORY/merge-repo/error_dir"
 
 # Directory where projects will be archived after a merge.
-# Example:  archive_dir="/home/mark.j.pernot/merge/archive_dir"
-archive_dir="/PATH_DIRECTORY/archive_dir"
+# Example:  archive_dir="/data/merge-repo/merge/archive_dir"
+archive_dir="/PATH_DIRECTORY/merge-repo/archive_dir"
 
 # Directory where project items will be quarantined.
-# Example:  quar_dir="/home/mark.j.pernot/merge/quarantine"
-quar_dir="/PATH_DIRECTORY/quarantine"
+# Example:  quar_dir="/data/merge-repo/merge/quarantine"
+quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
 
 # Email addresses for notification.
-# Example:  to_line="Mark.J.Pernot@coe.ic.gov"
 to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
 
 # Directory where log files will be placed.
-# Example:  log_file="/home/mark.j.pernot/merge/logs/merge-repo.log"
-log_file="/PATH_DIRECTORY/logs/merge-repo.log"
+# Example:  log_file="/data/merge-repo/merge/logs/merge-repo.log"
+log_file="/PATH_DIRECTORY/merge-repo/logs/merge-repo.log"
 
 # Do not modify the settings below unless you know what you are doing.
 # Local Git Repository user name.

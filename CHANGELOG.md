@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.0.0] - 2021-02-23
+- General Release.
+
+### Changed
+- config/merge.py.TEMPLATE:  Set "merge-repo" as the base directory structure.
+
+
 ## [0.3.2] - 2020-03-26
 ### Fixed
 - main:  Fixed handling command line arguments from SonarQube scan finding.
