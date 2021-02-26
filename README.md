@@ -70,6 +70,7 @@ Modify configutation file.  Make the appropriate changes to the Git environment 
   * "archive_dir" is the directory where the project will be save to after the merge.
   * "quar_dir" is the directory where items that are not processed will be saved to.
   * "to_line" is one or more email addresses to receive emails from the program.
+    -  If set to None, then no email notifications will be sent.
   * "log_file" is the directory path and log file name for the program.
 
   Note:  Ensure directories exist or are created for work_dir, err_dir, archive_dir, quar_dir, and log_file.
