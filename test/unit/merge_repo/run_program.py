@@ -59,6 +59,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_no_email_option -> Test with -n option selected.
         test_status_flag_true -> Test with status flag set to True.
         test_status_flag_false -> Test with status flag set to False.
 
@@ -95,20 +96,40 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.url = "git@gitlab.code.dicelab.net:JAC-IDM/"
-                self.work_dir = "/home/mark.j.pernot/merge/work_dir"
-                self.err_dir = "/home/mark.j.pernot/merge/error_dir"
-                self.archive_dir = "/home/mark.j.pernot/merge/archive_dir"
-                self.log_file = \
-                    "/home/mark.j.pernot/merge/log_dir/merge_repo.log"
-                self.to_line = "Mark.J.Pernot@coe.ic.gov"
+                self.url = "git@github.com:JAC-IDM/"
+                self.work_dir = "/data/merge-repo/work_dir"
+                self.err_dir = "/data/merge-repo/error_dir"
+                self.archive_dir = "/data/merge-repo/archive_dir"
+                self.log_file = "/data/merge-repo/log_dir/merge_repo.log"
+                self.to_line = "myemail@mydomain"
                 self.branch = "master"
 
         self.cfg = CfgTest()
         self.args = {"-c": "config_file", "-d": "config_dir",
                      "-r": "repo-name", "-p": "repo_path", "-M": True}
+        self.args2 = {"-c": "config_file", "-d": "config_dir", "-n": True,
+                      "-r": "repo-name", "-p": "repo_path", "-M": True}
         self.func_dict = {"-M": merge}
         self.msg_list = ["Error_Message"]
+
+    @mock.patch("merge_repo.gen_class.Logger")
+    @mock.patch("merge_repo.load_cfg")
+    def test_no_email_option(self, mock_cfg, mock_log):
+
+        """Function:  test_no_email_option
+
+        Description:  Test with -n option selected.
+
+        Arguments:
+
+        """
+
+        mock_cfg.return_value = (self.cfg, True, [])
+        mock_log.return_value = merge_repo.gen_class.Logger
+        mock_log.log_info.return_value = True
+        mock_log.log_close.return_value = True
+
+        self.assertFalse(merge_repo.run_program(self.args2, self.func_dict))
 
     @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.load_cfg")
