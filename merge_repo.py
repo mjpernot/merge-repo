@@ -88,6 +88,9 @@
             # Git Url Prefix
             prefix="git@"
 
+        Note:  Ensure directories exist or are created for work_dir, err_dir,
+            archive_dir, quar_dir, and log_file.
+
         SSH Deployment Keys:
             This is only if the -a option is used against a Github repository.
             If merging into a Github repository then each project may require
@@ -178,34 +181,40 @@ def load_cfg(cfg_name, cfg_dir):
         (input) cfg_dir -> Directory path to the configuration file.
         (output) cfg -> Configuration module handler.
         (output) status_flag -> True|False - successfully validate config file.
+        (output) err_messages -> Error messages from gen_libs.chk_crt_dir call.
 
     """
 
     status_flag = True
+    err_messages = ""
     cfg = gen_libs.load_module(cfg_name, cfg_dir)
     status, err_msg = gen_libs.chk_crt_dir(cfg.work_dir, write=True, read=True)
 
     if not status:
         status_flag = status
+        err_messages = err_messages + err_msg
 
     status, err_msg = gen_libs.chk_crt_dir(cfg.err_dir, write=True, read=True)
 
     if not status:
         status_flag = status
+        err_messages = err_messages + err_msg
 
     status, err_msg = gen_libs.chk_crt_dir(cfg.archive_dir, write=True,
                                            read=True)
 
     if not status:
         status_flag = status
+        err_messages = err_messages + err_msg
 
     status, err_msg = gen_libs.chk_crt_file(cfg.log_file, create=True,
                                             write=True, read=True)
 
     if not status:
         status_flag = status
+        err_messages = err_messages + err_msg
 
-    return cfg, status_flag
+    return cfg, status_flag, err_messages
 
 
 def is_git_repo(path):
