@@ -478,7 +478,7 @@ def quarantine_files(gitr, cfg, log, status=None):
                     % (f_type, item, os.path.join(cfg.quar_dir, q_dir)))
         body.append("\tReason:  %s was '%s'" % (f_type, status))
 
-    if file_list:
+    if cfg.to_line and file_list:
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 
