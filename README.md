@@ -72,6 +72,8 @@ Modify configutation file.  Make the appropriate changes to the Git environment 
   * "to_line" is one or more email addresses to receive emails from the program.
   * "log_file" is the directory path and log file name for the program.
 
+  Note:  Ensure directories exist or are created for work_dir, err_dir, archive_dir, quar_dir, and log_file.
+
 ```
 cd config
 cp merge.py.TEMPLATE merge.py
