@@ -95,9 +95,13 @@ class UnitTest(unittest.TestCase):
                 self.branch = "master"
 
         self.cfg = CfgTest()
-
         self.cfg_name = "Configuration_File"
         self.cfg_dir = "Configuration_Directory"
+        self.err_msg = "Work Directory Failure"
+        self.err_msg2 = "Error Directory Failure"
+        self.err_msg3 = "Archive Directory Failure"
+        self.err_msg4 = "Log File Failure"
+        self.true = [True, None]
 
     @mock.patch("merge_repo.gen_libs")
     def test_log_file_false(self, mock_lib):
@@ -111,11 +115,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [True, ""]]
-        mock_lib.chk_crt_file.side_effect = [[False, ""]]
+        mock_lib.chk_crt_dir.side_effect = [self.true, self.true, self.true]
+        mock_lib.chk_crt_file.side_effect = [[False, self.err_msg4]]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, False))
+                         (self.cfg, False, self.err_msg4))
 
     @mock.patch("merge_repo.gen_libs")
     def test_log_file_true(self, mock_lib):
@@ -129,11 +133,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [True, ""]]
-        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [self.true, self.true, self.true]
+        mock_lib.chk_crt_file.side_effect = [self.true]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, True))
+                         (self.cfg, True, ""))
 
     @mock.patch("merge_repo.gen_libs")
     def test_archive_dir_false(self, mock_lib):
@@ -147,12 +151,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""],
-                                            [False, ""]]
-        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [self.true, self.true,
+                                            [False, self.err_msg3]]
+        mock_lib.chk_crt_file.side_effect = [self.true]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, False))
+                         (self.cfg, False, self.err_msg3))
 
     @mock.patch("merge_repo.gen_libs")
     def test_archive_dir_true(self, mock_lib):
@@ -166,11 +170,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [True, ""]]
-        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [self.true, self.true, self.true]
+        mock_lib.chk_crt_file.side_effect = [self.true]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, True))
+                         (self.cfg, True, ""))
 
     @mock.patch("merge_repo.gen_libs")
     def test_err_dir_false(self, mock_lib):
@@ -184,12 +188,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [False, ""],
-                                            [True, ""]]
-        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [self.true, [False, self.err_msg2],
+                                            self.true]
+        mock_lib.chk_crt_file.side_effect = [self.true]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, False))
+                         (self.cfg, False, self.err_msg2))
 
     @mock.patch("merge_repo.gen_libs")
     def test_err_dir_true(self, mock_lib):
@@ -203,11 +207,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [True, ""]]
-        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [self.true, self.true, self.true]
+        mock_lib.chk_crt_file.side_effect = [self.true]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, True))
+                         (self.cfg, True, ""))
 
     @mock.patch("merge_repo.gen_libs")
     def test_work_dir_false(self, mock_lib):
@@ -221,12 +225,12 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[False, ""], [True, ""],
-                                            [True, ""]]
-        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [[False, self.err_msg], self.true,
+                                            self.true]
+        mock_lib.chk_crt_file.side_effect = [self.true]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, False))
+                         (self.cfg, False, self.err_msg))
 
     @mock.patch("merge_repo.gen_libs")
     def test_work_dir_true(self, mock_lib):
@@ -240,11 +244,11 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lib.load_module.return_value = self.cfg
-        mock_lib.chk_crt_dir.side_effect = [[True, ""], [True, ""], [True, ""]]
-        mock_lib.chk_crt_file.side_effect = [[True, ""]]
+        mock_lib.chk_crt_dir.side_effect = [self.true, self.true, self.true]
+        mock_lib.chk_crt_file.side_effect = [self.true]
 
         self.assertEqual(merge_repo.load_cfg(self.cfg_name, self.cfg_dir),
-                         (self.cfg, True))
+                         (self.cfg, True, ""))
 
 
 if __name__ == "__main__":
