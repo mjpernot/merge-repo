@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -58,6 +57,7 @@ class Repo(object):
         """
 
         self.git_dir = "Directory Path"
+        self.arg1 = arg1
 
 
 class UnitTest(unittest.TestCase):
