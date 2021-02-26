@@ -181,38 +181,38 @@ def load_cfg(cfg_name, cfg_dir):
         (input) cfg_dir -> Directory path to the configuration file.
         (output) cfg -> Configuration module handler.
         (output) status_flag -> True|False - successfully validate config file.
-        (output) err_messages -> Error messages from gen_libs.chk_crt_dir call.
+        (output) err_messages -> List of error messages.
 
     """
 
     status_flag = True
-    err_messages = ""
+    err_messages = []
     cfg = gen_libs.load_module(cfg_name, cfg_dir)
     status, err_msg = gen_libs.chk_crt_dir(cfg.work_dir, write=True, read=True)
 
     if not status:
         status_flag = status
-        err_messages = err_messages + err_msg
+        err_messages.append(err_msg)
 
     status, err_msg = gen_libs.chk_crt_dir(cfg.err_dir, write=True, read=True)
 
     if not status:
         status_flag = status
-        err_messages = err_messages + err_msg
+        err_messages.append(err_msg)
 
     status, err_msg = gen_libs.chk_crt_dir(cfg.archive_dir, write=True,
                                            read=True)
 
     if not status:
         status_flag = status
-        err_messages = err_messages + err_msg
+        err_messages.append(err_msg)
 
     status, err_msg = gen_libs.chk_crt_file(cfg.log_file, create=True,
                                             write=True, read=True)
 
     if not status:
         status_flag = status
-        err_messages = err_messages + err_msg
+        err_messages.append(err_msg)
 
     return cfg, status_flag, err_messages
 
