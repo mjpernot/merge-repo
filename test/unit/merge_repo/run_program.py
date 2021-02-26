@@ -105,10 +105,10 @@ class UnitTest(unittest.TestCase):
                 self.branch = "master"
 
         self.cfg = CfgTest()
-
         self.args = {"-c": "config_file", "-d": "config_dir",
                      "-r": "repo-name", "-p": "repo_path", "-M": True}
         self.func_dict = {"-M": merge}
+        self.msg_list = ["Error_Message"]
 
     @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.load_cfg")
@@ -122,7 +122,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cfg.return_value = (self.cfg, True)
+        mock_cfg.return_value = (self.cfg, True, [])
         mock_log.return_value = merge_repo.gen_class.Logger
         mock_log.log_info.return_value = True
         mock_log.log_close.return_value = True
@@ -140,7 +140,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_cfg.return_value = (self.cfg, False)
+        mock_cfg.return_value = (self.cfg, False, self.msg_list)
 
         with gen_libs.no_std_out():
             self.assertFalse(merge_repo.run_program(self.args, self.func_dict))
