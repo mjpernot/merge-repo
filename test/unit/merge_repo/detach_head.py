@@ -83,7 +83,6 @@ class UnitTest(unittest.TestCase):
 
                 self.branches = []
 
-
         class GitMerge(object):
 
             """Class:  GitMerge
