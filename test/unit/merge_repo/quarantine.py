@@ -43,6 +43,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_no_email -> Test with no email notifications.
         test_all_lists -> Test with all lists with data.
         test_rmfiles_list -> Test with rm_files list with data.
         test_both_lists -> Test with both lists with data.
@@ -83,8 +84,8 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.archive_dir = "/Arhive/Directory"
-                self.err_dir = "/Error/Directory"
+                self.archive_dir = "/data/merge-repo/archive_dir"
+                self.err_dir = "/data/merge-repo/error_dir"
                 self.to_line = "to@domain"
 
         class GitMerge(object):
@@ -115,6 +116,28 @@ class UnitTest(unittest.TestCase):
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()
+
+    @mock.patch("merge_repo.quarantine_files")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_no_email(self, mock_log, mock_quar):
+
+        """Function:  test_no_email
+
+        Description:  Test with no email notifications.
+
+        Arguments:
+
+        """
+
+        self.gitr.new_files = ["File1"]
+        self.gitr.chg_files = ["File2"]
+        self.gitr.rm_files = ["File3"]
+        self.cfg.to_line = None
+
+        mock_log.return_value = True
+        mock_quar.return_value = True
+
+        self.assertFalse(merge_repo.quarantine(self.gitr, self.cfg, mock_log))
 
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.post_body")
