@@ -42,7 +42,7 @@
         -M => Run the merge function.
             -a => Use the repository name as an alias in the Git url.  Used in
                 a Github repository setting.
-            -n => Do not send out email notifications.
+            -n => Override email setting and do not send email notifications.
 
         -v => Display version of this program.
         -h => Help and usage message.
