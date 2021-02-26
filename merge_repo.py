@@ -30,7 +30,7 @@
 
     Usage:
         merge_repo.py -c config -d config_dir -p repo_directory [-r repo_name]
-            {-M [-a]}
+            {-M [-a] [-n]}
             {-v | -h}
 
     Arguments:
@@ -42,6 +42,7 @@
         -M => Run the merge function.
             -a => Use the repository name as an alias in the Git url.  Used in
                 a Github repository setting.
+            -n => Do not send out email notifications.
 
         -v => Display version of this program.
         -h => Help and usage message.
@@ -68,6 +69,7 @@
             # Directory where repository items will be quarantined.
             quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
             # Email addresses for notification.
+            #  If set to None, will not email out notifications.
             to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
             # Directory where log files will be placed.
             log_file="/PATH_DIRECTORY/merge-repo/logs/merge-repo.log"
@@ -798,6 +800,10 @@ def run_program(args_array, func_dict, **kwargs):
     args_array = dict(args_array)
     func_dict = dict(func_dict)
     cfg, status_flag, msg_list = load_cfg(args_array["-c"], args_array["-d"])
+
+    # Disable email capability if option detected
+    if args_array.get("-n", False):
+        cfg.to_line = None
 
     if status_flag:
         log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",

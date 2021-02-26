@@ -6,8 +6,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [1.0.0] - 2021-02-23
 - General Release.
+- Added -n option and/or setting to_line to None to not send out email notifications.
 
 ### Changed
+- run_program:  Process -n option if detected in the command line arguments.
 - run_program: Process error messages from load_cfg function.
 - load_cfg:  Return list of error messages detected to calling function.
 - Removed unnecessary \*\*kwargs from argument list.
