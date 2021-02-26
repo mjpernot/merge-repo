@@ -507,12 +507,14 @@ def quarantine(gitr, cfg, log):
     if gitr.rm_files:
         log.log_info("quarantine:  Removed files detected")
         log.log_info("quarantine:  Files detected:  %s" % (gitr.rm_files))
-        subj = "Removed files detected in Git Repo: %s" % (gitr.repo_name)
-        body = []
-        body.append("Git Repo: %s" % (gitr.repo_name))
-        body.append("Removed files detected: %s" % (gitr.rm_files))
-        body = post_body(gitr, body)
-        send_mail(cfg.to_line, subj, body)
+
+        if cfg.to_line:
+            subj = "Removed files detected in Git Repo: %s" % (gitr.repo_name)
+            body = []
+            body.append("Git Repo: %s" % (gitr.repo_name))
+            body.append("Removed files detected: %s" % (gitr.rm_files))
+            body = post_body(gitr, body)
+            send_mail(cfg.to_line, subj, body)
 
 
 def merge_project(gitr, cfg, log):
