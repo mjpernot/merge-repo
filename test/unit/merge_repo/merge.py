@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -106,13 +105,11 @@ class UnitTest(unittest.TestCase):
                      "-d": "/data/merge-repo/merge_repo/config",
                      "-r": "repo-name", "-p": "/directory/repo-name"}
 
-    @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_no_email(self, mock_log, mock_lib, mock_isgit, mock_move,
-                      mock_post):
+    def test_no_email(self, mock_log, mock_lib, mock_isgit, mock_move):
 
         """Function:  test_no_email
 
@@ -424,14 +421,13 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_is_git_repo_false(self, mock_log, mock_lib, mock_isgit, mock_mail,
-                               mock_move, mock_post):
+                               mock_move):
 
         """Function:  test_is_git_repo_false
 
