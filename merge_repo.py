@@ -373,8 +373,10 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None):
     if msg is not None:
         msg = dict(msg)
 
-    subj, body = prepare_mail(gitr, status, line_list, msg)
-    send_mail(cfg.to_line, subj, body)
+    if cfg.to_line:
+        subj, body = prepare_mail(gitr, status, line_list, msg)
+        send_mail(cfg.to_line, subj, body)
+
     dest_dir = os.path.basename(gitr.git_dir) + "." \
         + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
 
