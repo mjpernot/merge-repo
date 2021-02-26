@@ -735,13 +735,16 @@ def merge(args_array, cfg, log):
 
     else:
         log.log_err("merge:  %s is not a local Git repository" % (git_dir))
-        subj = "Merge error for: " + git_dir
-        body = ["Local directory is not a Git repository.",
-                "Project Dir: " + git_dir]
-        body.append("DTG: "
-                    + datetime.datetime.strftime(datetime.datetime.now(),
-                                                 "%Y-%m-%d %H:%M:%S"))
-        send_mail(cfg.to_line, subj, body)
+
+        if cfg.to_line:
+            subj = "Merge error for: " + git_dir
+            body = ["Local directory is not a Git repository.",
+                    "Project Dir: " + git_dir]
+            body.append("DTG: "
+                        + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S"))
+            send_mail(cfg.to_line, subj, body)
+
         dest_dir = os.path.basename(git_dir) + "." \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
