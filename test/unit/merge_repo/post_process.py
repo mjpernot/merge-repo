@@ -43,6 +43,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_no_email -> Test with no email notifications.
         test_msg_passed -> Test with msg passed with data.
         test_linelist_passed -> Test with line_list passed with data.
         test_status_false -> Test with status set to False.
@@ -81,8 +82,8 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.archive_dir = "/Arhive/Directory"
-                self.err_dir = "/Error/Directory"
+                self.archive_dir = "/data/merge-repo/archive_dir"
+                self.err_dir = "/data/merge-repo/error_dir"
                 self.to_line = "to@domain"
 
         class GitMerge(object):
@@ -106,7 +107,7 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.git_dir = "/Git/Directory"
+                self.git_dir = "/directory/git_repo"
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()
@@ -114,6 +115,27 @@ class UnitTest(unittest.TestCase):
         self.body = ["Email Body Line 1", "Email Body Line 2"]
         self.status1 = True
         self.status2 = False
+
+    @mock.patch("merge_repo.gen_class.Logger")
+    @mock.patch("merge_repo.move")
+    def test_no_email(self, mock_move, mock_log):
+
+        """Function:  test_no_email
+
+        Description:  Test with no email notifications.
+
+        Arguments:
+
+        """
+
+        mock_log.return_value = True
+        mock_move.return_value = True
+
+        msg = {"1": "Line1", "2": "Line2"}
+        self.cfg.to_line = None
+
+        self.assertFalse(merge_repo.post_process(self.gitr, self.cfg, mock_log,
+                                                 self.status1, msg=msg))
 
     @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.move")
