@@ -28,6 +28,7 @@ archive_dir="/PATH_DIRECTORY/merge-repo/archive_dir"
 quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
 
 # Email addresses for notification.
+#  If set to None, will not email out notifications.
 to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
 
 # Directory where log files will be placed.
