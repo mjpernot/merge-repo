@@ -35,7 +35,7 @@ import version
 __version__ = version.__version__
 
 
-def merge(args_array, cfg, log, **kwargs):
+def merge(args_array, cfg, log):
 
     """Function:  merge_repo
 
@@ -48,7 +48,12 @@ def merge(args_array, cfg, log, **kwargs):
 
     """
 
-    pass
+    status = True
+
+    if args_array and cfg and log:
+        status = True
+
+    return status
 
 
 class UnitTest(unittest.TestCase):
