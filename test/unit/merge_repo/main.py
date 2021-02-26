@@ -18,8 +18,6 @@
 import sys
 import os
 import unittest
-import contextlib
-import io
 
 # Third-party
 import mock
@@ -33,7 +31,7 @@ import version
 __version__ = version.__version__
 
 
-def get_inst(cmd, **kwargs):
+def get_inst(cmd):
 
     """Function:  get_inst
 
@@ -73,6 +71,8 @@ class ProgramLock(object):
         """
 
         self.lock_created = True
+        self.argv = argv
+        self.flavor_id = flavor_id
 
     def __del__(self):
 
