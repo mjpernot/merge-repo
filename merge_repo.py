@@ -143,7 +143,6 @@ import os
 import datetime
 import socket
 import getpass
-import distutils.dir_util
 
 # Third-party
 import git

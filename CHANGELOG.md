@@ -17,6 +17,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - config/merge.py.TEMPLATE:  Set "merge-repo" as the base directory structure.
 - Documentation updates.
 
+### Removed
+- distutils.dir_util module.
+
 
 ## [0.3.2] - 2020-03-26
 ### Fixed
