@@ -797,7 +797,7 @@ def run_program(args_array, func_dict, **kwargs):
 
     args_array = dict(args_array)
     func_dict = dict(func_dict)
-    cfg, status_flag = load_cfg(args_array["-c"], args_array["-d"])
+    cfg, status_flag, msg_list = load_cfg(args_array["-c"], args_array["-d"])
 
     if status_flag:
         log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
@@ -817,7 +817,11 @@ def run_program(args_array, func_dict, **kwargs):
         log.log_close()
 
     else:
-        print("Error:  Problem in configuration file.")
+        print("Error:  Problem(s) in configuration file.")
+        print("Message(s):")
+
+        for item in msg_list:
+            print(item)
 
 
 def main(**kwargs):

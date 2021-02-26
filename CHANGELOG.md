@@ -8,6 +8,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - General Release.
 
 ### Changed
+- run_program: Process error messages from load_cfg function.
 - load_cfg:  Return list of error messages detected to calling function.
 - Removed unnecessary \*\*kwargs from argument list.
 - config/merge.py.TEMPLATE:  Set "merge-repo" as the base directory structure.
