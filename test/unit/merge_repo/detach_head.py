@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -148,7 +147,14 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                return (True, None)
+                status = True
+                msg = None
+
+                if branch and no_chk:
+                    status = True
+                    msg = None
+
+                return (status, msg)
 
         self.gitr = GitMerge()
         self.branch1 = ["Branch1"]
