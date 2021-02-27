@@ -2,7 +2,7 @@
 # Classification (U)
 
 # Description:
-  The program is designed to take an outside local Git repository and merge it into an existing remote Git repository.  It will, however, make the local Git repository the priority repository.  This is a way of an outside repository being modified and then merging those modifications into an existing remote Git respository.
+  Designed to take a non-local Git repository and merge it into an existing local and remote Git repository.  It will, however, make the new non-local Git repository the priority repository.  This is a way for an outside repository being modified and then merging those modifications into an existing local and remote Git respository.
 
 ###  This README file is broken down into the following sections:
   * Features
@@ -16,14 +16,12 @@
 
 
 # Features:
-  * Merge a outside local repository into an existing remote repository.
+  * Merge a non-local repository into an existing local and remote Git repository.
 
 
 # Prerequisites:
 
   * List of Linux packages that need to be installed on the server.
-    - python-libs
-    - python-devel
     - git
     - python-pip
 
@@ -64,14 +62,7 @@ pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host p
 
 # Configuration:
 
-Setup configuration file.
-```
-cd config
-cp merge.py.TEMPLATE merge.py
-```
-
-Modify configutation file.
-Make the appropriate changes to the Git environment in the merge.py file.
+Modify configutation file.  Make the appropriate changes to the Git environment in the merge.py file.
   * "git_project" is the Git Project name.
   * "git_server" is the Git Server Fully Qualified Domain Name.
   * "work_dir" is the directory where the merge will take place.
@@ -79,9 +70,14 @@ Make the appropriate changes to the Git environment in the merge.py file.
   * "archive_dir" is the directory where the project will be save to after the merge.
   * "quar_dir" is the directory where items that are not processed will be saved to.
   * "to_line" is one or more email addresses to receive emails from the program.
+    -  If set to None, then no email notifications will be sent.
   * "log_file" is the directory path and log file name for the program.
 
+  Note:  Ensure directories exist or are created for work_dir, err_dir, archive_dir, quar_dir, and log_file.
+
 ```
+cd config
+cp merge.py.TEMPLATE merge.py
 vim merge.py
 ```
 
@@ -109,8 +105,6 @@ These additional entries in the configuration file should not be modified unless
 # Testing:
 
 # Unit Testing:
-
-### Description: Testing consists of unit testing for the functions in the merge_repo.py program.
 
 ### Installation:
 
@@ -144,13 +138,13 @@ pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host p
 # Unit test runs for merge_repo.py:
   * Replace **{Python_Project}** with the baseline path of the python program.
 
-### Unit testing:
+### Testing:
 ```
 cd {Python_Project}/merge-repo
 test/unit/merge_repo/unit_test_run.sh
 ```
 
-### Code coverage unit testing:
+### Code coverage:
 ```
 cd {Python_Project}/merge-repo
 test/unit/merge_repo/code_coverage.sh

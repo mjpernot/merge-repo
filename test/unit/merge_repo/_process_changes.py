@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -132,7 +131,12 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                return True
+                status = True
+
+                if option:
+                    status = True
+
+                return status
 
             def process_untracked(self, option):
 
@@ -145,7 +149,12 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                return True
+                status = True
+
+                if option:
+                    status = True
+
+                return status
 
             def get_dirty(self):
 
