@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -78,13 +77,12 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.url = "git@gitlab.code.dicelab.net:JAC-IDM/"
-                self.work_dir = "/home/mark.j.pernot/merge/work_dir"
-                self.err_dir = "/home/mark.j.pernot/merge/error_dir"
-                self.archive_dir = "/home/mark.j.pernot/merge/archive_dir"
-                self.log_file = \
-                    "/home/mark.j.pernot/merge/log_dir/merge_repo.log"
-                self.to_line = "Mark.J.Pernot@coe.ic.gov"
+                self.url = "git@github.com:JAC-IDM/"
+                self.work_dir = "/data/merge-repo/work_dir"
+                self.err_dir = "/data/merge-repo/error_dir"
+                self.archive_dir = "/data/merge-repo/archive_dir"
+                self.log_file = "/data/merge-repo/log_dir/merge_repo.log"
+                self.to_line = "myemail@mydomain"
                 self.branch = "master"
 
         self.cfg = CfgTest()

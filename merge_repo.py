@@ -3,40 +3,47 @@
 
 """Program:  merge_repo.py
 
-    Description:  Merge an updated external local Git repository into an
-        existing remote Git repository.  The merge process will clean up the
-        external project of dirty and untracked files and it will then pull
-        the existing remote Git branch to the local Git repository.  The
-        program will then merge the external local Git repo with the existing
-        Git repo.  Once the branches have been merged the updated branch will
-        be pushed back to the remote Git repository on the same branch that was
-        pulled.
+    Description:  Merge a non-local Git repository into an existing local and
+        remote Git repository.  The merge process will clean up the non-local
+        Git repository of dirty and untracked files by either reverting or
+        commiting them.  Then the program will pull the existing remote Git
+        branch into the non-local Git repository.  This will then alow the
+        program to merge the non-local Git repository with the existing
+        Git repository.  Once the branches have been merged the updated branch
+        will be pushed back to the remote Git repository in the same branch
+        that was pulled.
 
-        NOTE 1:  The external Git repo being imported will have priority during
-            the merge.  This means that the imported Git repo will have
-            precedence over the changes made to the remote Git repo.
-        NOTE 2:  The external local Git repository can come in as a detached
+        NOTE 1:  The non-local Git repository being merged will have priority
+            during the merge.  This means that the non-local Git repository
+            will have precedence over the changes made to the remote Git
+            repository.
+        NOTE 2:  The non-local Git repository can come in as a detached
             HEAD repository and with no named branches in the repository or
-            come in with a single branch in which case the program will detach
-            the HEAD to the latest commit ID and remove the branch.
+            come the non-local Git repository can come in with a single branch
+            in which case the program will detach the HEAD to the latest commit
+            ID and remove the existing branch.
         NOTE 3:  The -a option allows for using multiple deploy keys for a
-            single user account into Git (e.g. required for Github).  There
-            must be an entry in the account's ~/.ssh/config file with an alias
-            name that matches the respository name being processed.  See Notes
-            section on format of entry in ~/.ssh/config file.
+            single user account into Git (e.g. sometimes required for Github).
+            There must be an entry in the account's ~/.ssh/config file with an
+            alias name that matches the respository name being processed.  See
+            the Notes section on format of entry in ~/.ssh/config file.
 
     Usage:
-        merge_repo.py -c config -d config_dir -p repo_directory {-r repo_name}
-            [-M] {-a} {-v | -h}
+        merge_repo.py -c config -d config_dir -p repo_directory [-r repo_name]
+            {-M [-a] [-n]}
+            {-v | -h}
 
     Arguments:
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
+        -p directory_path => Absolute path name to Project directory.
+        -r repo_name => Repository name being merged (e.g. "python-lib").
+
         -M => Run the merge function.
-        -a => Use the repository name as an alias in the Git url.  Used in a
-            Github repository setting.
-        -r repo_name => Repository name being merged (e.g. "hp-python-lib").
-        -p directory_path => Project directory which is the full absolute path.
+            -a => Use the repository name as an alias in the Git url.  Used in
+                a Github repository setting.
+            -n => Override email setting and do not send email notifications.
+
         -v => Display version of this program.
         -h => Help and usage message.
 
@@ -51,20 +58,21 @@
             # Git Project name.
             git_project="ProjectName"
             # Git Server Fully Qualified Domain Name.
-            #  Not required for -a option.
+            #  Not required if using the -a option.
             git_server="GitServerFQDN"
             # Directory of where the merge will take place.
-            work_dir="/PATH_DIRECTORY/work_dir"
-            # Directory where projects will be archived if encounter errors.
-            err_dir="/PATH_DIRECTORY/error_dir"
+            work_dir="/PATH_DIRECTORY/merge-repo/work_dir"
+            # Directory where projects will be archived if errors encountered.
+            err_dir="/PATH_DIRECTORY/merge-repo/error_dir"
             # Directory where projects will be archived after a merge.
-            archive_dir="/PATH_DIRECTORY/archive_dir"
-            # Directory where project items will be quarantined.
-            quar_dir="/PATH_DIRECTORY/quarantine"
+            archive_dir="/PATH_DIRECTORY/merge-repo/archive_dir"
+            # Directory where repository items will be quarantined.
+            quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
             # Email addresses for notification.
+            #  If set to None, will not email out notifications.
             to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
             # Directory where log files will be placed.
-            log_file="/PATH_DIRECTORY/logs/merge-repo.log"
+            log_file="/PATH_DIRECTORY/merge-repo/logs/merge-repo.log"
             # Do not modify the settings below unless you know what you are
             #   doing.
             # Local Git Repository user name.
@@ -82,9 +90,12 @@
             # Git Url Prefix
             prefix="git@"
 
+        Note:  Ensure directories exist or are created for work_dir, err_dir,
+            archive_dir, quar_dir, and log_file.
+
         SSH Deployment Keys:
             This is only if the -a option is used against a Github repository.
-            If merging into a Github repository then each project will require
+            If merging into a Github repository then each project may require
                 its own unique deployment key.  Running the following
                 procedures to create and setup deployment key for a project.
             Change the repsective variables below to the names required:
@@ -110,11 +121,11 @@
             3.  In Github setup a deploy key in the repository being merged.
                 a.  Go to project in GitHub.
                 b.  Click "Settings" -> "Deploy Keys" -> "Add Deploy Key"
-                        Title:  Nifi
+                        Title:  SomeNameHere
                         Key:  (Paste public key here)
                 c.  Click Button:  "Allow Write Access"
                 d.  Clock "Add Key"
-            4.  To use the deploy key too clone a git repository:
+            4.  To use the deploy key to clone a git repository:
                 > git clone git@GitRepoName:GitProject/GitRepoName.git
 
     Examples:
@@ -132,7 +143,6 @@ import os
 import datetime
 import socket
 import getpass
-import distutils.dir_util
 
 # Third-party
 import git
@@ -161,7 +171,7 @@ def help_message():
     print(__doc__)
 
 
-def load_cfg(cfg_name, cfg_dir, **kwargs):
+def load_cfg(cfg_name, cfg_dir):
 
     """Function:  load_cfg
 
@@ -172,37 +182,43 @@ def load_cfg(cfg_name, cfg_dir, **kwargs):
         (input) cfg_dir -> Directory path to the configuration file.
         (output) cfg -> Configuration module handler.
         (output) status_flag -> True|False - successfully validate config file.
+        (output) err_messages -> List of error messages.
 
     """
 
     status_flag = True
+    err_messages = []
     cfg = gen_libs.load_module(cfg_name, cfg_dir)
     status, err_msg = gen_libs.chk_crt_dir(cfg.work_dir, write=True, read=True)
 
     if not status:
         status_flag = status
+        err_messages.append(err_msg)
 
     status, err_msg = gen_libs.chk_crt_dir(cfg.err_dir, write=True, read=True)
 
     if not status:
         status_flag = status
+        err_messages.append(err_msg)
 
     status, err_msg = gen_libs.chk_crt_dir(cfg.archive_dir, write=True,
                                            read=True)
 
     if not status:
         status_flag = status
+        err_messages.append(err_msg)
 
     status, err_msg = gen_libs.chk_crt_file(cfg.log_file, create=True,
                                             write=True, read=True)
 
     if not status:
         status_flag = status
+        err_messages.append(err_msg)
 
-    return cfg, status_flag
+    return cfg, status_flag, err_messages
 
 
-def is_git_repo(path, **kwargs):
+def is_git_repo(path):
 
     """Function:  is_git_repo
 
@@ -222,7 +238,7 @@ def is_git_repo(path, **kwargs):
         return False
 
 
-def send_mail(to_line, subj, mail_body, **kwargs):
+def send_mail(to_line, subj, mail_body):
 
     """Function:  send_mail
 
@@ -245,7 +261,7 @@ def send_mail(to_line, subj, mail_body, **kwargs):
     email.send_mail()
 
 
-def post_body(gitr, body=None, **kwargs):
+def post_body(gitr, body=None):
 
     """Function:  post_body
 
@@ -273,7 +289,7 @@ def post_body(gitr, body=None, **kwargs):
     return body
 
 
-def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
+def prepare_mail(gitr, status, line_list=None, msg=None):
 
     """Function:  prepare_mail
 
@@ -319,7 +335,7 @@ def prepare_mail(gitr, status, line_list=None, msg=None, **kwargs):
     return subj, body
 
 
-def move(from_dir, to_dir, **kwargs):
+def move(from_dir, to_dir):
 
     """Function:  move
 
@@ -334,7 +350,7 @@ def move(from_dir, to_dir, **kwargs):
     gen_libs.mv_file2(from_dir, to_dir)
 
 
-def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
+def post_process(gitr, cfg, log, status, line_list=None, msg=None):
 
     """Function:  post_process
 
@@ -356,8 +372,10 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
     if msg is not None:
         msg = dict(msg)
 
-    subj, body = prepare_mail(gitr, status, line_list, msg)
-    send_mail(cfg.to_line, subj, body)
+    if cfg.to_line:
+        subj, body = prepare_mail(gitr, status, line_list, msg)
+        send_mail(cfg.to_line, subj, body)
+
     dest_dir = os.path.basename(gitr.git_dir) + "." \
         + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
 
@@ -372,7 +390,7 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None, **kwargs):
         move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def post_check(gitr, cfg, log, **kwargs):
+def post_check(gitr, cfg, log):
 
     """Function:  post_check
 
@@ -412,7 +430,7 @@ def post_check(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, True, line_list)
 
 
-def quarantine_files(gitr, cfg, log, status=None, **kwargs):
+def quarantine_files(gitr, cfg, log, status=None):
 
     """Function:  quarantine_files
 
@@ -461,12 +479,12 @@ def quarantine_files(gitr, cfg, log, status=None, **kwargs):
                     % (f_type, item, os.path.join(cfg.quar_dir, q_dir)))
         body.append("\tReason:  %s was '%s'" % (f_type, status))
 
-    if file_list:
+    if cfg.to_line and file_list:
         body = post_body(gitr, body)
         send_mail(cfg.to_line, subj, body)
 
 
-def quarantine(gitr, cfg, log, **kwargs):
+def quarantine(gitr, cfg, log):
 
     """Function:  quarantine
 
@@ -490,15 +508,17 @@ def quarantine(gitr, cfg, log, **kwargs):
     if gitr.rm_files:
         log.log_info("quarantine:  Removed files detected")
         log.log_info("quarantine:  Files detected:  %s" % (gitr.rm_files))
-        subj = "Removed files detected in Git Repo: %s" % (gitr.repo_name)
-        body = []
-        body.append("Git Repo: %s" % (gitr.repo_name))
-        body.append("Removed files detected: %s" % (gitr.rm_files))
-        body = post_body(gitr, body)
-        send_mail(cfg.to_line, subj, body)
+
+        if cfg.to_line:
+            subj = "Removed files detected in Git Repo: %s" % (gitr.repo_name)
+            body = []
+            body.append("Git Repo: %s" % (gitr.repo_name))
+            body.append("Removed files detected: %s" % (gitr.rm_files))
+            body = post_body(gitr, body)
+            send_mail(cfg.to_line, subj, body)
 
 
-def merge_project(gitr, cfg, log, **kwargs):
+def merge_project(gitr, cfg, log):
 
     """Function:  merge_project
 
@@ -546,7 +566,7 @@ def merge_project(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
-def process_project(gitr, cfg, log, **kwargs):
+def process_project(gitr, cfg, log):
 
     """Function:  process_project
 
@@ -596,7 +616,7 @@ def process_project(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
-def process_changes(gitr, cfg, log, **kwargs):
+def process_changes(gitr, cfg, log):
 
     """Function:  process_changes
 
@@ -622,7 +642,7 @@ def process_changes(gitr, cfg, log, **kwargs):
         gitr.process_untracked(option=cfg.untracked)
 
 
-def detach_head(gitr, log, **kwargs):
+def detach_head(gitr, log):
 
     """Function:  detach_head
 
@@ -667,7 +687,7 @@ def detach_head(gitr, log, **kwargs):
     return status, err_msg
 
 
-def merge(args_array, cfg, log, **kwargs):
+def merge(args_array, cfg, log):
 
     """Function:  merge
 
@@ -718,20 +738,23 @@ def merge(args_array, cfg, log, **kwargs):
 
     else:
         log.log_err("merge:  %s is not a local Git repository" % (git_dir))
-        subj = "Merge error for: " + git_dir
-        body = ["Local directory is not a Git repository.",
-                "Project Dir: " + git_dir]
-        body.append("DTG: "
-                    + datetime.datetime.strftime(datetime.datetime.now(),
-                                                 "%Y-%m-%d %H:%M:%S"))
-        send_mail(cfg.to_line, subj, body)
+
+        if cfg.to_line:
+            subj = "Merge error for: " + git_dir
+            body = ["Local directory is not a Git repository.",
+                    "Project Dir: " + git_dir]
+            body.append("DTG: "
+                        + datetime.datetime.strftime(datetime.datetime.now(),
+                                                     "%Y-%m-%d %H:%M:%S"))
+            send_mail(cfg.to_line, subj, body)
+
         dest_dir = os.path.basename(git_dir) + "." \
             + datetime.datetime.strftime(datetime.datetime.now(),
                                          "%Y%m%d_%H%M%S")
         move(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def _process_changes(gitr, cfg, log, **kwargs):
+def _process_changes(gitr, cfg, log):
 
     """Function:  _process_changes
 
@@ -782,7 +805,11 @@ def run_program(args_array, func_dict, **kwargs):
 
     args_array = dict(args_array)
     func_dict = dict(func_dict)
-    cfg, status_flag = load_cfg(args_array["-c"], args_array["-d"])
+    cfg, status_flag, msg_list = load_cfg(args_array["-c"], args_array["-d"])
+
+    # Disable email capability if option detected
+    if args_array.get("-n", False):
+        cfg.to_line = None
 
     if status_flag:
         log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
@@ -802,7 +829,11 @@ def run_program(args_array, func_dict, **kwargs):
         log.log_close()
 
     else:
-        print("Error:  Problem in configuration file.")
+        print("Error:  Problem(s) in configuration file.")
+        print("Message(s):")
+
+        for item in msg_list:
+            print(item)
 
 
 def main(**kwargs):

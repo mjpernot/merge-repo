@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -43,6 +42,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_no_email -> Test with no email notifications sent.
         test_git_alias_option -> Test with the git alias option set to True.
         test_not_dirty -> Test with no dirty files found.
         test_detach_head_false -> Test with detaching head returns False.
@@ -90,10 +90,10 @@ class UnitTest(unittest.TestCase):
                 self.prefix = "git@"
                 self.git_server = "domain"
                 self.git_project = "project"
-                self.work_dir = "/directory/work_dir"
-                self.err_dir = "/directory/error_dir"
-                self.archive_dir = "/directory/archive_dir"
-                self.log_file = "/directory/log_dir/merge_repo.log"
+                self.work_dir = "/data/merge-repo/work_dir"
+                self.err_dir = "/data/merge-repo/error_dir"
+                self.archive_dir = "/data/merge-repo/archive_dir"
+                self.log_file = "/data/merge-repo/log_dir/merge_repo.log"
                 self.to_line = "name@domain"
                 self.branch = "branch_name"
                 self.mod_branch = "mod_branch"
@@ -101,9 +101,32 @@ class UnitTest(unittest.TestCase):
                 self.email = "gituser@domain.mail"
 
         self.cfg = CfgTest()
-        self.args = {"-c": "config_file", "-d": "/directory/merge_repo/config",
-                     "-r": "repo-name", "-p": "/directory/repo-name",
-                     "-M": True}
+        self.args = {"-c": "config_file", "-M": True,
+                     "-d": "/data/merge-repo/merge_repo/config",
+                     "-r": "repo-name", "-p": "/directory/repo-name"}
+
+    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.is_git_repo")
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_no_email(self, mock_log, mock_lib, mock_isgit, mock_move):
+
+        """Function:  test_no_email
+
+        Description:  Test with no email notifications sent.
+
+        Arguments:
+
+        """
+
+        self.cfg.to_line = None
+
+        mock_log.return_value = True
+        mock_lib.mv_file2.return_value = True
+        mock_isgit.return_value = False
+        mock_move.return_value = True
+
+        self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
@@ -398,14 +421,13 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.move")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
     def test_is_git_repo_false(self, mock_log, mock_lib, mock_isgit, mock_mail,
-                               mock_move, mock_post):
+                               mock_move):
 
         """Function:  test_is_git_repo_false
 

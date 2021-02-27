@@ -25,7 +25,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -80,8 +79,8 @@ class UnitTest(unittest.TestCase):
                 """
 
                 self.repo_name = "repo-name"
-                self.url = "git@gitlab.code.dicelab.net:JAC-IDM/"
-                self.git_dir = "/home/mark.j.pernot/merge/work_dir/repo-name"
+                self.url = "git@github.com:JAC-IDM/"
+                self.git_dir = "/data/merge-repo/work_dir/repo-name"
                 self.branch = "master"
 
         self.gitr = GitMerge()

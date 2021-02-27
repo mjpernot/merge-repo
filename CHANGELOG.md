@@ -4,11 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.0.0] - 2021-02-23
+- General Release.
+- Added -n option and/or setting to_line to None to not send out email notifications.
+
+### Changed
+- post_process, quarantine_files, quarantine, merge:  If no "to email" address is detected, do not send email notifications.
+- run_program:  Process -n option if detected in the command line arguments.
+- run_program: Process error messages from load_cfg function.
+- load_cfg:  Return list of error messages detected to calling function.
+- Removed unnecessary \*\*kwargs from argument list.
+- config/merge.py.TEMPLATE:  Set "merge-repo" as the base directory structure.
+- Documentation updates.
+
+### Removed
+- distutils.dir_util module.
+
+
 ## [0.3.2] - 2020-03-26
 ### Fixed
 - main:  Fixed handling command line arguments from SonarQube scan finding.
-- process_project:  Fixed duplicate literal SonarQube scan finding.
-- merge_project:  Fixed duplicate literal SonarQube scan finding.
+- merge_project, process_project:  Fixed literal SonarQube scan finding.
 - detach_head:  Fixed incorrect referencing of branches attribute in Gitmerge class.
 
 ### Changed
@@ -57,8 +73,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Changed
 - merge:  Set the "url" depending on "-a" option setting.  To allow multiple deploy keys in a Github repository.
 - main:  Changed variable name to standard naming convention.
-- config/merge.py.TEMPLATE:  Removed "url" entry.  No longer required.
-- config/merge.py.TEMPLATE:  Added "git_project", "git_server", and "prefix" entries.
+- config/merge.py.TEMPLATE:  Removed "url" entry.  Added "git_project", "git_server", and "prefix" entries.
 
 
 ## [0.1.1] - 2019-06-14
@@ -73,13 +88,10 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Changed
 - Changed import of git_class to a sub-directory.
 - main:  Added ability to accept keywords arguments into function.  Will allow wrapper program to implment program.
-- merge:  Added Log instance to post_process calls.
 - merge:  Replaced dirty and untrack code with call to process_changes function.
-- process_project:  Added Log instance to post_process calls.
-- merge_project:  Added Log instance to post_process calls.
+- post_check, merge, merge_project, process_project:  Added Log instance to post_process calls.
 - quarantine:  Removed get_dirty and get_untracked calls and added Log instance to post_process calls.
 - quarantine_files:  Change file quarantine to directory to quarantine file to show move properly.
-- post_check:  Added Log instance to post_process calls.
 - post_process:  Added Log class instance to function to record entries to log.
 
 
@@ -92,10 +104,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ### Fixed
 - process_project:  Corrected call to git_fetch method.
 - prepare_mail:  Corrected logic in 'if' statement.
-- prepare_mail:  Fixed problem with mutable default arguments issue.
-- post_process:  Fixed problem with mutable default arguments issue.
-- merge:  Fixed problem with mutable default arguments issue.
-- run_program:  Fixed problem with mutable default arguments issue.
+- run_program, merge, post_process, prepare_mail:  Fixed problem with mutable default arguments issue.
 - send_mail:  Added newline for each line in email.
 - post_check:  Added branch name as arg to is_commits_ahead and is_commits_behind calls.
 
@@ -108,8 +117,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - prepare_mail:  Replaced post body mail lines with call to post_body function.
 - post_process:  Added datetime to destination directory for the archiving of the repo.
 - merge:  Added datetime to destination directory for the archiving of the repo.
-- merge_project:  Added additional logging error statements.
-- process_project:  Added additional logging error statements.
+- process_project, merge_project:  Added additional logging error statements.
 
 
 ## [0.0.3] - 2019-04-03

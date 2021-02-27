@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import merge_repo
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -43,6 +42,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_added_status -> Test with no email notifications.
         test_file_dir -> Test with file and sub-directory being quarantined.
         test_multiple_files -> Test with multiple files being quarantined.
         test_copy_directory2 -> Test file in sub-directory being quarantined.
@@ -87,7 +87,7 @@ class UnitTest(unittest.TestCase):
 
                 """
 
-                self.quar_dir = "/directory/quarantine"
+                self.quar_dir = "/data/merge-repo/quarantine"
                 self.to_line = "to@domain"
 
         class GitMerge(object):
@@ -114,14 +114,38 @@ class UnitTest(unittest.TestCase):
                 self.chg_files = []
                 self.new_files = []
                 self.repo_name = "Repo_Name"
-                self.git_dir = "/directory/git_dir"
+                self.git_dir = "/data/git_dir"
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()
-
         self.dtg = "2019-04-16 13:51:42"
         self.datetime = "(2019, 4, 16, 13, 51, 42, 852147)"
         self.pathfile = "subdirectory/File1"
+
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.datetime.datetime")
+    @mock.patch("merge_repo.gen_class.Logger")
+    def test_no_email(self, mock_log, mock_date, mock_lib):
+
+        """Function:  test_no_email
+
+        Description:  Test with no email notifications.
+
+        Arguments:
+
+        """
+
+        mock_date.now.return_value = self.datetime
+        mock_date.strftime.return_value = self.dtg
+        mock_log.return_value = True
+        mock_lib.cp_file.return_value = True
+        mock_lib.chk_crt_dir.return_value = True
+
+        self.gitr.new_files = ["File1"]
+        self.cfg.to_line = None
+
+        self.assertFalse(merge_repo.quarantine_files(self.gitr, self.cfg,
+                                                     mock_log, status="added"))
 
     @mock.patch("merge_repo.os.path.exists", mock.Mock(return_value=False))
     @mock.patch("merge_repo.os.makedirs", mock.Mock(return_value=True))
