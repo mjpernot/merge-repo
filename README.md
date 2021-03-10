@@ -1,8 +1,8 @@
-# Python project for the merging of a local Git repository into an existing Git repository.
+# Python project for the merging of a non-local Git repository into an existing Git repository.
 # Classification (U)
 
 # Description:
-  Designed to take a non-local Git repository and merge it into an existing local and remote Git repository.  It will, however, make the new non-local Git repository the priority repository.  This is a way for an outside repository being modified and then merging those modifications into an existing local and remote Git respository.
+  Designed to take a non-local Git repository and merge it into a remote Git repository.  It will, however, make the new non-local Git repository as the priority repository.  This is a way for an outside repository being modified and then merging those modifications into an existing remote Git respository.
 
 ###  This README file is broken down into the following sections:
   * Features
@@ -16,7 +16,8 @@
 
 
 # Features:
-  * Merge a non-local repository into an existing local and remote Git repository.
+  * Merge a non-local repository into an existing remote Git repository.
+  * Allow for the merging of unrelated Git histories.
 
 
 # Prerequisites:
@@ -54,6 +55,7 @@ exit
 ```
 
 Install supporting classes and libraries.
+
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
@@ -73,7 +75,7 @@ Modify configutation file.  Make the appropriate changes to the Git environment 
     -  If set to None, then no email notifications will be sent.
   * "log_file" is the directory path and log file name for the program.
 
-  Note:  Ensure directories exist or are created for work_dir, err_dir, archive_dir, quar_dir, and log_file.
+  Note:  Ensure directories exist for work_dir, err_dir, archive_dir, quar_dir, and log_file entries.
 
 ```
 cd config
@@ -129,6 +131,7 @@ exit
 ```
 
 Install supporting classes and libraries.
+
 ```
 pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
 pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
