@@ -5,6 +5,11 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [1.0.1] - 2021-03-03
+### Added
+- Added -u option to allow for unrelated Git repository histories to be merged.
+
+### Changed
+- Documentation updates.
 
 
 ## [1.0.0] - 2021-02-23

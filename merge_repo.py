@@ -29,27 +29,37 @@
             the Notes section on format of entry in ~/.ssh/config file.
 
     Usage:
-        merge_repo.py -c config -d config_dir -p repo_directory [-r repo_name]
-            {-M [-a] [-n]}
+        merge_repo.py -c config -d config_dir
+            -p project_directory [-r repo_name]
+            {-M [-a] [-n] [-u]}
             {-v | -h}
 
     Arguments:
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
-        -p directory_path => Absolute path name to Project directory.
-        -r repo_name => Repository name being merged (e.g. "python-lib").
+
+        -p directory_path => Absolute path name to project directory.
+            -r repo_name => Repository name being merged with.
+                Default:  Will take the basename from -p option.
 
         -M => Run the merge function.
             -a => Use the repository name as an alias in the Git url.  Used in
                 a Github repository setting.
             -n => Override email setting and do not send email notifications.
+            -u => Allows unrelated Git repo histories to be merged.
 
         -v => Display version of this program.
         -h => Help and usage message.
 
+        WARNING:  Only use the -u option if the below error message appears:
+            "fatal: refusing to merge unrelated histories".
+            This typically means these projects started independently of each
+            other and this needs to be clarified you want to merge these
+            repositories.
+
         NOTE 1:  -v or -h overrides the other options.
-        NOTE 2:  If -r is not passed, will use the basename from the -p option
-            directory path to populate the -r option.
+        NOTE 2:  If -r is not passed, the program will use the basename from
+            the -p option directory path to populate the -r argument.
         NOTE 3:  If -a is used, this assumes there is an alias name in the
             account's ~/.ssh/config that matches the repository name.
 
@@ -90,8 +100,8 @@
             # Git Url Prefix
             prefix="git@"
 
-        Note:  Ensure directories exist or are created for work_dir, err_dir,
-            archive_dir, quar_dir, and log_file.
+        Note:  Ensure directories exist for work_dir, err_dir, archive_dir,
+            quar_dir, and log_file configuration settings.
 
         SSH Deployment Keys:
             This is only if the -a option is used against a Github repository.
