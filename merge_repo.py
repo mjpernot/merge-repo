@@ -768,7 +768,7 @@ def merge(args_array, cfg, log):
         move(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def _process_changes(gitr, cfg, log):
+def _process_changes(gitr, cfg, log, **kwargs):
 
     """Function:  _process_changes
 
@@ -780,6 +780,8 @@ def _process_changes(gitr, cfg, log):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
+        (input) **kwargs:
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
@@ -790,7 +792,7 @@ def _process_changes(gitr, cfg, log):
 
         if status:
             log.log_info("merge:  Processing project...")
-            process_project(gitr, cfg, log)
+            process_project(gitr, cfg, log, **kwargs)
 
         else:
             log.log_err("merge:  Problem detected in detaching head.")
