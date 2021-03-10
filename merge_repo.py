@@ -578,7 +578,7 @@ def merge_project(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
-def process_project(gitr, cfg, log):
+def process_project(gitr, cfg, log, **kwargs):
 
     """Function:  process_project
 
@@ -588,6 +588,8 @@ def process_project(gitr, cfg, log):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
+        (input) **kwargs:
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
@@ -605,7 +607,7 @@ def process_project(gitr, cfg, log):
             status3, msg3 = gitr.git_co()
 
             if status3:
-                merge_project(gitr, cfg, log)
+                merge_project(gitr, cfg, log, **kwargs)
 
             else:
                 log.log_err("process_project:  Fail to checkout branch: %s."
