@@ -742,7 +742,7 @@ def merge(args_array, cfg, log):
         gitr.set_remote()
 
         if gitr.is_remote():
-            _process_changes(gitr, cfg, log)
+            _process_changes(gitr, cfg, log, allow=args_array.get("-u", False))
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."

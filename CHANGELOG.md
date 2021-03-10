@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - merge_project:  Added "allow" option to gitr.priority_merge call.
+- merge:  Processed "-u" option from args_array and passed to \_process_changes call.
 - process_project:  Added kwargs passing to merge_project call.
 - \_process_changes:  Added kwargs passing to process_project call.
 - Documentation updates.
