@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added -u option to allow for unrelated Git repository histories to be merged.
 
 ### Changed
+- merge_project:  Added "allow" option to gitr.priority_merge call.
 - Documentation updates.
 
 

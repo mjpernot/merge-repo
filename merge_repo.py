@@ -528,7 +528,7 @@ def quarantine(gitr, cfg, log):
             send_mail(cfg.to_line, subj, body)
 
 
-def merge_project(gitr, cfg, log):
+def merge_project(gitr, cfg, log, **kwargs):
 
     """Function:  merge_project
 
@@ -538,11 +538,13 @@ def merge_project(gitr, cfg, log):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
+        (input) **kwargs:
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
     log.log_info("merge_project:  Fetching and setting up branches.")
-    status1, msg1 = gitr.priority_merge()
+    status1, msg1 = gitr.priority_merge(allow=kwargs.get("allow", False))
 
     if status1:
         log.log_info("merge_project:  Pushing changes to remote Git.")
