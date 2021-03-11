@@ -152,6 +152,7 @@ class GitMerge(object):
 
         return True
 
+
 class CfgTest(object):
 
     """Class:  CfgTest
