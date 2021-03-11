@@ -30,6 +30,33 @@ import version
 __version__ = version.__version__
 
 
+class GitMerge(object):
+
+    """Class:  GitMerge
+
+    Description:  Class which is a representation of GitMerge module.
+
+    Methods:
+        __init__ -> Initialize configuration environment.
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the GitMerge class.
+
+        Arguments:
+
+        """
+
+        self.repo_name = "repo-name"
+        self.url = "git@github.com:JAC-IDM/"
+        self.git_dir = "/data/merge-repo/work_dir/repo-name"
+        self.branch = "master"
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -56,32 +83,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class GitMerge(object):
-
-            """Class:  GitMerge
-
-            Description:  Class which is a representation of GitMerge module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the GitMerge class.
-
-                Arguments:
-
-                """
-
-                self.repo_name = "repo-name"
-                self.url = "git@github.com:JAC-IDM/"
-                self.git_dir = "/data/merge-repo/work_dir/repo-name"
-                self.branch = "master"
 
         self.gitr = GitMerge()
         self.status1 = True
@@ -118,7 +119,7 @@ class UnitTest(unittest.TestCase):
         for line in self.line_list2:
             test_body.append(line)
 
-        for key in self.msg.keys():
+        for key in self.msg:
             test_body.append("%s: %s" % (key, self.msg[key]))
 
         test_body.append("URL: " + self.gitr.url)
