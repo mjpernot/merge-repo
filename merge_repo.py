@@ -742,7 +742,7 @@ def merge(args_array, cfg, log):
         gitr.set_remote()
 
         if gitr.is_remote():
-            _process_changes(gitr, cfg, log, allow=args_array.get("-u", False))
+            cleanup_repo(gitr, cfg, log, allow=args_array.get("-u", False))
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
@@ -768,13 +768,12 @@ def merge(args_array, cfg, log):
         move(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def _process_changes(gitr, cfg, log, **kwargs):
+def cleanup_repo(gitr, cfg, log, **kwargs):
 
-    """Function:  _process_changes
+    """Function:  cleanup_repo
 
-    Description:  Private function for merge function.  Checks to ensure head
-        is detached and there are not any dirty or untracked changes before
-        merging repository.
+    Description:  Checks to ensure head is detached and there are not any dirty
+        or untracked changes before merging repository.
 
     Arguments:
         (input) gitr -> Git class instance.
