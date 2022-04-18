@@ -40,7 +40,7 @@ pipeline {
                 ./test/unit/merge_repo/process_project.py
                 ./test/unit/merge_repo/process_changes.py
                 ./test/unit/merge_repo/merge.py
-                ./test/unit/merge_repo/_process_changes.py
+                ./test/unit/merge_repo/cleanup_repo.py
                 ./test/unit/merge_repo/detach_head.py
                 deactivate
                 rm -rf test_env
