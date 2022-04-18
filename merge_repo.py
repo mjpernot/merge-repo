@@ -379,12 +379,13 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None):
     if status:
         log.log_info("post_process:  Project was moved to: %s."
                      % (os.path.join(cfg.archive_dir, dest_dir)))
-        move(gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
+        gen_libs.mv_file2(
+            gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
 
     else:
         log.log_info("post_process:  Project was moved to: %s."
                      % (os.path.join(cfg.err_dir, dest_dir)))
-        move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
+        gen_libs.mv_file2(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
 def post_check(gitr, cfg, log):
