@@ -103,8 +103,8 @@ class UnitTest(unittest.TestCase):
 
         mock_mail.send_mail.return_value = True
 
-        self.assertFalse(merge_repo.send_mail(self.cfg, self.subj,
-                                              self.email_body))
+        self.assertFalse(
+            merge_repo.send_mail(self.cfg, self.subj, self.email_body))
 
 
 if __name__ == "__main__":
