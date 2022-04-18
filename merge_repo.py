@@ -253,7 +253,7 @@ def send_mail(to_line, subj, mail_body):
     email = gen_class.Mail(to_line, subj, frm_line)
 
     for line in body:
-        email.add_2_msg(line + "\n")
+        email.add_2_msg(line, new_line=True)
 
     email.send_mail()
 

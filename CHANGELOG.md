@@ -11,6 +11,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Added -u option to allow for unrelated Git repository histories to be merged.
 
 ### Changed
+- send_mail: Added "newline" option to add_2_msg method call.
 - Renamed \_process_changes to cleanup_repo to avoid naming conflict.
 - merge_project:  Added "allow" option to gitr.priority_merge call.
 - merge:  Processed "-u" option from args_array and passed to \_process_changes call.
