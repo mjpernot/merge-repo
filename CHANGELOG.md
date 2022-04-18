@@ -5,6 +5,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [1.0.1] - 2021-03-03
+- Upgraded python-lib to v2.9.0
+
 ### Added
 - Added -u option to allow for unrelated Git repository histories to be merged.
 
