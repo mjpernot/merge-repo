@@ -750,9 +750,9 @@ def merge(args_array, cfg, log):
             send_mail(cfg.to_line, subj, body)
 
         dest_dir = os.path.basename(git_dir) + "." \
-            + datetime.datetime.strftime(datetime.datetime.now(),
-                                         "%Y%m%d_%H%M%S")
-        move(git_dir, os.path.join(cfg.err_dir, dest_dir))
+            + datetime.datetime.strftime(
+                datetime.datetime.now(), "%Y%m%d_%H%M%S")
+        gen_libs.mv_file2(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
 def cleanup_repo(gitr, cfg, log, **kwargs):
