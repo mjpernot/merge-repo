@@ -20,6 +20,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - \_process_changes:  Added kwargs passing to process_project call.
 - Documentation updates.
 
+### Removed
+- move function
+
 
 ## [1.0.0] - 2021-02-23
 - General Release.

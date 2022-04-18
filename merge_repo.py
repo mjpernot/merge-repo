@@ -332,21 +332,6 @@ def prepare_mail(gitr, status, line_list=None, msg=None):
     return subj, body
 
 
-def move(from_dir, to_dir):
-
-    """Function:  move
-
-    Description:  Move of git repo to proper directory for storage.
-
-    Arguments:
-        (input) from_dir -> Source directory.
-        (input) to_dir -> Desitination directory.
-
-    """
-
-    gen_libs.mv_file2(from_dir, to_dir)
-
-
 def post_process(gitr, cfg, log, status, line_list=None, msg=None):
 
     """Function:  post_process
