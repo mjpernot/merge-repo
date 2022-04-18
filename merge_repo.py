@@ -691,6 +691,12 @@ def merge(args_array, cfg, log):
 
     args_array = dict(args_array)
     log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
+    arch_dir = os.path.join(
+        cfg.archive_dir,
+        os.path.basename(args_array["-p"]) + ".Original." \
+        + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S"))
+    gen_libs.cp_dir(args_array["-p"], arch_dir)
+    log.log_ingo("merge:  Original repo dir copied to:  %s" % (arch_dir))
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
     git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
@@ -730,9 +736,9 @@ def merge(args_array, cfg, log):
             subj = "Merge error for: " + git_dir
             body = ["Local directory is not a Git repository.",
                     "Project Dir: " + git_dir]
-            body.append("DTG: "
-                        + datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d %H:%M:%S"))
+            body.append(
+                "DTG: " + datetime.datetime.strftime(
+                    datetime.datetime.now(), "%Y-%m-%d %H:%M:%S"))
             send_mail(cfg.to_line, subj, body)
 
         dest_dir = os.path.basename(git_dir) + "." \
