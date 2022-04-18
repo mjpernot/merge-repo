@@ -40,7 +40,6 @@
 
         -p directory_path => Absolute path name to project directory.
             -r repo_name => Repository name being merged with.
-                Default:  Will take the basename from -p option.
 
         -M => Run the merge function.
             -a => Use the repository name as an alias in the Git url.  Used in
