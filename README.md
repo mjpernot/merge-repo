@@ -27,10 +27,8 @@
     - python-pip
 
   * Local class/library dependencies within the program structure.
-    - lib/gen_class
-    - lib/arg_parser
-    - lib/gen_libs
-    - git_lib/git_class
+    - python-lib
+    - git-lib
 
 
 # Installation:
