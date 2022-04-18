@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # Classification (U)
 
-"""Program:  _process_changes.py
+"""Program:  cleanup_repo.py
 
-    Description:  Unit testing of _process_changes in merge_repo.py.
+    Description:  Unit testing of cleanup_repo in merge_repo.py.
 
     Usage:
-        test/unit/merge_repo/_process_changes.py
+        test/unit/merge_repo/cleanup_repo.py
 
     Arguments:
 
@@ -235,8 +235,8 @@ class UnitTest(unittest.TestCase):
 
         mock_log.return_value = True
 
-        self.assertFalse(merge_repo._process_changes(self.gitr, self.cfg,
-                                                     mock_log))
+        self.assertFalse(
+            merge_repo.cleanup_repo(self.gitr, self.cfg, mock_log))
 
     @mock.patch("merge_repo.process_changes", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process", mock.Mock(return_value=True))
@@ -256,8 +256,8 @@ class UnitTest(unittest.TestCase):
 
         mock_log.return_value = True
 
-        self.assertFalse(merge_repo._process_changes(self.gitr, self.cfg,
-                                                     mock_log))
+        self.assertFalse(
+            merge_repo.cleanup_repo(self.gitr, self.cfg, mock_log))
 
     @mock.patch("merge_repo.process_changes", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process", mock.Mock(return_value=True))
@@ -277,8 +277,8 @@ class UnitTest(unittest.TestCase):
 
         mock_log.return_value = True
 
-        self.assertFalse(merge_repo._process_changes(self.gitr, self.cfg,
-                                                     mock_log))
+        self.assertFalse(
+            merge_repo.cleanup_repo(self.gitr, self.cfg, mock_log))
 
     @mock.patch("merge_repo.process_changes", mock.Mock(return_value=True))
     @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
@@ -301,8 +301,8 @@ class UnitTest(unittest.TestCase):
         mock_head.return_value = (False, "Error Message")
         mock_log.return_value = True
 
-        self.assertFalse(merge_repo._process_changes(self.gitr, self.cfg,
-                                                     mock_log))
+        self.assertFalse(
+            merge_repo.cleanup_repo(self.gitr, self.cfg, mock_log))
 
     @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
     @mock.patch("merge_repo.process_changes", mock.Mock(return_value=True))
@@ -324,8 +324,8 @@ class UnitTest(unittest.TestCase):
         mock_head.return_value = (True, None)
         mock_log.return_value = True
 
-        self.assertFalse(merge_repo._process_changes(self.gitr, self.cfg,
-                                                     mock_log))
+        self.assertFalse(
+            merge_repo.cleanup_repo(self.gitr, self.cfg, mock_log))
 
 
 if __name__ == "__main__":
