@@ -144,7 +144,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
@@ -460,7 +460,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
