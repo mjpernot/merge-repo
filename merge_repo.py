@@ -65,39 +65,27 @@
 
     Notes:
         Config file:
-            # Git Project name.
+            # Basic Git Project set up
             git_project="ProjectName"
-            # Git Server Fully Qualified Domain Name.
-            #  Not required if using the -a option.
             git_server="GitServerFQDN"
-            # Directory of where the merge will take place.
+
+            # Directory set up
             work_dir="/PATH_DIRECTORY/merge-repo/work_dir"
-            # Directory where projects will be archived if errors encountered.
             err_dir="/PATH_DIRECTORY/merge-repo/error_dir"
-            # Directory where projects will be archived after a merge.
             archive_dir="/PATH_DIRECTORY/merge-repo/archive_dir"
-            # Directory where repository items will be quarantined.
             quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
-            # Email addresses for notification.
-            #  If set to None, will not email out notifications.
-            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
-            # Directory where log files will be placed.
             log_file="/PATH_DIRECTORY/merge-repo/logs/merge-repo.log"
-            # Do not modify the settings below unless you know what you are
-            #   doing.
-            # Local Git Repository user name.
+
+            # Email set up
+            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
+
+            # Do not modify unless you know what you are doing
             name="gituser"
-            # Local Git Repository user email address.
             email="gituser@domain.mail"
-            # Branch on which the merge will take place on.
             branch="develop"
-            # Name of temporary branch on local git repo.
             mod_branch="mod_release"
-            # Option setting for dirty items:  revert|commit
             dirty="revert"
-            # Option setting for untracked items:  add|remove
             untracked="remove"
-            # Git Url Prefix
             prefix="git@"
 
         Note:  Ensure directories exist for work_dir, err_dir, archive_dir,
@@ -119,11 +107,11 @@
                     same as the git_project variable in the config file above.
 
             1.  Create deployment key.
-                > ssh-keygen -t dsa
+                $ ssh-keygen -t dsa
                     Name:  id_dsa.GitRepoName
                     Passphrase:  Null
             2.  Add project entry to ssh config file.
-                > vim ~/.ssh/config file
+                $ vim ~/.ssh/config file
                     Host GitRepoName ServerNameFQDN
                     Hostname ServerNameFQDN
                     User UserName
@@ -136,7 +124,7 @@
                 c.  Click Button:  "Allow Write Access"
                 d.  Clock "Add Key"
             4.  To use the deploy key to clone a git repository:
-                > git clone git@GitRepoName:GitProject/GitRepoName.git
+                $ git clone git@GitRepoName:GitProject/GitRepoName.git
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
