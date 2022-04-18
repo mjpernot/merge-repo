@@ -18,7 +18,6 @@ coverage run -a --source=merge_repo test/unit/merge_repo/quarantine_files.py
 coverage run -a --source=merge_repo test/unit/merge_repo/quarantine.py
 coverage run -a --source=merge_repo test/unit/merge_repo/post_body.py
 coverage run -a --source=merge_repo test/unit/merge_repo/prepare_mail.py
-coverage run -a --source=merge_repo test/unit/merge_repo/move.py
 coverage run -a --source=merge_repo test/unit/merge_repo/post_process.py
 coverage run -a --source=merge_repo test/unit/merge_repo/post_check.py
 coverage run -a --source=merge_repo test/unit/merge_repo/merge_project.py
