@@ -37,9 +37,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_body_data -> Test with body with data.
-        test_body_empty -> Test with body with empty list.
+        setUp
+        test_body_data
+        test_body_empty
 
     """
 
@@ -60,7 +60,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of GitMerge module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 

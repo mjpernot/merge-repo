@@ -41,7 +41,7 @@ class Repo(object):
     Description:  Class stub holder for repo class.
 
     Methods:
-        __init__ -> Class initilization.
+        __init__
 
     """
 
@@ -52,7 +52,6 @@ class Repo(object):
         Description:  Initialization instance of the Repo class.
 
         Arguments:
-            (input) arg1 -> Stub holder for argument.
 
         """
 
@@ -67,8 +66,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_is_git_repo -> Test is_git_repo function.
+        setUp
+        test_is_git_repo
 
     """
 

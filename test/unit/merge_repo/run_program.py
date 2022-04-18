@@ -42,9 +42,6 @@ def merge(args_array, cfg, log):
     Description:  This is a function stub for merge_repo.merge_repo.
 
     Arguments:
-        args_array -> Stub argument holder.
-        cfg -> Stub argument holder.
-        log -> Stub argument holder.
 
     """
 
@@ -63,10 +60,10 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_no_email_option -> Test with -n option selected.
-        test_status_flag_true -> Test with status flag set to True.
-        test_status_flag_false -> Test with status flag set to False.
+        setUp
+        test_no_email_option
+        test_status_flag_true
+        test_status_flag_false
 
     """
 
@@ -87,7 +84,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a cfg module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 

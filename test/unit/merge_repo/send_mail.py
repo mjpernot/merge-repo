@@ -41,7 +41,7 @@ class CfgTest(object):
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -71,8 +71,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_send_mail -> Test send_mail function.
+        setUp
+        test_send_mail
 
     """
 

@@ -41,18 +41,18 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_added_status -> Test with no email notifications.
-        test_file_dir -> Test with file and sub-directory being quarantined.
-        test_multiple_files -> Test with multiple files being quarantined.
-        test_copy_directory2 -> Test file in sub-directory being quarantined.
-        test_copy_directory -> Test file in sub-directory being quarantined.
-        test_copy_file -> Test with file being quarantined.
-        test_modified_no_list -> Test status set to modified with empty list.
-        test_added_no_list -> Test with status set to added with empty list.
-        test_no_status -> Test with status not set.
-        test_modified_status -> Test with status set to modified.
-        test_added_status -> Test with status set to added.
+        setUp
+        test_added_status
+        test_file_dir
+        test_multiple_files
+        test_copy_directory2
+        test_copy_directory
+        test_copy_file
+        test_modified_no_list
+        test_added_no_list
+        test_no_status
+        test_modified_status
+        test_added_status
 
     """
 
@@ -73,7 +73,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a cfg module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
@@ -97,7 +97,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of GitMerge module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 

@@ -41,11 +41,11 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_behind_one -> Test with behind set to one.
-        test_behind_zero -> Test with behind set to zero.
-        test_ahead_one -> Test with ahead set to one.
-        test_ahead_zero -> Test with ahead set to zero.
+        setUp
+        test_behind_one
+        test_behind_zero
+        test_ahead_one
+        test_ahead_zero
 
     """
 
@@ -66,7 +66,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a cfg module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 

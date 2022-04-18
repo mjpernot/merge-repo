@@ -41,16 +41,16 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_multiple_errors -> Test with multiple errors returned.
-        test_log_file_false -> Test log_file check returns False.
-        test_log_file_true -> Test log_file check returns True.
-        test_archive_dir_false -> Test archive_dir check returns False.
-        test_archive_dir_true -> Test archive_dir check returns True.
-        test_err_dir_false -> Test err_dir check returns False.
-        test_err_dir_true -> Test err_dir check returns True.
-        test_work_dir_false -> Test work_dir check returns False.
-        test_work_dir_true -> Test work_dir check returns True.
+        setUp
+        test_multiple_errors
+        test_log_file_false
+        test_log_file_true
+        test_archive_dir_false
+        test_archive_dir_true
+        test_err_dir_false
+        test_err_dir_true
+        test_work_dir_false
+        test_work_dir_true
 
     """
 
@@ -71,7 +71,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a cfg module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 

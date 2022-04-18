@@ -37,7 +37,7 @@ class GitMerge(object):
     Description:  Class which is a representation of GitMerge module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -64,13 +64,13 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_msg_data -> Test with msg with data.
-        test_linelist_empty -> Test with line_list with empty list.
-        test_linelist_data -> Test with line_list with data.
-        test_status_false -> Test with status set to False.
-        test_linelist_none -> Test with line_list set to None.
-        test_status_true -> Test with status set to True.
+        setUp
+        test_msg_data
+        test_linelist_empty
+        test_linelist_data
+        test_status_false
+        test_linelist_none
+        test_status_true
 
     """
 

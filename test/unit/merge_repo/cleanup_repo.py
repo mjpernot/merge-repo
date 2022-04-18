@@ -41,13 +41,13 @@ class GitMerge(object):
     Description:  Class which is a representation of GitMerge module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
-        is_dirty -> Stub holder for the GitMerge.is_dirty method.
-        is_untracked -> Stub holder for GitMerge.is_untracked method.
-        process_dirty -> Stub holder for GitMerge.process_dirty method.
-        process_untracked -> Stub GitMerge.process_untracked method.
-        get_dirty -> Stub holder for the GitMerge.get_dirty method.
-        get_untracked -> Stub holder for GitMerge.get_untracked method.
+        __init__
+        is_dirty
+        is_untracked
+        process_dirty
+        process_untracked
+        get_dirty
+        get_untracked
 
     """
 
@@ -99,7 +99,6 @@ class GitMerge(object):
         Description:  Stub holder for GitMerge.process_dirty method.
 
         Arguments:
-            (input) option -> Stub holder for argument.
 
         """
 
@@ -117,7 +116,6 @@ class GitMerge(object):
         Description:  Stub holder GitMerge.process_untracked method.
 
         Arguments:
-            (input) option -> Stub holder for argument.
 
         """
 
@@ -160,7 +158,7 @@ class CfgTest(object):
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -195,12 +193,12 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_both_true -> Test with untrack and dirty set to True.
-        test_is_untracked_true -> Test untrack set to True and dirty to False.
-        test_is_dirty_true -> Test with dirty set to True and untrack to False.
-        test_detach_head_false -> Test with detaching head returns False.
-        test_detach_head_true -> Test with detaching head returns True.
+        setUp
+        test_both_true
+        test_is_untracked_true
+        test_is_dirty_true
+        test_detach_head_false
+        test_detach_head_true
 
     """
 
