@@ -34,7 +34,7 @@
 # Installation:
 
 Install the project using git.
-  * Replace **{Python_Project}** with the baseline path of the python program.
+  * From here on out, any reference to **{Python_Project}** or **PYTHON_PROJECT** replace with the baseline path of the python program.
 
 ```
 umask 022
@@ -95,7 +95,6 @@ These additional entries in the configuration file should not be modified unless
 # Program Help Function:
 
   All of the programs, except the library and class files, will have an -h (Help option) that will show display a help message for that particular program.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
-  * Replace **{Python_Project}** with the baseline path of the python program.
 
 ```
 {Python_Project}/merge-repo/merge_repo.py -h
@@ -108,38 +107,10 @@ These additional entries in the configuration file should not be modified unless
 
 ### Installation:
 
-Install the project using git.
-  * Replace **{Python_Project}** with the baseline path of the python program.
-  * Replace **{Branch_Name}** with the name of the Git branch being tested.  See Git Merge Request.
-
-```
-umask 022
-cd {Python_Project}
-git clone --branch {Branch_Name} git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/merge-repo.git
-```
-
-Install/upgrade system modules.
-
-```
-cd merge-repo
-sudo bash
-umask 022
-pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
-exit
-```
-
-Install supporting classes and libraries.
-
-```
-pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-git-lib.txt --target git_lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-python-lib.txt --target git_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
-```
-
-# Unit test runs for merge_repo.py:
-  * Replace **{Python_Project}** with the baseline path of the python program.
+Install the project using the procedures in the Installation section.
 
 ### Testing:
+
 ```
 cd {Python_Project}/merge-repo
 test/unit/merge_repo/unit_test_run.sh
