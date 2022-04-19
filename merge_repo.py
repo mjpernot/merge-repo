@@ -693,7 +693,7 @@ def merge(args_array, cfg, log):
     log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
     arch_dir = os.path.join(
         cfg.archive_dir,
-        os.path.basename(args_array["-p"]) + ".Original." \
+        os.path.basename(args_array["-p"]) + ".Original."
         + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S"))
     gen_libs.cp_dir(args_array["-p"], arch_dir)
     log.log_ingo("merge:  Original repo dir copied to:  %s" % (arch_dir))
