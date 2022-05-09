@@ -40,7 +40,6 @@
 
         -p directory_path => Absolute path name to project directory.
             -r repo_name => Repository name being merged with.
-                Default:  Will take the basename from -p option.
 
         -M => Run the merge function.
             -a => Use the repository name as an alias in the Git url.  Used in
@@ -65,39 +64,27 @@
 
     Notes:
         Config file:
-            # Git Project name.
+            # Basic Git Project set up
             git_project="ProjectName"
-            # Git Server Fully Qualified Domain Name.
-            #  Not required if using the -a option.
             git_server="GitServerFQDN"
-            # Directory of where the merge will take place.
+
+            # Directory set up
             work_dir="/PATH_DIRECTORY/merge-repo/work_dir"
-            # Directory where projects will be archived if errors encountered.
             err_dir="/PATH_DIRECTORY/merge-repo/error_dir"
-            # Directory where projects will be archived after a merge.
             archive_dir="/PATH_DIRECTORY/merge-repo/archive_dir"
-            # Directory where repository items will be quarantined.
             quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
-            # Email addresses for notification.
-            #  If set to None, will not email out notifications.
-            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
-            # Directory where log files will be placed.
             log_file="/PATH_DIRECTORY/merge-repo/logs/merge-repo.log"
-            # Do not modify the settings below unless you know what you are
-            #   doing.
-            # Local Git Repository user name.
+
+            # Email set up
+            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
+
+            # Do not modify unless you know what you are doing
             name="gituser"
-            # Local Git Repository user email address.
             email="gituser@domain.mail"
-            # Branch on which the merge will take place on.
             branch="develop"
-            # Name of temporary branch on local git repo.
             mod_branch="mod_release"
-            # Option setting for dirty items:  revert|commit
             dirty="revert"
-            # Option setting for untracked items:  add|remove
             untracked="remove"
-            # Git Url Prefix
             prefix="git@"
 
         Note:  Ensure directories exist for work_dir, err_dir, archive_dir,
@@ -119,11 +106,11 @@
                     same as the git_project variable in the config file above.
 
             1.  Create deployment key.
-                > ssh-keygen -t dsa
+                $ ssh-keygen -t dsa
                     Name:  id_dsa.GitRepoName
                     Passphrase:  Null
             2.  Add project entry to ssh config file.
-                > vim ~/.ssh/config file
+                $ vim ~/.ssh/config file
                     Host GitRepoName ServerNameFQDN
                     Hostname ServerNameFQDN
                     User UserName
@@ -136,7 +123,7 @@
                 c.  Click Button:  "Allow Write Access"
                 d.  Clock "Add Key"
             4.  To use the deploy key to clone a git repository:
-                > git clone git@GitRepoName:GitProject/GitRepoName.git
+                $ git clone git@GitRepoName:GitProject/GitRepoName.git
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
@@ -266,7 +253,7 @@ def send_mail(to_line, subj, mail_body):
     email = gen_class.Mail(to_line, subj, frm_line)
 
     for line in body:
-        email.add_2_msg(line + "\n")
+        email.add_2_msg(line, new_line=True)
 
     email.send_mail()
 
@@ -345,21 +332,6 @@ def prepare_mail(gitr, status, line_list=None, msg=None):
     return subj, body
 
 
-def move(from_dir, to_dir):
-
-    """Function:  move
-
-    Description:  Move of git repo to proper directory for storage.
-
-    Arguments:
-        (input) from_dir -> Source directory.
-        (input) to_dir -> Desitination directory.
-
-    """
-
-    gen_libs.mv_file2(from_dir, to_dir)
-
-
 def post_process(gitr, cfg, log, status, line_list=None, msg=None):
 
     """Function:  post_process
@@ -392,12 +364,13 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None):
     if status:
         log.log_info("post_process:  Project was moved to: %s."
                      % (os.path.join(cfg.archive_dir, dest_dir)))
-        move(gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
+        gen_libs.mv_file2(
+            gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
 
     else:
         log.log_info("post_process:  Project was moved to: %s."
                      % (os.path.join(cfg.err_dir, dest_dir)))
-        move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
+        gen_libs.mv_file2(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
 def post_check(gitr, cfg, log):
@@ -718,6 +691,11 @@ def merge(args_array, cfg, log):
 
     args_array = dict(args_array)
     log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
+    arch_dir = os.path.join(
+        cfg.archive_dir, os.path.basename(args_array["-p"]) + ".Original."
+        + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S"))
+    gen_libs.cp_dir(args_array["-p"], arch_dir)
+    log.log_ingo("merge:  Original repo dir copied to:  %s" % (arch_dir))
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
     git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
@@ -742,7 +720,7 @@ def merge(args_array, cfg, log):
         gitr.set_remote()
 
         if gitr.is_remote():
-            _process_changes(gitr, cfg, log, allow=args_array.get("-u", False))
+            cleanup_repo(gitr, cfg, log, allow=args_array.get("-u", False))
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
@@ -757,24 +735,23 @@ def merge(args_array, cfg, log):
             subj = "Merge error for: " + git_dir
             body = ["Local directory is not a Git repository.",
                     "Project Dir: " + git_dir]
-            body.append("DTG: "
-                        + datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d %H:%M:%S"))
+            body.append(
+                "DTG: " + datetime.datetime.strftime(
+                    datetime.datetime.now(), "%Y-%m-%d %H:%M:%S"))
             send_mail(cfg.to_line, subj, body)
 
         dest_dir = os.path.basename(git_dir) + "." \
-            + datetime.datetime.strftime(datetime.datetime.now(),
-                                         "%Y%m%d_%H%M%S")
-        move(git_dir, os.path.join(cfg.err_dir, dest_dir))
+            + datetime.datetime.strftime(
+                datetime.datetime.now(), "%Y%m%d_%H%M%S")
+        gen_libs.mv_file2(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def _process_changes(gitr, cfg, log, **kwargs):
+def cleanup_repo(gitr, cfg, log, **kwargs):
 
-    """Function:  _process_changes
+    """Function:  cleanup_repo
 
-    Description:  Private function for merge function.  Checks to ensure head
-        is detached and there are not any dirty or untracked changes before
-        merging repository.
+    Description:  Checks to ensure head is detached and there are not any dirty
+        or untracked changes before merging repository.
 
     Arguments:
         (input) gitr -> Git class instance.

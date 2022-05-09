@@ -41,7 +41,7 @@ class CfgTest(object):
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -71,8 +71,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_send_mail -> Test send_mail function.
+        setUp
+        test_send_mail
 
     """
 
@@ -103,8 +103,8 @@ class UnitTest(unittest.TestCase):
 
         mock_mail.send_mail.return_value = True
 
-        self.assertFalse(merge_repo.send_mail(self.cfg, self.subj,
-                                              self.email_body))
+        self.assertFalse(
+            merge_repo.send_mail(self.cfg, self.subj, self.email_body))
 
 
 if __name__ == "__main__":

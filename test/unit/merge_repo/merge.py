@@ -41,7 +41,7 @@ class CfgTest(object):
     Description:  Class which is a representation of a cfg module.
 
     Methods:
-        __init__ -> Initialize configuration environment.
+        __init__
 
     """
 
@@ -76,19 +76,19 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_allow_true -> Test with allow option set to True.
-        test_no_email -> Test with no email notifications sent.
-        test_git_alias_option -> Test with the git alias option set to True.
-        test_not_dirty -> Test with no dirty files found.
-        test_detach_head_false -> Test with detaching head returns False.
-        test_detach_head_true -> Test with detaching head returns True.
-        test_second_check_false -> Test with second check set to False.
-        test_second_check_true -> Test with second check set to True.
-        test_is_remote_true -> Test with is_remote set to True.
-        test_is_remote_false -> Test with is_remote set to False.
-        test_is_git_repo_true -> Test with is_git_repo set to True.
-        test_is_git_repo_false -> Test with is_git_repo set to False.
+        setUp
+        test_allow_true
+        test_no_email
+        test_git_alias_option
+        test_not_dirty
+        test_detach_head_false
+        test_detach_head_true
+        test_second_check_false
+        test_second_check_true
+        test_is_remote_true
+        test_is_remote_false
+        test_is_git_repo_true
+        test_is_git_repo_false
 
     """
 
@@ -107,8 +107,9 @@ class UnitTest(unittest.TestCase):
                      "-d": "/data/merge-repo/merge_repo/config",
                      "-r": "repo-name", "-p": "/directory/repo-name"}
 
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process", mock.Mock(return_value=True))
-    @mock.patch("merge_repo._process_changes", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.cleanup_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
     @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.detach_head")
@@ -144,7 +145,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
@@ -167,6 +169,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
@@ -198,6 +201,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
     @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
     @mock.patch("merge_repo.detach_head")
@@ -229,8 +233,9 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process", mock.Mock(return_value=True))
-    @mock.patch("merge_repo._process_changes", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.cleanup_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
     @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.detach_head")
@@ -264,7 +269,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo._process_changes", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.cleanup_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
     @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.detach_head")
@@ -298,7 +304,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo._process_changes", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.cleanup_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.process_project", mock.Mock(return_value=True))
     @mock.patch("merge_repo.is_git_repo", mock.Mock(return_value=True))
     @mock.patch("merge_repo.detach_head")
@@ -332,7 +339,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo._process_changes")
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.cleanup_repo")
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
@@ -366,7 +374,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo._process_changes")
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.cleanup_repo")
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
@@ -400,6 +409,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
@@ -430,6 +440,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process")
     @mock.patch("merge_repo.git_class")
     @mock.patch("merge_repo.is_git_repo")
@@ -460,7 +471,8 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.send_mail")
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")

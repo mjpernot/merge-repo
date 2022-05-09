@@ -5,15 +5,26 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [1.0.1] - 2021-03-03
+- Upgraded python-lib to v2.9.0
+
+### Fixed
+- merge: Copied the original repository into archive directory prior to processing.
+
 ### Added
 - Added -u option to allow for unrelated Git repository histories to be merged.
 
 ### Changed
+- merge, post_process: Replaced "move" function call with gen_libs.mv_file2 library call.
+- send_mail: Added "newline" option to add_2_msg method call.
+- Renamed \_process_changes to cleanup_repo to avoid naming conflict.
 - merge_project:  Added "allow" option to gitr.priority_merge call.
 - merge:  Processed "-u" option from args_array and passed to \_process_changes call.
 - process_project:  Added kwargs passing to merge_project call.
 - \_process_changes:  Added kwargs passing to process_project call.
 - Documentation updates.
+
+### Removed
+- move function
 
 
 ## [1.0.0] - 2021-02-23

@@ -38,8 +38,6 @@ def get_inst(cmd):
     Description:  Returns the module instance header.
 
     Arguments:
-        (input) cmd -> Module library.
-        (output) cmd -> Return module instance.
 
     """
 
@@ -53,8 +51,8 @@ class ProgramLock(object):
     Description:  Mock of the gen_class.ProgramLock class.
 
     Methods:
-        __init__ -> Class instance initilization.
-        __del__ -> Deletion of the ProgramLock instance.
+        __init__
+        __del__
 
     """
 
@@ -65,8 +63,6 @@ class ProgramLock(object):
         Description:  Initialization of an instance of the ProgramLock class.
 
         Arguments:
-            (input) argv -> Arguments from the command line.
-            (input) flavor_id -> Unique identifier for an instance.
 
         """
 
@@ -94,18 +90,18 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Initialize testing environment.
-        test_exception_handler -> Test with exception handler.
-        test_adding_r_option -> Test adding -r option to args_array.
-        test_help_true -> Test with Help_Func returns True.
-        test_help_false -> Test with Help_Func returns False.
-        test_arg_require_true -> Test with arg_require returns True.
-        test_arg_require_false -> Test with arg_require returns False.
-        test_arg_dir_chk_crt_true -> Test with arg_dir_chk_crt returns True.
-        test_arg_dir_chk_crt_false -> Test with arg_dir_chk_crt returns False.
-        test_run_program -> Test with run_program.
-        test_programlock_true -> Test with ProgramLock returns True.
-        test_programlock_false -> Test with ProgramLock returns False.
+        setUp
+        test_exception_handler
+        test_adding_r_option
+        test_help_true
+        test_help_false
+        test_arg_require_true
+        test_arg_require_false
+        test_arg_dir_chk_crt_true
+        test_arg_dir_chk_crt_false
+        test_run_program
+        test_programlock_true
+        test_programlock_false
 
     """
 

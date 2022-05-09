@@ -10,7 +10,6 @@ test/unit/merge_repo/detach_head.py
 test/unit/merge_repo/load_cfg.py
 test/unit/merge_repo/is_git_repo.py
 test/unit/merge_repo/prepare_mail.py
-test/unit/merge_repo/move.py
 test/unit/merge_repo/post_process.py
 test/unit/merge_repo/post_check.py
 test/unit/merge_repo/merge_project.py
@@ -21,7 +20,7 @@ test/unit/merge_repo/post_body.py
 test/unit/merge_repo/process_project.py
 test/unit/merge_repo/process_changes.py
 test/unit/merge_repo/merge.py
-test/unit/merge_repo/_process_changes.py
+test/unit/merge_repo/cleanup_repo.py
 test/unit/merge_repo/help_message.py
 test/unit/merge_repo/run_program.py
 test/unit/merge_repo/main.py
