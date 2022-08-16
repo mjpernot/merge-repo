@@ -29,69 +29,66 @@
             the Notes section on format of entry in ~/.ssh/config file.
 
     Usage:
-        merge_repo.py -c config -d config_dir -p repo_directory [-r repo_name]
-            {-M [-a] [-n]}
+        merge_repo.py -c config -d config_dir
+            -p project_directory [-r repo_name]
+            {-M [-a] [-n] [-u]}
             {-v | -h}
 
     Arguments:
         -c file_name => Name of merge_repo configuration file.
         -d directory_path => Directory path to the configuration file.
-        -p directory_path => Absolute path name to Project directory.
-        -r repo_name => Repository name being merged (e.g. "python-lib").
+
+        -p directory_path => Absolute path name to project directory.
+            -r repo_name => Repository name being merged with.
 
         -M => Run the merge function.
             -a => Use the repository name as an alias in the Git url.  Used in
                 a Github repository setting.
             -n => Override email setting and do not send email notifications.
+            -u => Allows unrelated Git repo histories to be merged.
 
         -v => Display version of this program.
         -h => Help and usage message.
 
+        WARNING:  Only use the -u option if the below error message appears:
+            "fatal: refusing to merge unrelated histories".
+            This typically means these projects started independently of each
+            other and this needs to be clarified you want to merge these
+            repositories.
+
         NOTE 1:  -v or -h overrides the other options.
-        NOTE 2:  If -r is not passed, will use the basename from the -p option
-            directory path to populate the -r option.
+        NOTE 2:  If -r is not passed, the program will use the basename from
+            the -p option directory path to populate the -r argument.
         NOTE 3:  If -a is used, this assumes there is an alias name in the
             account's ~/.ssh/config that matches the repository name.
 
     Notes:
         Config file:
-            # Git Project name.
+            # Basic Git Project set up
             git_project="ProjectName"
-            # Git Server Fully Qualified Domain Name.
-            #  Not required if using the -a option.
             git_server="GitServerFQDN"
-            # Directory of where the merge will take place.
+
+            # Directory set up
             work_dir="/PATH_DIRECTORY/merge-repo/work_dir"
-            # Directory where projects will be archived if errors encountered.
             err_dir="/PATH_DIRECTORY/merge-repo/error_dir"
-            # Directory where projects will be archived after a merge.
             archive_dir="/PATH_DIRECTORY/merge-repo/archive_dir"
-            # Directory where repository items will be quarantined.
             quar_dir="/PATH_DIRECTORY/merge-repo/quarantine"
-            # Email addresses for notification.
-            #  If set to None, will not email out notifications.
-            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
-            # Directory where log files will be placed.
             log_file="/PATH_DIRECTORY/merge-repo/logs/merge-repo.log"
-            # Do not modify the settings below unless you know what you are
-            #   doing.
-            # Local Git Repository user name.
+
+            # Email set up
+            to_line="EMAIL_ADDRESS@EMAIL_DOMAIN"
+
+            # Do not modify unless you know what you are doing
             name="gituser"
-            # Local Git Repository user email address.
             email="gituser@domain.mail"
-            # Branch on which the merge will take place on.
             branch="develop"
-            # Name of temporary branch on local git repo.
             mod_branch="mod_release"
-            # Option setting for dirty items:  revert|commit
             dirty="revert"
-            # Option setting for untracked items:  add|remove
             untracked="remove"
-            # Git Url Prefix
             prefix="git@"
 
-        Note:  Ensure directories exist or are created for work_dir, err_dir,
-            archive_dir, quar_dir, and log_file.
+        Note:  Ensure directories exist for work_dir, err_dir, archive_dir,
+            quar_dir, and log_file configuration settings.
 
         SSH Deployment Keys:
             This is only if the -a option is used against a Github repository.
@@ -109,11 +106,11 @@
                     same as the git_project variable in the config file above.
 
             1.  Create deployment key.
-                > ssh-keygen -t dsa
+                $ ssh-keygen -t dsa
                     Name:  id_dsa.GitRepoName
                     Passphrase:  Null
             2.  Add project entry to ssh config file.
-                > vim ~/.ssh/config file
+                $ vim ~/.ssh/config file
                     Host GitRepoName ServerNameFQDN
                     Hostname ServerNameFQDN
                     User UserName
@@ -126,7 +123,7 @@
                 c.  Click Button:  "Allow Write Access"
                 d.  Clock "Add Key"
             4.  To use the deploy key to clone a git repository:
-                > git clone git@GitRepoName:GitProject/GitRepoName.git
+                $ git clone git@GitRepoName:GitProject/GitRepoName.git
 
     Examples:
         merge_repo.py -c merge -d config -r python-lib -p /local/python-lib -M
@@ -256,7 +253,7 @@ def send_mail(to_line, subj, mail_body):
     email = gen_class.Mail(to_line, subj, frm_line)
 
     for line in body:
-        email.add_2_msg(line + "\n")
+        email.add_2_msg(line, new_line=True)
 
     email.send_mail()
 
@@ -335,21 +332,6 @@ def prepare_mail(gitr, status, line_list=None, msg=None):
     return subj, body
 
 
-def move(from_dir, to_dir):
-
-    """Function:  move
-
-    Description:  Move of git repo to proper directory for storage.
-
-    Arguments:
-        (input) from_dir -> Source directory.
-        (input) to_dir -> Desitination directory.
-
-    """
-
-    gen_libs.mv_file2(from_dir, to_dir)
-
-
 def post_process(gitr, cfg, log, status, line_list=None, msg=None):
 
     """Function:  post_process
@@ -382,12 +364,13 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None):
     if status:
         log.log_info("post_process:  Project was moved to: %s."
                      % (os.path.join(cfg.archive_dir, dest_dir)))
-        move(gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
+        gen_libs.mv_file2(
+            gitr.git_dir, os.path.join(cfg.archive_dir, dest_dir))
 
     else:
         log.log_info("post_process:  Project was moved to: %s."
                      % (os.path.join(cfg.err_dir, dest_dir)))
-        move(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
+        gen_libs.mv_file2(gitr.git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
 def post_check(gitr, cfg, log):
@@ -518,7 +501,7 @@ def quarantine(gitr, cfg, log):
             send_mail(cfg.to_line, subj, body)
 
 
-def merge_project(gitr, cfg, log):
+def merge_project(gitr, cfg, log, **kwargs):
 
     """Function:  merge_project
 
@@ -528,11 +511,13 @@ def merge_project(gitr, cfg, log):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
+        (input) **kwargs:
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
     log.log_info("merge_project:  Fetching and setting up branches.")
-    status1, msg1 = gitr.priority_merge()
+    status1, msg1 = gitr.priority_merge(allow=kwargs.get("allow", False))
 
     if status1:
         log.log_info("merge_project:  Pushing changes to remote Git.")
@@ -566,7 +551,7 @@ def merge_project(gitr, cfg, log):
         post_process(gitr, cfg, log, status1, line_list, msg1)
 
 
-def process_project(gitr, cfg, log):
+def process_project(gitr, cfg, log, **kwargs):
 
     """Function:  process_project
 
@@ -576,6 +561,8 @@ def process_project(gitr, cfg, log):
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
+        (input) **kwargs:
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
@@ -593,7 +580,7 @@ def process_project(gitr, cfg, log):
             status3, msg3 = gitr.git_co()
 
             if status3:
-                merge_project(gitr, cfg, log)
+                merge_project(gitr, cfg, log, **kwargs)
 
             else:
                 log.log_err("process_project:  Fail to checkout branch: %s."
@@ -704,6 +691,11 @@ def merge(args_array, cfg, log):
 
     args_array = dict(args_array)
     log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
+    arch_dir = os.path.join(
+        cfg.archive_dir, os.path.basename(args_array["-p"]) + ".Original."
+        + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S"))
+    gen_libs.cp_dir(args_array["-p"], arch_dir)
+    log.log_info("merge:  Original repo dir copied to:  %s" % (arch_dir))
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
     git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
@@ -728,7 +720,7 @@ def merge(args_array, cfg, log):
         gitr.set_remote()
 
         if gitr.is_remote():
-            _process_changes(gitr, cfg, log)
+            cleanup_repo(gitr, cfg, log, allow=args_array.get("-u", False))
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
@@ -743,29 +735,30 @@ def merge(args_array, cfg, log):
             subj = "Merge error for: " + git_dir
             body = ["Local directory is not a Git repository.",
                     "Project Dir: " + git_dir]
-            body.append("DTG: "
-                        + datetime.datetime.strftime(datetime.datetime.now(),
-                                                     "%Y-%m-%d %H:%M:%S"))
+            body.append(
+                "DTG: " + datetime.datetime.strftime(
+                    datetime.datetime.now(), "%Y-%m-%d %H:%M:%S"))
             send_mail(cfg.to_line, subj, body)
 
         dest_dir = os.path.basename(git_dir) + "." \
-            + datetime.datetime.strftime(datetime.datetime.now(),
-                                         "%Y%m%d_%H%M%S")
-        move(git_dir, os.path.join(cfg.err_dir, dest_dir))
+            + datetime.datetime.strftime(
+                datetime.datetime.now(), "%Y%m%d_%H%M%S")
+        gen_libs.mv_file2(git_dir, os.path.join(cfg.err_dir, dest_dir))
 
 
-def _process_changes(gitr, cfg, log):
+def cleanup_repo(gitr, cfg, log, **kwargs):
 
-    """Function:  _process_changes
+    """Function:  cleanup_repo
 
-    Description:  Private function for merge function.  Checks to ensure head
-        is detached and there are not any dirty or untracked changes before
-        merging repository.
+    Description:  Checks to ensure head is detached and there are not any dirty
+        or untracked changes before merging repository.
 
     Arguments:
         (input) gitr -> Git class instance.
         (input) cfg -> Configuration settings module for the program.
         (input) log -> Log class instance.
+        (input) **kwargs:
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
@@ -776,7 +769,7 @@ def _process_changes(gitr, cfg, log):
 
         if status:
             log.log_info("merge:  Processing project...")
-            process_project(gitr, cfg, log)
+            process_project(gitr, cfg, log, **kwargs)
 
         else:
             log.log_err("merge:  Problem detected in detaching head.")

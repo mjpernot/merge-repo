@@ -41,12 +41,12 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_no_email -> Test with no email notifications.
-        test_msg_passed -> Test with msg passed with data.
-        test_linelist_passed -> Test with line_list passed with data.
-        test_status_false -> Test with status set to False.
-        test_status_true -> Test with status set to True.
+        setUp
+        test_no_email
+        test_msg_passed
+        test_linelist_passed
+        test_status_false
+        test_status_true
 
     """
 
@@ -67,7 +67,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a cfg module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
@@ -92,7 +92,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of GitMerge module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
@@ -116,7 +116,7 @@ class UnitTest(unittest.TestCase):
         self.status2 = False
 
     @mock.patch("merge_repo.gen_class.Logger")
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     def test_no_email(self, mock_move, mock_log):
 
         """Function:  test_no_email
@@ -137,7 +137,7 @@ class UnitTest(unittest.TestCase):
                                                  self.status1, msg=msg))
 
     @mock.patch("merge_repo.gen_class.Logger")
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
     def test_msg_passed(self, mock_mail, mock_prepare, mock_move, mock_log):
@@ -161,7 +161,7 @@ class UnitTest(unittest.TestCase):
                                                  self.status1, msg=msg))
 
     @mock.patch("merge_repo.gen_class.Logger")
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
     def test_linelist_passed(self, mock_mail, mock_prepare, mock_move,
@@ -187,7 +187,7 @@ class UnitTest(unittest.TestCase):
                                                  line_list=line_list))
 
     @mock.patch("merge_repo.gen_class.Logger")
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
     def test_status_false(self, mock_mail, mock_prepare, mock_move, mock_log):
@@ -209,7 +209,7 @@ class UnitTest(unittest.TestCase):
                                                  self.status2))
 
     @mock.patch("merge_repo.gen_class.Logger")
-    @mock.patch("merge_repo.move")
+    @mock.patch("merge_repo.gen_libs.mv_file2")
     @mock.patch("merge_repo.prepare_mail")
     @mock.patch("merge_repo.send_mail")
     def test_status_true(self, mock_mail, mock_prepare, mock_move, mock_log):

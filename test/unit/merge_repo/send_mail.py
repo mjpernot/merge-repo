@@ -34,6 +34,36 @@ import version
 __version__ = version.__version__
 
 
+class CfgTest(object):
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.url = "git@github.com:JAC-IDM/"
+        self.work_dir = "/data/merge-repo/work_dir"
+        self.err_dir = "/data/merge-repo/error_dir"
+        self.archive_dir = "/data/merge-repo/archive_dir"
+        self.log_file = "/data/merge-repo/log_dir/merge_repo.log"
+        self.to_line = "myemail@mydomain"
+        self.branch = "master"
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -41,8 +71,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_send_mail -> Test send_mail function.
+        setUp
+        test_send_mail
 
     """
 
@@ -55,35 +85,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__ -> Initialize configuration environment.
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.url = "git@github.com:JAC-IDM/"
-                self.work_dir = "/data/merge-repo/work_dir"
-                self.err_dir = "/data/merge-repo/error_dir"
-                self.archive_dir = "/data/merge-repo/archive_dir"
-                self.log_file = "/data/merge-repo/log_dir/merge_repo.log"
-                self.to_line = "myemail@mydomain"
-                self.branch = "master"
 
         self.cfg = CfgTest()
         self.subj = "Email_Subject"
@@ -102,10 +103,8 @@ class UnitTest(unittest.TestCase):
 
         mock_mail.send_mail.return_value = True
 
-        self.args_array = {"-t": "Email Addresses", "-z": True}
-
-        self.assertFalse(merge_repo.send_mail(self.cfg, self.subj,
-                                              self.email_body))
+        self.assertFalse(
+            merge_repo.send_mail(self.cfg, self.subj, self.email_body))
 
 
 if __name__ == "__main__":

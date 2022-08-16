@@ -9,27 +9,26 @@ pipeline {
         stage('Test') {
             steps {
                 dir ('lib') {
-                    git branch: "master", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
+                    git branch: "mod/283", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
                 }
                 dir ('git_lib') {
-                    git branch: "master", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/git-lib.git"
+                    git branch: "mod/100", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/git-lib.git"
                 }
                 dir ('git_lib/lib') {
-                    git branch: "master", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
+                    git branch: "mod/283", credentialsId: "2cfb403c-be21-4fac-94d7-c8cd5c531feb", url: "https://gitlab.code.dicelab.net/JAC-IDM/python-lib.git"
                 }
                 sh """
                 virtualenv test_env
                 source test_env/bin/activate
                 pip2 install mock==2.0.0 --user
-                pip2 install gitpython==2.1.8 --user
                 pip2 install gitdb2==2.0.4 --user
+                pip2 install gitpython==2.1.8 --user
                 ./test/unit/merge_repo/main.py
                 ./test/unit/merge_repo/run_program.py
                 ./test/unit/merge_repo/help_message.py
                 ./test/unit/merge_repo/load_cfg.py
                 ./test/unit/merge_repo/is_git_repo.py
                 ./test/unit/merge_repo/prepare_mail.py
-                ./test/unit/merge_repo/move.py
                 ./test/unit/merge_repo/post_process.py
                 ./test/unit/merge_repo/post_check.py
                 ./test/unit/merge_repo/merge_project.py
@@ -40,7 +39,7 @@ pipeline {
                 ./test/unit/merge_repo/process_project.py
                 ./test/unit/merge_repo/process_changes.py
                 ./test/unit/merge_repo/merge.py
-                ./test/unit/merge_repo/_process_changes.py
+                ./test/unit/merge_repo/cleanup_repo.py
                 ./test/unit/merge_repo/detach_head.py
                 deactivate
                 rm -rf test_env
@@ -97,6 +96,11 @@ pipeline {
                     server.upload(uploadSpec)
                 }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs disableDeferredWipeout: true
         }
     }
 }
