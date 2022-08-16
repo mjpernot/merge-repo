@@ -695,7 +695,7 @@ def merge(args_array, cfg, log):
         cfg.archive_dir, os.path.basename(args_array["-p"]) + ".Original."
         + datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S"))
     gen_libs.cp_dir(args_array["-p"], arch_dir)
-    log.log_ingo("merge:  Original repo dir copied to:  %s" % (arch_dir))
+    log.log_info("merge:  Original repo dir copied to:  %s" % (arch_dir))
     gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
     git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
