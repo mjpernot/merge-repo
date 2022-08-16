@@ -41,11 +41,11 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_detach_failure -> Test with detaching head failing.
-        test_one_branch -> Test with one branch found.
-        test_multiple_branches -> Test with multiple branches found.
-        test_zero_branches -> Test with zero branches found.
+        setUp
+        test_detach_failure
+        test_one_branch
+        test_multiple_branches
+        test_zero_branches
 
     """
 
@@ -66,7 +66,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of GitRepo module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
@@ -89,10 +89,10 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of GitMerge module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
-                get_br_name -> Stub holder for the GitMerge.get_br_name method.
-                detach_head -> Stub holder for GitMerge.detach_head method.
-                remove_branch -> Stub holder for GitMerge.remove_branch method.
+                __init__
+                get_br_name
+                detach_head
+                remove_branch
 
             """
 
@@ -142,8 +142,6 @@ class UnitTest(unittest.TestCase):
                 Description:  Stub holder for GitMerge.remove_branch method.
 
                 Arguments:
-                    (input) branch -> Branch name.
-                    (input) no_chk -> True|False - skip checking on branch.
 
                 """
 

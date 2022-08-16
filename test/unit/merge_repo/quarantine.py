@@ -41,14 +41,14 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_no_email -> Test with no email notifications.
-        test_all_lists -> Test with all lists with data.
-        test_rmfiles_list -> Test with rm_files list with data.
-        test_both_lists -> Test with both lists with data.
-        test_newfiles_list -> Test with new_files list with data.
-        test_chgfiles_list -> Test with chg_files list with data.
-        test_empty_lists -> Test with chg_files & new_files are empty lists.
+        setUp
+        test_no_email
+        test_all_lists
+        test_rmfiles_list
+        test_both_lists
+        test_newfiles_list
+        test_chgfiles_list
+        test_empty_lists
 
     """
 
@@ -69,7 +69,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of a cfg module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
@@ -94,7 +94,7 @@ class UnitTest(unittest.TestCase):
             Description:  Class which is a representation of GitMerge module.
 
             Methods:
-                __init__ -> Initialize configuration environment.
+                __init__
 
             """
 
