@@ -131,25 +131,31 @@
 """
 
 # Libraries and Global Variables
+from __future__ import print_function
+from __future__ import absolute_import
 
 # Standard
-# For Python 2.6/2.7: Redirection of stdout in a print command.
-from __future__ import print_function
 import sys
 import os
 import datetime
 import socket
 import getpass
-
-# Third-party
 import git
 
 # Local
-import lib.arg_parser as arg_parser
-import lib.gen_libs as gen_libs
-import lib.gen_class as gen_class
-import git_lib.git_class as git_class
-import version
+try:
+    from .lib import arg_parser
+    from .lib import gen_libs
+    from .lib import gen_class
+    from .git_lib import git_class
+    from . import version
+
+except (ValueError, ImportError) as err:
+    import lib.arg_parser as arg_parser
+    import lib.gen_libs as gen_libs
+    import lib.gen_class as gen_class
+    import git_lib.git_class as git_class
+    import version
 
 __version__ = version.__version__
 
@@ -324,7 +330,7 @@ def prepare_mail(gitr, status, line_list=None, msg=None):
             body.append(line)
 
         if msg:
-            for key in msg.keys():
+            for key in list(msg.keys()):
                 body.append("%s: %s" % (key, msg[key]))
 
     body = post_body(gitr, body)
@@ -862,7 +868,8 @@ def main(**kwargs):
     if not gen_libs.help_func(args_array, __version__, help_message):
 
         # Set Repo Name if not passed
-        if "-r" not in args_array.keys() and "-p" in args_array.keys():
+        if "-r" not in list(args_array.keys()) \
+           and "-p" in list(args_array.keys()):
             args_array["-r"] = os.path.basename(args_array["-p"])
 
         if not arg_parser.arg_require(args_array, opt_req_list) \

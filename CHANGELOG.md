@@ -10,6 +10,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ### Changed
 - Converted imports to use Python 2.7 or Python 3.
+- prepare_mail, main:  Converted dictionary keys() call to list.
 
 
 ## [1.0.1] - 2021-03-03
