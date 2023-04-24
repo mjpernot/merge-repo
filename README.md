@@ -6,7 +6,6 @@
 
 ###  This README file is broken down into the following sections:
   * Features
-  * Prerequisites
   * Installation
   * Configuration
     - Advance Configuration
@@ -18,17 +17,6 @@
 # Features:
   * Merge a non-local repository into an existing remote Git repository.
   * Allow for the merging of unrelated Git histories.
-
-
-# Prerequisites:
-
-  * List of Linux packages that need to be installed on the server.
-    - git
-    - python-pip
-
-  * Local class/library dependencies within the program structure.
-    - python-lib
-    - git-lib
 
 
 # Installation:

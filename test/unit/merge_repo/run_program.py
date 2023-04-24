@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  run_program.py
@@ -17,13 +16,7 @@
 # Standard
 import sys
 import os
-
-if sys.version_info < (2, 7):
-    import unittest2 as unittest
-else:
-    import unittest
-
-# Third-party
+import unittest
 import mock
 
 # Local
@@ -111,7 +104,7 @@ class UnitTest(unittest.TestCase):
                      "-r": "repo-name", "-p": "repo_path", "-M": True}
         self.args2 = {"-c": "config_file", "-d": "config_dir", "-n": True,
                       "-r": "repo-name", "-p": "repo_path", "-M": True}
-        self.func_dict = {"-M": merge}
+        self.func_names = {"-M": merge}
         self.msg_list = ["Error_Message"]
 
     @mock.patch("merge_repo.gen_class.Logger")
@@ -131,7 +124,7 @@ class UnitTest(unittest.TestCase):
         mock_log.log_info.return_value = True
         mock_log.log_close.return_value = True
 
-        self.assertFalse(merge_repo.run_program(self.args2, self.func_dict))
+        self.assertFalse(merge_repo.run_program(self.args2, self.func_names))
 
     @mock.patch("merge_repo.gen_class.Logger")
     @mock.patch("merge_repo.load_cfg")
@@ -150,7 +143,7 @@ class UnitTest(unittest.TestCase):
         mock_log.log_info.return_value = True
         mock_log.log_close.return_value = True
 
-        self.assertFalse(merge_repo.run_program(self.args, self.func_dict))
+        self.assertFalse(merge_repo.run_program(self.args, self.func_names))
 
     @mock.patch("merge_repo.load_cfg")
     def test_status_flag_false(self, mock_cfg):
@@ -166,7 +159,8 @@ class UnitTest(unittest.TestCase):
         mock_cfg.return_value = (self.cfg, False, self.msg_list)
 
         with gen_libs.no_std_out():
-            self.assertFalse(merge_repo.run_program(self.args, self.func_dict))
+            self.assertFalse(
+                merge_repo.run_program(self.args, self.func_names))
 
 
 if __name__ == "__main__":
