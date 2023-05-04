@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  help_message.py
@@ -18,8 +17,6 @@
 import sys
 import os
 import unittest
-
-# Third-party
 
 # Local
 sys.path.append(os.getcwd())
