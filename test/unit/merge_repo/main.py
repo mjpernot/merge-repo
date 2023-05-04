@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # Classification (U)
 
 """Program:  main.py
@@ -18,8 +17,6 @@
 import sys
 import os
 import unittest
-
-# Third-party
 import mock
 
 # Local
@@ -117,7 +114,6 @@ class UnitTest(unittest.TestCase):
 
         self.args = {"-c": "config_file", "-d": "config_dir",
                      "-r": "repo-name", "-p": "repo_path", "-M": True}
-        self.func_dict = {"-M": merge_repo.merge}
         self.proglock = ProgramLock(["cmdline"], self.args["-r"])
 
     @mock.patch("merge_repo.gen_libs")
