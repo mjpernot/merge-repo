@@ -28,17 +28,102 @@ import version
 __version__ = version.__version__
 
 
-def get_inst(cmd):
+class ArgParser(object):
 
-    """Function:  get_inst
+    """Class:  ArgParser
 
-    Description:  Returns the module instance header.
+    Description:  Class stub holder for gen_class.ArgParser class.
 
-    Arguments:
+    Methods:
+        __init__
+        arg_dir_chk
+        arg_exist
+        arg_require
+        get_val
+        insert_arg
 
     """
 
-    return cmd
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+        self.opt_req = None
+        self.opt_req2 = True
+        self.dir_perms_chk = None
+        self.dir_perms_chk2 = True
+
+    def arg_dir_chk(self, dir_perms_chk):
+
+        """Method:  arg_dir_chk
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_dir_chk.
+
+        Arguments:
+
+        """
+
+        self.dir_perms_chk = dir_perms_chk
+
+        return self.dir_perms_chk2
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def arg_require(self, opt_req):
+
+        """Method:  arg_require
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_require.
+
+        Arguments:
+
+        """
+
+        self.opt_req = opt_req
+
+        return self.opt_req2
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+    def insert_arg(self, arg_key, arg_val):
+
+        """Method:  insert_arg
+
+        Description:  Method stub holder for gen_class.ArgParser.insert_arg.
+
+        Arguments:
+
+        """
+
+        self.args_array[arg_key] = arg_val
 
 
 class ProgramLock(object):
@@ -92,10 +177,10 @@ class UnitTest(unittest.TestCase):
         test_adding_r_option
         test_help_true
         test_help_false
-        test_arg_require_true
         test_arg_require_false
-        test_arg_dir_chk_crt_true
+        test_arg_require_true
         test_arg_dir_chk_crt_false
+        test_arg_dir_chk_crt_true
         test_run_program
         test_programlock_true
         test_programlock_false
@@ -112,12 +197,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args = {"-c": "config_file", "-d": "config_dir",
-                     "-r": "repo-name", "-p": "repo_path", "-M": True}
-        self.proglock = ProgramLock(["cmdline"], self.args["-r"])
+        self.args = ArgParser()
+        self.args.args_array = {
+            "-c": "config_file", "-d": "config_dir", "-r": "repo-name",
+            "-p": "repo_path", "-M": True}
+        self.proglock = ProgramLock(["cmdline"], self.args.get_val("-r"))
 
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class.ArgParser")
     @mock.patch("merge_repo.gen_class.ProgramLock")
     def test_exception_handler(self, mock_lock, mock_arg, mock_lib):
 
@@ -130,17 +217,15 @@ class UnitTest(unittest.TestCase):
         """
 
         mock_lock.side_effect = merge_repo.gen_class.SingleInstanceException
-        mock_arg.arg_parse2.return_value = self.args
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = False
 
         with gen_libs.no_std_out():
             self.assertFalse(merge_repo.main())
 
+    @mock.patch("merge_repo.run_program", mock.Mock(return_value=True))
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class.ArgParser")
     def test_adding_r_option(self, mock_arg, mock_lib):
 
         """Function:  test_adding_r_option
@@ -151,17 +236,16 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
         mock_arg.arg_require.return_value = True
 
-        self.args.pop("-r")
+        self.args.args_array.pop("-r")
 
         self.assertFalse(merge_repo.main())
 
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser.arg_parse2")
+    @mock.patch("merge_repo.gen_class.ArgParser")
     def test_help_true(self, mock_arg, mock_lib):
 
         """Function:  test_help_true
@@ -174,12 +258,11 @@ class UnitTest(unittest.TestCase):
 
         mock_arg.return_value = self.args
         mock_lib.help_func.return_value = True
-        mock_lib.get_inst.return_value = get_inst(sys)
 
         self.assertFalse(merge_repo.main())
 
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class.ArgParser")
     def test_help_false(self, mock_arg, mock_lib):
 
         """Function:  test_help_false
@@ -190,34 +273,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args
+        self.args.opt_req2 = False
+
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = True
 
         self.assertFalse(merge_repo.main())
 
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
-    def test_arg_require_true(self, mock_arg, mock_lib):
-
-        """Function:  test_arg_require_true
-
-        Description:  Test main function with arg_require returns True.
-
-        Arguments:
-
-        """
-
-        mock_arg.arg_parse2.return_value = self.args
-        mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = True
-
-        self.assertFalse(merge_repo.main())
-
-    @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class.ArgParser")
     def test_arg_require_false(self, mock_arg, mock_lib):
 
         """Function:  test_arg_require_false
@@ -228,40 +292,35 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args
+        self.args.opt_req2 = False
+
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = True
 
         self.assertFalse(merge_repo.main())
 
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
-    def test_arg_dir_chk_crt_true(self, mock_arg, mock_lib):
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    def test_arg_require_true(self, mock_arg, mock_lib):
 
-        """Function:  test_arg_dir_chk_crt_true
+        """Function:  test_arg_require_true
 
-        Description:  Test main function with arg_dir_chk_crt returns True.
+        Description:  Test main function with arg_require returns True.
 
         Arguments:
 
         """
 
-        mock_arg.arg_parse2.return_value = self.args
+        self.args.dir_perms_chk2 = False
+
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = True
-        mock_arg.arg_dir_chk_crt.return_value = True
 
         self.assertFalse(merge_repo.main())
 
-    @mock.patch("merge_repo.run_program")
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
-    @mock.patch("merge_repo.gen_class")
-    def test_arg_dir_chk_crt_false(self, mock_class, mock_arg, mock_lib,
-                                   mock_run):
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    def test_arg_dir_chk_crt_false(self, mock_arg, mock_lib):
 
         """Function:  test_arg_dir_chk_crt_false
 
@@ -271,21 +330,38 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.ProgramLock.return_value = self.proglock
-        mock_arg.arg_parse2.return_value = self.args
+        self.args.dir_perms_chk2 = False
+
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = False
-        mock_run.return_value = True
 
         self.assertFalse(merge_repo.main())
 
-    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.run_program", mock.Mock(return_value=True))
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
-    @mock.patch("merge_repo.gen_class")
-    def test_run_program(self, mock_class, mock_arg, mock_lib, mock_run):
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    @mock.patch("merge_repo.gen_class.ProgramLock")
+    def test_arg_dir_chk_crt_true(self, mock_class, mock_arg, mock_lib):
+
+        """Function:  test_arg_dir_chk_crt_true
+
+        Description:  Test main function with arg_dir_chk_crt returns True.
+
+        Arguments:
+
+        """
+
+        mock_class.return_value = self.proglock
+        mock_arg.return_value = self.args
+        mock_lib.help_func.return_value = False
+
+        self.assertFalse(merge_repo.main())
+
+    @mock.patch("merge_repo.run_program", mock.Mock(return_value=True))
+    @mock.patch("merge_repo.gen_libs")
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    @mock.patch("merge_repo.gen_class.ProgramLock")
+    def test_run_program(self, mock_class, mock_arg, mock_lib):
 
         """Function:  test_run_program
 
@@ -295,21 +371,17 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.ProgramLock.return_value = self.proglock
-        mock_arg.arg_parse2.return_value = self.args
+        mock_class.return_value = self.proglock
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = False
-        mock_run.return_value = True
 
         self.assertFalse(merge_repo.main())
 
-    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.run_program", mock.Mock(return_value=True))
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
-    @mock.patch("merge_repo.gen_class")
-    def test_programlock_true(self, mock_class, mock_arg, mock_lib, mock_run):
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    @mock.patch("merge_repo.gen_class.ProgramLock")
+    def test_programlock_true(self, mock_class, mock_arg, mock_lib):
 
         """Function:  test_programlock_true
 
@@ -319,21 +391,17 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.ProgramLock.return_value = self.proglock
-        mock_arg.arg_parse2.return_value = self.args
+        mock_class.return_value = self.proglock
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = False
-        mock_run.return_value = True
 
         self.assertFalse(merge_repo.main())
 
-    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.run_program", mock.Mock(return_value=True))
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
+    @mock.patch("merge_repo.gen_class.ArgParser")
     @mock.patch("merge_repo.gen_class.ProgramLock")
-    def test_programlock_false(self, mock_lock, mock_arg, mock_lib, mock_run):
+    def test_programlock_false(self, mock_lock, mock_arg, mock_lib):
 
         """Function:  test_programlock_false
 
@@ -345,21 +413,17 @@ class UnitTest(unittest.TestCase):
 
         mock_lock.side_effect = \
             merge_repo.gen_class.SingleInstanceException
-        mock_arg.arg_parse2.return_value = self.args
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = False
-        mock_run.return_value = True
 
         with gen_libs.no_std_out():
             self.assertFalse(merge_repo.main())
 
-    @mock.patch("merge_repo.run_program")
+    @mock.patch("merge_repo.run_program", mock.Mock(return_value=True))
     @mock.patch("merge_repo.gen_libs")
-    @mock.patch("merge_repo.arg_parser")
-    @mock.patch("merge_repo.gen_class")
-    def test_programlock_id(self, mock_class, mock_arg, mock_lib, mock_run):
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    @mock.patch("merge_repo.gen_class.ProgramLock")
+    def test_programlock_id(self, mock_class, mock_arg, mock_lib):
 
         """Function:  test_programlock_id
 
@@ -369,13 +433,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.ProgramLock.return_value = self.proglock
-        mock_arg.arg_parse2.return_value = self.args
+        mock_class.return_value = self.proglock
+        mock_arg.return_value = self.args
         mock_lib.help_func.return_value = False
-        mock_lib.get_inst.return_value = get_inst(sys)
-        mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = False
-        mock_run.return_value = True
 
         self.assertFalse(merge_repo.main())
 
