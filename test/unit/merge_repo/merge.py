@@ -27,6 +27,57 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_exist
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
 class CfgTest(object):
 
     """Class:  CfgTest
@@ -96,9 +147,11 @@ class UnitTest(unittest.TestCase):
         """
 
         self.cfg = CfgTest()
-        self.args = {"-c": "config_file", "-M": True,
-                     "-d": "/data/merge-repo/merge_repo/config",
-                     "-r": "repo-name", "-p": "/directory/repo-name"}
+        self.args = ArgParser()
+        self.args.args_array = {
+            "-c": "config_file", "-M": True,
+            "-d": "/data/merge-repo/merge_repo/config", "-r": "repo-name",
+            "-p": "/directory/repo-name"}
 
     @mock.patch("merge_repo.gen_libs.cp_dir", mock.Mock(return_value=True))
     @mock.patch("merge_repo.post_process", mock.Mock(return_value=True))
@@ -119,7 +172,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args["-u"] = True
+        self.args.args_array["-u"] = True
 
         mock_head.return_value = (False, "Error Message")
         mock_log.return_value = True
@@ -190,7 +243,7 @@ class UnitTest(unittest.TestCase):
         mock_git.GitMerge.set_remote.return_value = True
         mock_git.GitMerge.is_remote.return_value = False
         mock_post.return_value = True
-        self.args["-a"] = True
+        self.args.args_array["-a"] = True
 
         self.assertFalse(merge_repo.merge(self.args, self.cfg, mock_log))
 
