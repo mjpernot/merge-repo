@@ -144,12 +144,14 @@ import git
 
 # Local
 try:
+    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .git_lib import git_class
     from . import version
 
 except (ValueError, ImportError) as err:
+    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import git_lib.git_class as git_class
@@ -179,11 +181,11 @@ def load_cfg(cfg_name, cfg_dir):
     Description:  Load the configuration file and validate the settings.
 
     Arguments:
-        (input) cfg_name -> Configuration file name
-        (input) cfg_dir -> Directory path to the configuration file
-        (output) cfg -> Configuration module handler
-        (output) status_flag -> True|False - successfully validate config file
-        (output) err_messages -> List of error messages
+        (input) cfg_name -> Configuration file name.
+        (input) cfg_dir -> Directory path to the configuration file.
+        (output) cfg -> Configuration module handler.
+        (output) status_flag -> True|False - successfully validate config file.
+        (output) err_messages -> List of error messages.
 
     """
 
@@ -226,8 +228,8 @@ def is_git_repo(path):
     Description:  Determines if the path is a local git repository.
 
     Arguments:
-        (input) path -> Directory path to git repository
-        (output)  True|False -> If the directory path is a git repository
+        (input) path -> Directory path to git repository.
+        (output)  True|False -> If the directory path is a git repository.
 
     """
 
@@ -246,9 +248,9 @@ def send_mail(to_line, subj, mail_body):
     Description:  Compiles and sends out an email notification message.
 
     Arguments:
-        (input) to_line -> Email's to line
-        (input) subj -> Email subject line
-        (input) mail_body -> Email body list
+        (input) to_line -> Email's to line.
+        (input) subj -> Email subject line.
+        (input) mail_body -> Email body list.
 
     """
 
@@ -269,9 +271,9 @@ def post_body(gitr, body=None):
     Description:  Append default post-header to mail body.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) body -> Mail list body
-        (output) body -> Body of the email
+        (input) gitr -> Git class instance.
+        (input) body -> Mail list body.
+        (output) body -> Body of the email.
 
     """
 
@@ -297,11 +299,11 @@ def prepare_mail(gitr, status, line_list=None, msg=None):
     Description:  Prepare email body with a set header.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) status -> True|False - Status success of Git command
-        (input) line_list -> List of lines to add to email body
-        (input) msg -> Dictionary of error message from Git command
-        (output) body -> Body of the email
+        (input) gitr -> Git class instance.
+        (input) status -> True|False - Status success of Git command.
+        (input) line_list -> List of lines to add to email body.
+        (input) msg -> Dictionary of error message from Git command.
+        (output) body -> Body of the email.
 
     """
 
@@ -343,12 +345,12 @@ def post_process(gitr, cfg, log, status, line_list=None, msg=None):
     Description:  Post processing of the git repository.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
-        (input) status -> True|False - Status success of command
-        (input) line_list -> List of lines to add to email body
-        (input) msg -> Dictionary of error message from Git command
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) status -> True|False - Status success of command.
+        (input) line_list -> List of lines to add to email body.
+        (input) msg -> Dictionary of error message from Git command.
 
     """
 
@@ -384,9 +386,9 @@ def post_check(gitr, cfg, log):
     Description:  Check to see the local Git is in sync with the remote Git.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
 
     """
 
@@ -424,10 +426,10 @@ def quarantine_files(gitr, cfg, log, status=None):
     Description:  Copy files out of Git repo into a quarantine directory.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
-        (input) status -> added|modified - Status of the file for quarantine
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
+        (input) status -> added|modified - Status of the file for quarantine.
 
     """
 
@@ -478,9 +480,9 @@ def quarantine(gitr, cfg, log):
     Description:  Get dirty and untracked files and quarantine them.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
 
     """
 
@@ -512,11 +514,11 @@ def merge_project(gitr, cfg, log, **kwargs):
     Description:  Merge, and push the project to the remote Git repo.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
         (input) **kwargs:
-            allow -> True|False - Allow merge of unrelated histories
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
@@ -562,11 +564,11 @@ def process_project(gitr, cfg, log, **kwargs):
     Description:  Prepare for the merge of the project.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
         (input) **kwargs:
-            allow -> True|False - Allow merge of unrelated histories
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
@@ -614,9 +616,9 @@ def process_changes(gitr, cfg, log):
     Description:  Locate and process dirty and untracked files.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
 
     """
 
@@ -641,10 +643,10 @@ def detach_head(gitr, log):
         latest commit id and remove the existing branch.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) log -> Log class instance
-        (output) status -> True|False - Status of detaching head in project
-        (output) err_msg -> Error messages detected, if any
+        (input) gitr -> Git class instance.
+        (input) log -> Log class instance.
+        (output) status -> True|False - Status of detaching head in project.
+        (output) err_msg -> Error messages detected, if any.
 
     """
 
@@ -678,7 +680,7 @@ def detach_head(gitr, log):
     return status, err_msg
 
 
-def merge(args, cfg, log):
+def merge(args_array, cfg, log):
 
     """Function:  merge
 
@@ -687,20 +689,21 @@ def merge(args, cfg, log):
         repository.
 
     Arguments:
-        (input) args -> ArgParser class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
+        (input) args_array -> Dict of command line options and values.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
 
     """
 
-    log.log_info("merge:  Starting merge of:  %s" % (args.get_val("-r")))
+    args_array = dict(args_array)
+    log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
     arch_dir = os.path.join(
-        cfg.archive_dir, os.path.basename(args.get_val("-p")) + ".Original." +
+        cfg.archive_dir, os.path.basename(args_array["-p"]) + ".Original." +
         datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S"))
-    gen_libs.cp_dir(args.get_val("-p"), arch_dir)
+    gen_libs.cp_dir(args_array["-p"], arch_dir)
     log.log_info("merge:  Original repo dir copied to:  %s" % (arch_dir))
-    gen_libs.mv_file2(args.get_val("-p"), cfg.work_dir)
-    git_dir = os.path.join(cfg.work_dir, os.path.basename(args.get_val("-p")))
+    gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
+    git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
 
     if is_git_repo(git_dir):
         log.log_info("merge:  Updating Git config file")
@@ -710,20 +713,20 @@ def merge(args, cfg, log):
         log.log_info("merge:  Processing: %s directory" % (git_dir))
 
         # Use alias for servername
-        if args.arg_exist("-a"):
-            url = cfg.prefix + args.get_val("-r")
+        if "-a" in args_array:
+            url = cfg.prefix + args_array["-r"]
 
         else:
             url = cfg.prefix + cfg.git_server
 
-        url = url + ":" + cfg.git_project + "/" + args.get_val("-r") + ".git"
-        gitr = git_class.GitMerge(
-            args.get_val("-r"), git_dir, url, cfg.branch, cfg.mod_branch)
+        url = url + ":" + cfg.git_project + "/" + args_array["-r"] + ".git"
+        gitr = git_class.GitMerge(args_array["-r"], git_dir, url, cfg.branch,
+                                  cfg.mod_branch)
         gitr.create_gitrepo()
         gitr.set_remote()
 
         if gitr.is_remote():
-            cleanup_repo(gitr, cfg, log, allow=args.arg_exist("-u"))
+            cleanup_repo(gitr, cfg, log, allow=args_array.get("-u", False))
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
@@ -757,11 +760,11 @@ def cleanup_repo(gitr, cfg, log, **kwargs):
         or untracked changes before merging repository.
 
     Arguments:
-        (input) gitr -> Git class instance
-        (input) cfg -> Configuration settings module for the program
-        (input) log -> Log class instance
+        (input) gitr -> Git class instance.
+        (input) cfg -> Configuration settings module for the program.
+        (input) log -> Log class instance.
         (input) **kwargs:
-            allow -> True|False - Allow merge of unrelated histories
+            allow -> True|False - Allow merge of unrelated histories.
 
     """
 
@@ -786,7 +789,7 @@ def cleanup_repo(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, False, line_list)
 
 
-def run_program(args, func_dict, **kwargs):
+def run_program(args_array, func_dict, **kwargs):
 
     """Function:  run_program
 
@@ -794,33 +797,33 @@ def run_program(args, func_dict, **kwargs):
         class for the running instance of the program.
 
     Arguments:
-        (input) args -> ArgParser class instance
-        (input) func_dict -> Dict of function calls and associated options
+        (input) args_array -> Dict of command line options and values.
+        (input) func_dict -> Dict of function calls and associated options.
 
     """
 
+    args_array = dict(args_array)
     func_dict = dict(func_dict)
-    cfg, status_flag, msg_list = load_cfg(
-        args.get_val("-c"), cfg_dir=args.get_val("-d"))
+    cfg, status_flag, msg_list = load_cfg(args_array["-c"], args_array["-d"])
 
     # Disable email capability if option detected
-    if args.arg_exist("-n"):
+    if args_array.get("-n", False):
         cfg.to_line = None
 
     if status_flag:
-        log = gen_class.Logger(
-            cfg.log_file, cfg.log_file, "INFO",
-            "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
+        log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
+                               "%(asctime)s %(levelname)s %(message)s",
+                               "%Y-%m-%dT%H:%M:%SZ")
         str_val = "=" * 80
-        log.log_info("%s Initialized" % (args.get_val("-r")))
+        log.log_info("%s Initialized" % (args_array["-r"]))
         log.log_info("%s" % (str_val))
-        log.log_info("Project:  %s" % (args.get_val("-r")))
-        log.log_info("Project Directory:  %s" % (args.get_val("-p")))
+        log.log_info("Project:  %s" % (args_array["-r"]))
+        log.log_info("Project Directory:  %s" % (args_array["-p"]))
         log.log_info("%s" % (str_val))
 
         # Intersect args_array & func_dict to find which functions to call.
-        for opt in set(args.get_args_keys()) & set(func_dict.keys()):
-            func_dict[opt](args, cfg, log, **kwargs)
+        for opt in set(args_array.keys()) & set(func_dict.keys()):
+            func_dict[opt](args_array, cfg, log, **kwargs)
 
         log.log_close()
 
@@ -840,45 +843,47 @@ def main(**kwargs):
         line arguments and values.
 
     Variables:
-        dir_perms_chk -> contains directories and their octal permissions
-        func_dict -> dictionary list for the function calls or other options
-        opt_req_list -> contains options that are required for the program
-        opt_val_list -> contains options which require values
+        dir_chk_list -> contains options which will be directories.
+        func_dict -> dictionary list for the function calls or other options.
+        opt_req_list -> contains options that are required for the program.
+        opt_val_list -> contains options which require values.
 
     Arguments:
-        (input) argv -> Arguments from the command line
+        (input) argv -> Arguments from the command line.
         (input) **kwargs:
-            argv_list -> List of arguments from a wrapper program
+            argv_list -> List of arguments from a wrapper program.
 
     """
 
-    sys.argv = kwargs.get("argv_list", sys.argv)
-    dir_perms_chk = {"-d": 5, "-p": 5}
+    cmdline = gen_libs.get_inst(sys)
+    cmdline.argv = kwargs.get("argv_list", cmdline.argv)
+    dir_chk_list = ["-d", "-p"]
     func_dict = {"-M": merge}
     opt_req_list = ["-c", "-d", "-p", "-r"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
-    # Process argument list from command line
-    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
+    # Process argument list from command line.
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
-    if not gen_libs.help_func(args, __version__, help_message):
+    if not gen_libs.help_func(args_array, __version__, help_message):
 
         # Set Repo Name if not passed
-        if not args.arg_exist("-r") and args.arg_exist("-p"):
-            args.insert_arg("-r", os.path.basename(args.get_val("-p")))
+        if "-r" not in list(args_array.keys()) \
+           and "-p" in list(args_array.keys()):
+            args_array["-r"] = os.path.basename(args_array["-p"])
 
-        if args.arg_require(opt_req=opt_req_list)           \
-           and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
+        if not arg_parser.arg_require(args_array, opt_req_list) \
+           and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
 
             try:
-                prog_lock = gen_class.ProgramLock(
-                    sys.argv, args.get_val("-r", def_val=""))
-                run_program(args, func_dict)
+                prog_lock = gen_class.ProgramLock(cmdline.argv,
+                                                  args_array.get("-r", ""))
+                run_program(args_array, func_dict)
                 del prog_lock
 
             except gen_class.SingleInstanceException:
                 print("WARNING:  lock in place for merge with id of: %s"
-                      % (args.get_val("-r", def_val="")))
+                      % (args_array.get("-r", "")))
 
 
 if __name__ == "__main__":
