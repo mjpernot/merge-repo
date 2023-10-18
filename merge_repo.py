@@ -801,7 +801,7 @@ def run_program(args, func_dict, **kwargs):
 
     func_dict = dict(func_dict)
     cfg, status_flag, msg_list = load_cfg(
-        args.get_val("-c"), cfg_dir=args.get_val("-d"))
+        args.get_val("-c"), args.get_val("-d"))
 
     # Disable email capability if option detected
     if args.arg_exist("-n"):
