@@ -678,7 +678,7 @@ def detach_head(gitr, log):
     return status, err_msg
 
 
-def merge(args_array, cfg, log):
+def merge(args, cfg, log):
 
     """Function:  merge
 
@@ -687,21 +687,20 @@ def merge(args_array, cfg, log):
         repository.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values
+        (input) args -> ArgParser class instance
         (input) cfg -> Configuration settings module for the program
         (input) log -> Log class instance
 
     """
 
-    args_array = dict(args_array)
-    log.log_info("merge:  Starting merge of:  %s" % (args_array["-r"]))
+    log.log_info("merge:  Starting merge of:  %s" % (args.get_val("-r")))
     arch_dir = os.path.join(
-        cfg.archive_dir, os.path.basename(args_array["-p"]) + ".Original." +
+        cfg.archive_dir, os.path.basename(args.get_val("-p")) + ".Original." +
         datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S"))
-    gen_libs.cp_dir(args_array["-p"], arch_dir)
+    gen_libs.cp_dir(args.get_val("-p"), arch_dir)
     log.log_info("merge:  Original repo dir copied to:  %s" % (arch_dir))
-    gen_libs.mv_file2(args_array["-p"], cfg.work_dir)
-    git_dir = os.path.join(cfg.work_dir, os.path.basename(args_array["-p"]))
+    gen_libs.mv_file2(args.get_val("-p"), cfg.work_dir)
+    git_dir = os.path.join(cfg.work_dir, os.path.basename(args.get_val("-p")))
 
     if is_git_repo(git_dir):
         log.log_info("merge:  Updating Git config file")
@@ -711,20 +710,20 @@ def merge(args_array, cfg, log):
         log.log_info("merge:  Processing: %s directory" % (git_dir))
 
         # Use alias for servername
-        if "-a" in args_array:
-            url = cfg.prefix + args_array["-r"]
+        if args.arg_exist("-a"):
+            url = cfg.prefix + args.get_val("-r")
 
         else:
             url = cfg.prefix + cfg.git_server
 
-        url = url + ":" + cfg.git_project + "/" + args_array["-r"] + ".git"
-        gitr = git_class.GitMerge(args_array["-r"], git_dir, url, cfg.branch,
-                                  cfg.mod_branch)
+        url = url + ":" + cfg.git_project + "/" + args.get_val("-r") + ".git"
+        gitr = git_class.GitMerge(
+            args.get_val("-r"), git_dir, url, cfg.branch, cfg.mod_branch)
         gitr.create_gitrepo()
         gitr.set_remote()
 
         if gitr.is_remote():
-            cleanup_repo(gitr, cfg, log, allow=args_array.get("-u", False))
+            cleanup_repo(gitr, cfg, log, allow=args.arg_exist("-u"))
 
         else:
             log.log_err("merge:  %s does not exist at remote repo."
@@ -787,7 +786,7 @@ def cleanup_repo(gitr, cfg, log, **kwargs):
         post_process(gitr, cfg, log, False, line_list)
 
 
-def run_program(args_array, func_dict, **kwargs):
+def run_program(args, func_dict, **kwargs):
 
     """Function:  run_program
 
@@ -795,33 +794,33 @@ def run_program(args_array, func_dict, **kwargs):
         class for the running instance of the program.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values
+        (input) args -> ArgParser class instance
         (input) func_dict -> Dict of function calls and associated options
 
     """
 
-    args_array = dict(args_array)
     func_dict = dict(func_dict)
-    cfg, status_flag, msg_list = load_cfg(args_array["-c"], args_array["-d"])
+    cfg, status_flag, msg_list = load_cfg(
+        args.get_val("-c"), cfg_dir=args.get_val("-d"))
 
     # Disable email capability if option detected
-    if args_array.get("-n", False):
+    if args.arg_exist("-n"):
         cfg.to_line = None
 
     if status_flag:
-        log = gen_class.Logger(cfg.log_file, cfg.log_file, "INFO",
-                               "%(asctime)s %(levelname)s %(message)s",
-                               "%Y-%m-%dT%H:%M:%SZ")
+        log = gen_class.Logger(
+            cfg.log_file, cfg.log_file, "INFO",
+            "%(asctime)s %(levelname)s %(message)s", "%Y-%m-%dT%H:%M:%SZ")
         str_val = "=" * 80
-        log.log_info("%s Initialized" % (args_array["-r"]))
+        log.log_info("%s Initialized" % (args.get_val("-r")))
         log.log_info("%s" % (str_val))
-        log.log_info("Project:  %s" % (args_array["-r"]))
-        log.log_info("Project Directory:  %s" % (args_array["-p"]))
+        log.log_info("Project:  %s" % (args.get_val("-r")))
+        log.log_info("Project Directory:  %s" % (args.get_val("-p")))
         log.log_info("%s" % (str_val))
 
         # Intersect args_array & func_dict to find which functions to call.
-        for opt in set(args_array.keys()) & set(func_dict.keys()):
-            func_dict[opt](args_array, cfg, log, **kwargs)
+        for opt in set(args.get_args_keys()) & set(func_dict.keys()):
+            func_dict[opt](args, cfg, log, **kwargs)
 
         log.log_close()
 
@@ -841,7 +840,7 @@ def main(**kwargs):
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories
+        dir_perms_chk -> contains directories and their octal permissions
         func_dict -> dictionary list for the function calls or other options
         opt_req_list -> contains options that are required for the program
         opt_val_list -> contains options which require values
@@ -854,33 +853,32 @@ def main(**kwargs):
     """
 
     sys.argv = kwargs.get("argv_list", sys.argv)
-    dir_chk_list = ["-d", "-p"]
+    dir_perms_chk = {"-d": 5, "-p": 5}
     func_dict = {"-M": merge}
     opt_req_list = ["-c", "-d", "-p", "-r"]
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
-    # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    # Process argument list from command line
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
 
-    if not gen_libs.help_func(args_array, __version__, help_message):
+    if not gen_libs.help_func(args, __version__, help_message):
 
         # Set Repo Name if not passed
-        if "-r" not in list(args_array.keys()) \
-           and "-p" in list(args_array.keys()):
-            args_array["-r"] = os.path.basename(args_array["-p"])
+        if not args.arg_exist("-r") and args.arg_exist("-p"):
+            args.insert_arg("-r", os.path.basename(args.get_val("-p")))
 
-        if not arg_parser.arg_require(args_array, opt_req_list) \
-           and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
+        if args.arg_require(opt_req=opt_req_list)           \
+           and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
 
             try:
                 prog_lock = gen_class.ProgramLock(
-                    sys.argv, args_array.get("-r", ""))
-                run_program(args_array, func_dict)
+                    sys.argv, args.get_val("-r", def_val=""))
+                run_program(args, func_dict)
                 del prog_lock
 
             except gen_class.SingleInstanceException:
                 print("WARNING:  lock in place for merge with id of: %s"
-                      % (args_array.get("-r", "")))
+                      % (args.get_val("-r", def_val="")))
 
 
 if __name__ == "__main__":

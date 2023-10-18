@@ -28,7 +28,7 @@ import version
 __version__ = version.__version__
 
 
-def merge(args_array, cfg, log):
+def merge(args, cfg, log):
 
     """Function:  merge_repo
 
@@ -40,10 +40,104 @@ def merge(args_array, cfg, log):
 
     status = True
 
-    if args_array and cfg and log:
+    if args and cfg and log:
         status = True
 
     return status
+
+
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        arg_exist
+        get_args_keys
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args_array = dict()
+
+    def arg_exist(self, arg):
+
+        """Method:  arg_exist
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_exist.
+
+        Arguments:
+
+        """
+
+        return True if arg in self.args_array else False
+
+    def get_args_keys(self):
+
+        """Method:  get_args_keys
+
+        Description:  Method stub holder for gen_class.ArgParser.get_args_keys.
+
+        Arguments:
+
+        """
+
+        return list(self.args_array.keys())
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args_array.get(skey, def_val)
+
+
+class CfgTest(object):
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.url = "git@github.com:JAC-IDM/"
+        self.work_dir = "/data/merge-repo/work_dir"
+        self.err_dir = "/data/merge-repo/error_dir"
+        self.archive_dir = "/data/merge-repo/archive_dir"
+        self.log_file = "/data/merge-repo/log_dir/merge_repo.log"
+        self.to_line = "myemail@mydomain"
+        self.branch = "master"
 
 
 class UnitTest(unittest.TestCase):
@@ -70,40 +164,15 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.url = "git@github.com:JAC-IDM/"
-                self.work_dir = "/data/merge-repo/work_dir"
-                self.err_dir = "/data/merge-repo/error_dir"
-                self.archive_dir = "/data/merge-repo/archive_dir"
-                self.log_file = "/data/merge-repo/log_dir/merge_repo.log"
-                self.to_line = "myemail@mydomain"
-                self.branch = "master"
-
         self.cfg = CfgTest()
-        self.args = {"-c": "config_file", "-d": "config_dir",
-                     "-r": "repo-name", "-p": "repo_path", "-M": True}
-        self.args2 = {"-c": "config_file", "-d": "config_dir", "-n": True,
-                      "-r": "repo-name", "-p": "repo_path", "-M": True}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args.args_array = {
+            "-c": "config_file", "-d": "config_dir", "-r": "repo-name",
+            "-p": "repo_path", "-M": True}
+        self.args2.args_array = {
+            "-c": "config_file", "-d": "config_dir", "-n": True,
+            "-r": "repo-name", "-p": "repo_path", "-M": True}
         self.func_names = {"-M": merge}
         self.msg_list = ["Error_Message"]
 

@@ -9,6 +9,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 - Upgraded python-lib to v2.10.1
 
 ### Changed
+- Multiple functions: Replaced the arg_parser code with gen_class.ArgParser code.
 - main: Removed gen_libs.get_inst call.
 - Documentation updates.
 
