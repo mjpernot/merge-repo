@@ -859,9 +859,10 @@ def main(**kwargs):
     opt_val_list = ["-c", "-d", "-p", "-r"]
 
     # Process argument list from command line
-    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list)
 
-    if not gen_libs.help_func(args, __version__, help_message):
+    if args.arg_parse2()                                            \
+       and not gen_libs.help_func(args, __version__, help_message):
 
         # Set Repo Name if not passed
         if not args.arg_exist("-r") and args.arg_exist("-p"):
