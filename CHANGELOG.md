@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.1.2] - 2024-09-10
+
+### Changed
+- main: Removed parsing from gen_class.ArgParser call and called arg_parse2 as part of "if" statement.
+
+
 ## [1.1.1] - 2024-03-04
 - Updated to work in Red Hat 8
 - Updated python-lib to v3.0.3

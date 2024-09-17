@@ -41,6 +41,7 @@ class ArgParser(object):
         arg_require
         get_val
         insert_arg
+        arg_parse2
 
     """
 
@@ -60,6 +61,7 @@ class ArgParser(object):
         self.opt_req2 = True
         self.dir_perms_chk = None
         self.dir_perms_chk2 = True
+        self.argparse2 = True
 
     def arg_dir_chk(self, dir_perms_chk):
 
@@ -125,6 +127,18 @@ class ArgParser(object):
 
         self.args_array[arg_key] = arg_val
 
+    def arg_parse2(self):
+
+        """Method:  arg_parse2
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_parse2.
+
+        Arguments:
+
+        """
+
+        return self.argparse2
+
 
 class ProgramLock(object):
 
@@ -173,6 +187,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_arg_parse2_false
+        test_arg_parse2_true
         test_exception_handler
         test_adding_r_option
         test_help_true
@@ -202,6 +218,40 @@ class UnitTest(unittest.TestCase):
             "-c": "config_file", "-d": "config_dir", "-r": "repo-name",
             "-p": "repo_path", "-M": True}
         self.proglock = ProgramLock(["cmdline"], self.args.get_val("-r"))
+
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    def test_arg_parse2_false(self, mock_arg):
+
+        """Function:  test_arg_parse2_false
+
+        Description:  Test arg_parse2 returns false.
+
+        Arguments:
+
+        """
+
+        self.args.argparse2 = False
+
+        mock_arg.return_value = self.args
+
+        self.assertFalse(merge_repo.main())
+
+    @mock.patch("merge_repo.gen_libs.help_func")
+    @mock.patch("merge_repo.gen_class.ArgParser")
+    def test_arg_parse2_true(self, mock_arg, mock_help):
+
+        """Function:  test_arg_parse2_true
+
+        Description:  Test arg_parse2 returns true.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = True
+
+        self.assertFalse(merge_repo.main())
 
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.ArgParser")
