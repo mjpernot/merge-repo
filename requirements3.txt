@@ -3,4 +3,4 @@ distro==1.6.0
 smmap2==2.0.4
 gitdb2==2.0.4
 GitPython==2.1.8
-simplejson==3.12.0
+simplejson==3.13.2
