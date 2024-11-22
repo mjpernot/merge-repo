@@ -49,5 +49,11 @@ setuptools.setup(
         "Operating System :: Linux :: RedHat :: 8",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
+        "Operating System :: Linux :: RedHat :: 9",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.9",
+        "Operating System :: Linux :: Fedora",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.12",
         "Git :: Gitlab",
         "Git :: Github"])

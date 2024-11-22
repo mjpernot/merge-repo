@@ -124,7 +124,7 @@ Install the project using the procedures in the Installation section.
 
 ```
 cd {Python_Project}/merge-repo
-test/unit/merge_repo/unit_test_run.sh
+test/unit/merge_repo/unit_test_run3.sh
 ```
 
 ### Code coverage:
