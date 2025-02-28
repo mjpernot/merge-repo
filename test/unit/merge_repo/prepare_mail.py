@@ -21,13 +21,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class GitMerge(object):
+class GitMerge(object):                         # pylint:disable=R0903,R0205
 
     """Class:  GitMerge
 
@@ -96,6 +96,8 @@ class UnitTest(unittest.TestCase):
         self.dtg = "2019-04-16 13:51:42"
         self.keystr = "Git Dir: "
         self.keystr2 = "Branch: "
+        self.urls = "URL: "
+        self.dtgs = "DTG: "
 
     @mock.patch("merge_repo.datetime.datetime")
     def test_msg_data(self, mock_date):
@@ -116,13 +118,13 @@ class UnitTest(unittest.TestCase):
         for line in self.line_list2:
             test_body.append(line)
 
-        for key in self.msg:
+        for key in self.msg:                            # pylint:disable=C0206
             test_body.append("%s: %s" % (key, self.msg[key]))
 
-        test_body.append("URL: " + self.gitr.url)
+        test_body.append(self.urls + self.gitr.url)
         test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append(self.keystr2 + self.gitr.branch)
-        test_body.append("DTG: " + self.dtg)
+        test_body.append(self.dtgs + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status2,
                                              self.line_list2, self.msg)
@@ -145,10 +147,10 @@ class UnitTest(unittest.TestCase):
 
         test_body = list(self.body2)
 
-        test_body.append("URL: " + self.gitr.url)
+        test_body.append(self.urls + self.gitr.url)
         test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append(self.keystr2 + self.gitr.branch)
-        test_body.append("DTG: " + self.dtg)
+        test_body.append(self.dtgs + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status2,
                                              self.line_list)
@@ -174,10 +176,10 @@ class UnitTest(unittest.TestCase):
         for line in self.line_list2:
             test_body.append(line)
 
-        test_body.append("URL: " + self.gitr.url)
+        test_body.append(self.urls + self.gitr.url)
         test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append(self.keystr2 + self.gitr.branch)
-        test_body.append("DTG: " + self.dtg)
+        test_body.append(self.dtgs + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status2,
                                              self.line_list2)
@@ -199,10 +201,10 @@ class UnitTest(unittest.TestCase):
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body2)
-        test_body.append("URL: " + self.gitr.url)
+        test_body.append(self.urls + self.gitr.url)
         test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append(self.keystr2 + self.gitr.branch)
-        test_body.append("DTG: " + self.dtg)
+        test_body.append(self.dtgs + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status2)
 
@@ -223,10 +225,10 @@ class UnitTest(unittest.TestCase):
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
-        test_body.append("URL: " + self.gitr.url)
+        test_body.append(self.urls + self.gitr.url)
         test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append(self.keystr2 + self.gitr.branch)
-        test_body.append("DTG: " + self.dtg)
+        test_body.append(self.dtgs + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status1,
                                              line_list=None)
@@ -248,10 +250,10 @@ class UnitTest(unittest.TestCase):
         mock_date.strftime.return_value = self.dtg
 
         test_body = list(self.body)
-        test_body.append("URL: " + self.gitr.url)
+        test_body.append(self.urls + self.gitr.url)
         test_body.append(self.keystr + self.gitr.git_dir)
         test_body.append(self.keystr2 + self.gitr.branch)
-        test_body.append("DTG: " + self.dtg)
+        test_body.append(self.dtgs + self.dtg)
 
         subj, body = merge_repo.prepare_mail(self.gitr, self.status1)
 

@@ -21,10 +21,62 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class CfgTest(object):                          # pylint:disable=R0903,R0205
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.quar_dir = "/data/merge-repo/quarantine"
+        self.to_line = "to@domain"
+
+
+class GitMerge(object):                         # pylint:disable=R0903,R0205
+
+    """Class:  GitMerge
+
+    Description:  Class which is a representation of GitMerge module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the GitMerge class.
+
+        Arguments:
+
+        """
+
+        self.chg_files = []
+        self.new_files = []
+        self.repo_name = "Repo_Name"
+        self.git_dir = "/data/git_dir"
 
 
 class UnitTest(unittest.TestCase):
@@ -58,56 +110,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.quar_dir = "/data/merge-repo/quarantine"
-                self.to_line = "to@domain"
-
-        class GitMerge(object):
-
-            """Class:  GitMerge
-
-            Description:  Class which is a representation of GitMerge module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the GitMerge class.
-
-                Arguments:
-
-                """
-
-                self.chg_files = []
-                self.new_files = []
-                self.repo_name = "Repo_Name"
-                self.git_dir = "/data/git_dir"
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()
@@ -147,8 +149,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_file_dir(self, mock_log, mock_date, mock_lib, mock_body,
-                      mock_mail):
+    def test_file_dir(                                  # pylint:disable=R0913
+            self, mock_log, mock_date, mock_lib, mock_body, mock_mail):
 
         """Function:  test_file_dir
 
@@ -176,8 +178,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_multiple_files(self, mock_log, mock_date, mock_lib, mock_body,
-                            mock_mail):
+    def test_multiple_files(                            # pylint:disable=R0913
+            self, mock_log, mock_date, mock_lib, mock_body, mock_mail):
 
         """Function:  test_copy_file
 
@@ -207,8 +209,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_copy_directory2(self, mock_log, mock_date, mock_lib, mock_body,
-                             mock_mail):
+    def test_copy_directory2(                           # pylint:disable=R0913
+            self, mock_log, mock_date, mock_lib, mock_body, mock_mail):
 
         """Function:  test_copy_directory2
 
@@ -237,8 +239,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_copy_directory(self, mock_log, mock_date, mock_lib, mock_body,
-                            mock_mail):
+    def test_copy_directory(                            # pylint:disable=R0913
+            self, mock_log, mock_date, mock_lib, mock_body, mock_mail):
 
         """Function:  test_copy_directory
 
@@ -266,8 +268,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_copy_file(self, mock_log, mock_date, mock_lib, mock_body,
-                       mock_mail):
+    def test_copy_file(                                 # pylint:disable=R0913
+            self, mock_log, mock_date, mock_lib, mock_body, mock_mail):
 
         """Function:  test_copy_file
 
@@ -344,8 +346,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_modified_status(self, mock_log, mock_date, mock_lib, mock_body,
-                             mock_mail):
+    def test_modified_status(                           # pylint:disable=R0913
+            self, mock_log, mock_date, mock_lib, mock_body, mock_mail):
 
         """Function:  test_modified_status
 
@@ -373,8 +375,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.datetime.datetime")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_added_status(self, mock_log, mock_date, mock_lib, mock_body,
-                          mock_mail):
+    def test_added_status(                              # pylint:disable=R0913
+            self, mock_log, mock_date, mock_lib, mock_body, mock_mail):
 
         """Function:  test_added_status
 

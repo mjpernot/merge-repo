@@ -21,10 +21,36 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class CfgTest(object):                          # pylint:disable=R0903,R0205
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.archive_dir = "/Arhive/Directory"
+        self.err_dir = "/Error/Directory"
+        self.to_line = "to@domain"
 
 
 class UnitTest(unittest.TestCase):
@@ -53,31 +79,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.archive_dir = "/Arhive/Directory"
-                self.err_dir = "/Error/Directory"
-                self.to_line = "to@domain"
 
         self.cfg = CfgTest()
         self.status = True

@@ -21,13 +21,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class Repo(object):
+class Repo(object):                             # pylint:disable=R0903,R0205
 
     """Class:  Repo
 
