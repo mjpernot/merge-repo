@@ -21,14 +21,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import lib.gen_libs as gen_libs
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser(object):                                # pylint:disable=R0205
 
     """Class:  ArgParser
 
@@ -56,7 +56,7 @@ class ArgParser(object):
         """
 
         self.cmdline = None
-        self.args_array = dict()
+        self.args_array = {}
         self.opt_req = None
         self.opt_req2 = True
         self.dir_perms_chk = None
@@ -87,7 +87,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def arg_require(self, opt_req):
 
@@ -140,7 +140,7 @@ class ArgParser(object):
         return self.argparse2
 
 
-class ProgramLock(object):
+class ProgramLock(object):                      # pylint:disable=R0903,R0205
 
     """Class:  ProgramLock
 

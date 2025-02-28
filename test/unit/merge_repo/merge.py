@@ -21,13 +21,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser(object):                                # pylint:disable=R0205
 
     """Class:  ArgParser
 
@@ -51,7 +51,7 @@ class ArgParser(object):
         """
 
         self.cmdline = None
-        self.args_array = dict()
+        self.args_array = {}
 
     def arg_exist(self, arg):
 
@@ -63,7 +63,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def get_val(self, skey, def_val=None):
 
@@ -78,7 +78,7 @@ class ArgParser(object):
         return self.args_array.get(skey, def_val)
 
 
-class CfgTest(object):
+class CfgTest(object):                          # pylint:disable=R0903,R0205
 
     """Class:  CfgTest
 
@@ -221,8 +221,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_git_alias_option(self, mock_log, mock_lib, mock_isgit, mock_git,
-                              mock_post):
+    def test_git_alias_option(                          # pylint:disable=R0913
+            self, mock_log, mock_lib, mock_isgit, mock_git, mock_post):
 
         """Function:  test_git_alias_option
 
@@ -392,8 +392,9 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_second_check_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                               mock_post, mock_chg):
+    def test_second_check_true(                         # pylint:disable=R0913
+            self, mock_log, mock_lib, mock_isgit, mock_git, mock_post,
+            mock_chg):
 
         """Function:  test_second_check_true
 
@@ -427,8 +428,9 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_remote_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                            mock_post, mock_chg):
+    def test_is_remote_true(                            # pylint:disable=R0913
+            self, mock_log, mock_lib, mock_isgit, mock_git, mock_post,
+            mock_chg):
 
         """Function:  test_is_remote_true
 
@@ -461,8 +463,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_remote_false(self, mock_log, mock_lib, mock_isgit, mock_git,
-                             mock_post):
+    def test_is_remote_false(                           # pylint:disable=R0913
+            self, mock_log, mock_lib, mock_isgit, mock_git, mock_post):
 
         """Function:  test_is_remote_false
 
@@ -492,8 +494,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_git_repo_true(self, mock_log, mock_lib, mock_isgit, mock_git,
-                              mock_post):
+    def test_is_git_repo_true(                          # pylint:disable=R0913
+            self, mock_log, mock_lib, mock_isgit, mock_git, mock_post):
 
         """Function:  test_is_git_repo_true
 
@@ -523,8 +525,8 @@ class UnitTest(unittest.TestCase):
     @mock.patch("merge_repo.is_git_repo")
     @mock.patch("merge_repo.gen_libs")
     @mock.patch("merge_repo.gen_class.Logger")
-    def test_is_git_repo_false(self, mock_log, mock_lib, mock_isgit, mock_mail,
-                               mock_move):
+    def test_is_git_repo_false(                         # pylint:disable=R0913
+            self, mock_log, mock_lib, mock_isgit, mock_mail, mock_move):
 
         """Function:  test_is_git_repo_false
 

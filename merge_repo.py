@@ -150,9 +150,9 @@ try:
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.gen_libs as gen_libs
-    import lib.gen_class as gen_class
-    import git_lib.git_class as git_class
+    import lib.gen_libs as gen_libs                     # pylint:disable=R0402
+    import lib.gen_class as gen_class                   # pylint:disable=R0402
+    import git_lib.git_class as git_class               # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
@@ -232,10 +232,10 @@ def is_git_repo(path):
     """
 
     try:
-        git.Repo(path).git_dir
+        git.Repo(path).git_dir                      # pylint:disable=W0106
         return True
 
-    except git.exc.InvalidGitRepositoryError:
+    except git.exc.InvalidGitRepositoryError:       # pylint:disable=E1101
         return False
 
 
@@ -336,7 +336,8 @@ def prepare_mail(gitr, status, line_list=None, msg=None):
     return subj, body
 
 
-def post_process(gitr, cfg, log, status, line_list=None, msg=None):
+def post_process(                                       # pylint:disable=R0913
+        gitr, cfg, log, status, line_list=None, msg=None):
 
     """Function:  post_process
 
@@ -434,6 +435,7 @@ def quarantine_files(gitr, cfg, log, status=None):
     dtg = datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d_%H%M%S")
     q_dir = gitr.repo_name + "-" + dtg
     file_list = []
+    subj = "No Subject"
 
     if status == "added":
         file_list = list(gitr.new_files)

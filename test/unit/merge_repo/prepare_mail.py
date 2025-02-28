@@ -21,13 +21,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class GitMerge(object):
+class GitMerge(object):                         # pylint:disable=R0903,R0205
 
     """Class:  GitMerge
 
@@ -116,7 +116,7 @@ class UnitTest(unittest.TestCase):
         for line in self.line_list2:
             test_body.append(line)
 
-        for key in self.msg:
+        for key in self.msg:                            # pylint:disable=C0206
             test_body.append("%s: %s" % (key, self.msg[key]))
 
         test_body.append("URL: " + self.gitr.url)

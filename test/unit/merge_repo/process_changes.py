@@ -21,10 +21,161 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class CfgTest(object):                          # pylint:disable=R0903,R0205
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.url = "git@domain:project/"
+        self.work_dir = "/directory/work_dir"
+        self.err_dir = "/directory/error_dir"
+        self.archive_dir = "/directory/archive_dir"
+        self.log_file = "/directory/log_dir/merge_repo.log"
+        self.to_line = "name@domain"
+        self.branch = "branch_name"
+        self.mod_branch = "mod_branch"
+        self.dirty = "revert"
+        self.untracked = "remove"
+
+
+class GitMerge(object):                                 # pylint:disable=R0205
+
+    """Class:  GitMerge
+
+    Description:  Class which is a representation of GitMerge module.
+
+    Methods:
+        __init__
+        is_dirty
+        is_untracked
+        process_dirty
+        process_untracked
+        get_dirty
+        get_untracked
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the GitMerge class.
+
+        Arguments:
+
+        """
+
+        self.chg_files = []
+        self.new_files = []
+        self.rm_files = []
+        self.repo_name = "Repo_Name"
+
+        self.dirty = True
+        self.untracked = True
+
+    def is_dirty(self):
+
+        """Method:  is_dirty
+
+        Description:  Stub holder for the GitMerge.is_dirty method.
+
+        Arguments:
+
+        """
+
+        return self.dirty
+
+    def is_untracked(self):
+
+        """Method:  is_untracked
+
+        Description:  Stub holder for GitMerge.is_untracked method.
+
+        Arguments:
+
+        """
+
+        return self.untracked
+
+    def process_dirty(self, option):
+
+        """Method:  process_dirty
+
+        Description:  Stub holder for GitMerge.process_dirty method.
+
+        Arguments:
+
+        """
+
+        status = True
+
+        if option:
+            status = True
+
+        return status
+
+    def process_untracked(self, option):
+
+        """Method:  process_untracked
+
+        Description:  Stub holder GitMerge.process_untracked method.
+
+        Arguments:
+
+        """
+
+        status = True
+
+        if option:
+            status = True
+
+        return status
+
+    def get_dirty(self):
+
+        """Method:  get_dirty
+
+        Description:  Stub holder for the GitMerge.get_dirty method.
+
+        Arguments:
+
+        """
+
+        return True
+
+    def get_untracked(self):
+
+        """Method:  get_untracked
+
+        Description:  Stub holder for GitMerge.get_untracked method.
+
+        Arguments:
+
+        """
+
+        return True
 
 
 class UnitTest(unittest.TestCase):
@@ -51,155 +202,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.url = "git@domain:project/"
-                self.work_dir = "/directory/work_dir"
-                self.err_dir = "/directory/error_dir"
-                self.archive_dir = "/directory/archive_dir"
-                self.log_file = "/directory/log_dir/merge_repo.log"
-                self.to_line = "name@domain"
-                self.branch = "branch_name"
-                self.mod_branch = "mod_branch"
-                self.dirty = "revert"
-                self.untracked = "remove"
-
-        class GitMerge(object):
-
-            """Class:  GitMerge
-
-            Description:  Class which is a representation of GitMerge module.
-
-            Methods:
-                __init__
-                is_dirty
-                is_untracked
-                process_dirty
-                process_untracked
-                get_dirty
-                get_untracked
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the GitMerge class.
-
-                Arguments:
-
-                """
-
-                self.chg_files = []
-                self.new_files = []
-                self.rm_files = []
-                self.repo_name = "Repo_Name"
-
-                self.dirty = True
-                self.untracked = True
-
-            def is_dirty(self):
-
-                """Method:  is_dirty
-
-                Description:  Stub holder for the GitMerge.is_dirty method.
-
-                Arguments:
-
-                """
-
-                return self.dirty
-
-            def is_untracked(self):
-
-                """Method:  is_untracked
-
-                Description:  Stub holder for GitMerge.is_untracked method.
-
-                Arguments:
-
-                """
-
-                return self.untracked
-
-            def process_dirty(self, option):
-
-                """Method:  process_dirty
-
-                Description:  Stub holder for GitMerge.process_dirty method.
-
-                Arguments:
-
-                """
-
-                status = True
-
-                if option:
-                    status = True
-
-                return status
-
-            def process_untracked(self, option):
-
-                """Method:  process_untracked
-
-                Description:  Stub holder GitMerge.process_untracked method.
-
-                Arguments:
-
-                """
-
-                status = True
-
-                if option:
-                    status = True
-
-                return status
-
-            def get_dirty(self):
-
-                """Method:  get_dirty
-
-                Description:  Stub holder for the GitMerge.get_dirty method.
-
-                Arguments:
-
-                """
-
-                return True
-
-            def get_untracked(self):
-
-                """Method:  get_untracked
-
-                Description:  Stub holder for GitMerge.get_untracked method.
-
-                Arguments:
-
-                """
-
-                return True
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()
