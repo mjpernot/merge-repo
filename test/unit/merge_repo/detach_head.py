@@ -21,10 +21,107 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class GitRepo(object):                          # pylint:disable=R0903,R0205
+
+    """Class:  GitRepo
+
+    Description:  Class which is a representation of GitRepo module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the GitMerge class.
+
+        Arguments:
+
+        """
+
+        self.branches = []
+
+
+class GitMerge(object):                                 # pylint:disable=R0205
+
+    """Class:  GitMerge
+
+    Description:  Class which is a representation of GitMerge module.
+
+    Methods:
+        __init__
+        get_br_name
+        detach_head
+        remove_branch
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the GitMerge class.
+
+        Arguments:
+
+        """
+
+        self.gitrepo = GitRepo()
+        self.branch_name = "branch_name"
+        self.status = []
+        self.branches = []
+
+    def get_br_name(self):
+
+        """Method:  get_br_name
+
+        Description:  Stub holder for the GitMerge.get_br_name method.
+
+        Arguments:
+
+        """
+
+        return self.branch_name
+
+    def detach_head(self):
+
+        """Method:  detach_head
+
+        Description:  Stub holder for GitMerge.detach_head method.
+
+        Arguments:
+
+        """
+
+        return self.status
+
+    def remove_branch(self, branch, no_chk=False):
+
+        """Method:  process_dirty
+
+        Description:  Stub holder for GitMerge.remove_branch method.
+
+        Arguments:
+
+        """
+
+        status = True
+        msg = None
+
+        if branch and no_chk:
+            status = True
+            msg = None
+
+        return (status, msg)
 
 
 class UnitTest(unittest.TestCase):
@@ -51,101 +148,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class GitRepo(object):
-
-            """Class:  GitRepo
-
-            Description:  Class which is a representation of GitRepo module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the GitMerge class.
-
-                Arguments:
-
-                """
-
-                self.branches = []
-
-        class GitMerge(object):
-
-            """Class:  GitMerge
-
-            Description:  Class which is a representation of GitMerge module.
-
-            Methods:
-                __init__
-                get_br_name
-                detach_head
-                remove_branch
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the GitMerge class.
-
-                Arguments:
-
-                """
-
-                self.gitrepo = GitRepo()
-                self.branch_name = "branch_name"
-                self.status = []
-                self.branches = []
-
-            def get_br_name(self):
-
-                """Method:  get_br_name
-
-                Description:  Stub holder for the GitMerge.get_br_name method.
-
-                Arguments:
-
-                """
-
-                return self.branch_name
-
-            def detach_head(self):
-
-                """Method:  detach_head
-
-                Description:  Stub holder for GitMerge.detach_head method.
-
-                Arguments:
-
-                """
-
-                return self.status
-
-            def remove_branch(self, branch, no_chk=False):
-
-                """Method:  process_dirty
-
-                Description:  Stub holder for GitMerge.remove_branch method.
-
-                Arguments:
-
-                """
-
-                status = True
-                msg = None
-
-                if branch and no_chk:
-                    status = True
-                    msg = None
-
-                return (status, msg)
 
         self.gitr = GitMerge()
         self.branch1 = ["Branch1"]

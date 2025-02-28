@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.1.4] - 2025-02-28
+- Updated git-lib to v1.0.10
+
+### Changed
+- quarantine_files: Set subj variable to a default value.
+- Documentation changes.
+
+
 ## [1.1.3] - 2024-11-22
 - Updated distro==1.9.0 for Python 3
 - Added smmap==5.0.0 for Python 3

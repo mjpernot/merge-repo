@@ -21,10 +21,60 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
+
+
+class CfgTest(object):                          # pylint:disable=R0903,R0205
+
+    """Class:  CfgTest
+
+    Description:  Class which is a representation of a cfg module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the CfgTest class.
+
+        Arguments:
+
+        """
+
+        self.archive_dir = "/data/merge-repo/archive_dir"
+        self.err_dir = "/data/merge-repo/error_dir"
+        self.to_line = "to@domain"
+
+
+class GitMerge(object):                         # pylint:disable=R0903,R0205
+
+    """Class:  GitMerge
+
+    Description:  Class which is a representation of GitMerge module.
+
+    Methods:
+        __init__
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Initialization instance of the GitMerge class.
+
+        Arguments:
+
+        """
+
+        self.git_dir = "/directory/git_repo"
 
 
 class UnitTest(unittest.TestCase):
@@ -52,54 +102,6 @@ class UnitTest(unittest.TestCase):
         Arguments:
 
         """
-
-        class CfgTest(object):
-
-            """Class:  CfgTest
-
-            Description:  Class which is a representation of a cfg module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the CfgTest class.
-
-                Arguments:
-
-                """
-
-                self.archive_dir = "/data/merge-repo/archive_dir"
-                self.err_dir = "/data/merge-repo/error_dir"
-                self.to_line = "to@domain"
-
-        class GitMerge(object):
-
-            """Class:  GitMerge
-
-            Description:  Class which is a representation of GitMerge module.
-
-            Methods:
-                __init__
-
-            """
-
-            def __init__(self):
-
-                """Method:  __init__
-
-                Description:  Initialization instance of the GitMerge class.
-
-                Arguments:
-
-                """
-
-                self.git_dir = "/directory/git_repo"
 
         self.gitr = GitMerge()
         self.cfg = CfgTest()

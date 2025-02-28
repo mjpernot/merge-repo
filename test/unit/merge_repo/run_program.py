@@ -21,9 +21,9 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import merge_repo
-import lib.gen_libs as gen_libs
-import version
+import merge_repo                               # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
@@ -46,7 +46,7 @@ def merge(args, cfg, log):
     return status
 
 
-class ArgParser(object):
+class ArgParser(object):                                # pylint:disable=R0205
 
     """Class:  ArgParser
 
@@ -71,7 +71,7 @@ class ArgParser(object):
         """
 
         self.cmdline = None
-        self.args_array = dict()
+        self.args_array = {}
 
     def arg_exist(self, arg):
 
@@ -83,7 +83,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
     def get_args_keys(self):
 
@@ -110,7 +110,7 @@ class ArgParser(object):
         return self.args_array.get(skey, def_val)
 
 
-class CfgTest(object):
+class CfgTest(object):                          # pylint:disable=R0903,R0205
 
     """Class:  CfgTest
 
